@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ImagePicker</string>
+    <string name="fileprovider_authorities">image_picker_file_provider</string>
+    <string name="imagepicker_title_take_photo">拍摄照片</string>
+    <string name="imagepicker_back">返回</string>
+    <string name="imagepicker_preview">预览</string>
+    <string name="error_no_sdcard">SD卡不存在！</string>
+    <string name="error_imagepicker_scanfail">无法扫描本地图片数据</string>
+    <string name="error_imagepicker_parsefail">无法读取图片</string>
+    <string name="error_imagepicker_lack_params">缺少参数</string>
+    <string name="imagepicker_all_image_floder">全部图片</string>
+    <string name="btn_imagepicker_ok">完成(%1$s/%2$s)</string>
+    <string name="warning_imagepicker_limit_num">只能选择%1$s张图片</string>
+    <string name="imagepicker_floder_image_num">%1$s张图片</string>
+    <string name="warning_imagepicker_permission_sdcard_denied">无法获取外部存储卡读写权限</string>
+    <string name="warning_imagepicker_permission_camera_denied">无法获取拍照权限</string>
+    <string name="dialog_imagepicker_permission_title">权限申明</string>
+    <string name="dialog_imagepicker_permission_confirm">我知道了</string>
+    <string name="toast_imagepicker_permission_denied">无法获取所需权限</string>
+    <string name="dialog_imagepicker_permission_nerver_ask_confirm">去设置</string>
+    <string name="dialog_imagepicker_permission_nerver_ask_cancel">取消</string>
+    <string name="dialog_imagepicker_permission_sdcard_message">应用程序需要获取外部存储卡的读写权限，否则无法获取照片数据!</string>
+    <string name="dialog_imagepicker_permission_camera_message">应用程序需要获取拍照权限和外部存储卡写入权限，否则无法拍摄照片!</string>
+    <string name="dialog_imagepicker_permission_sdcard_nerver_ask_message">应用程序无法获取外部存储卡的读写权限，导致无法获取照片数据，您可通过系统设置界面打开软件的读写权限</string>
+    <string name="dialog_imagepicker_permission_camera_nerver_ask_message">应用程序无法获取拍照所需权限，导致无法启用拍照功能，您可通过系统设置界面打开软件的拍照权限和外部存储卡读写权限</string>
+</resources>

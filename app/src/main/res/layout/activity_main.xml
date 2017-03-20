@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lwkandroid.imagepickerdemo.MainActivity">
+
+
+    <Button
+        android:id="@+id/btn_main01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="只拍照"/>
+
+    <Button
+        android:id="@+id/btn_main02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="单选"/>
+
+    <Button
+        android:id="@+id/btn_main03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="多选"/>
+</LinearLayout>
