@@ -44,7 +44,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/imagepicker_floder_listitem_padding"
-        android:src="@drawable/ck_imagepicker_selected"
+        android:src="@drawable/ck_imagepicker_grid_selected"
         android:visibility="gone"/>
 
 </RelativeLayout>

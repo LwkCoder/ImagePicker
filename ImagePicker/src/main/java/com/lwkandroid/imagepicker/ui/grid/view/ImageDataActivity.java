@@ -15,14 +15,15 @@ import android.widget.TextView;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.base.activity.ImagePickerBaseActivity;
-import com.lwkandroid.imagepicker.data.Contants;
 import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImageContants;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.data.ImageFloderBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerOptions;
 import com.lwkandroid.imagepicker.ui.grid.adapter.ImageDataAdapter;
 import com.lwkandroid.imagepicker.ui.grid.presenter.ImageDataPresenter;
+import com.lwkandroid.imagepicker.ui.pager.view.ImagePagerActivity;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.utils.PermissionChecker;
 import com.lwkandroid.imagepicker.utils.TakePhotoCompatUtils;
@@ -31,6 +32,8 @@ import com.lwkandroid.imagepicker.widget.ImagePickerActionBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.lwkandroid.imagepicker.data.ImageContants.REQUEST_CODE_PERMISSION_CAMERA;
+import static com.lwkandroid.imagepicker.data.ImageContants.REQUEST_CODE_PERMISSION_SDCARD;
 import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermissions;
 
 /**
@@ -38,15 +41,6 @@ import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermission
  */
 public class ImageDataActivity extends ImagePickerBaseActivity implements IImageDataView, ImageFloderPop.onFloderItemClickListener
 {
-
-    //sdk23获取sd卡读写权限的requestCode
-    private static final int REQUEST_CODE_PERMISSION_SDCARD = 110;
-    //sdk23获取sd卡拍照权限的requestCode
-    private static final int REQUEST_CODE_PERMISSION_CAMERA = 111;
-    //拍照请求码
-    private static final int REQUEST_CODE_TAKE_PHOTO = 112;
-    //裁剪请求码
-    private static final int REQUEST_CODE_CROP = 113;
 
     private ImageDataPresenter mPresenter;
     private ImagePickerOptions mOptions;
@@ -69,8 +63,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     {
         super.beforSetContentView(savedInstanceState);
         Intent intent = getIntent();
-        mOptions = intent.getParcelableExtra(Contants.INTENT_OPTIONS_KEY);
-        mResultCode = intent.getIntExtra(Contants.INTENT_RESULTCODE_KEY, ImagePicker.DEF_RESULT_CODE);
+        mOptions = intent.getParcelableExtra(ImageContants.INTENT_KEY_OPTIONS);
+        mResultCode = intent.getIntExtra(ImageContants.INTENT_KEY_RESULTCODE, ImagePicker.DEF_RESULT_CODE);
     }
 
     @Override
@@ -98,6 +92,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             startTakePhoto();
         } else
         {
+            mActionBar.setTitle(R.string.imagepicker_title_select_image);
+
             ViewStub viewStub = findView(R.id.vs_image_data);
             viewStub.inflate();
             mGridView = findView(R.id.gv_image_data);
@@ -114,9 +110,11 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                 mActionBar.hidePreview();
             } else
             {
+                mActionBar.showPreview();
+                mActionBar.setOnPreviewClickListener(this);
                 mBtnOk.setVisibility(View.VISIBLE);
-                onSelectNumChanged(0);
                 mBtnOk.setOnClickListener(this);
+                onSelectNumChanged(0);
             }
         }
     }
@@ -161,7 +159,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     //执行拍照的方法
     private void doTakePhoto()
     {
-        mPhotoPath = TakePhotoCompatUtils.takePhoto(this, REQUEST_CODE_TAKE_PHOTO, mOptions.getCachePath());
+        mPhotoPath = TakePhotoCompatUtils.takePhoto(this, ImageContants.REQUEST_CODE_TAKE_PHOTO, mOptions.getCachePath());
     }
 
     //执行扫描sd卡的方法
@@ -224,7 +222,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                 {
                     mGridView.setVisibility(View.VISIBLE);
                     mAdapter.refreshDatas(dataList);
-                    mGridView.scrollTo(0, 0);
+                    mGridView.setSelection(0);
                 }
             });
         }
@@ -250,7 +248,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     }
 
     @Override
-    public void onImageClicked(ImageBean imageBean)
+    public void onImageClicked(ImageBean imageBean, int position)
     {
         if (mOptions.getType() == ImagePickType.SINGLE)
         {
@@ -261,37 +259,52 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             {
                 returnSingleImage(imageBean);
             }
-        }
-        //多选模式下进入大图查看界面
-        else
+        } else
         {
-            //TODO 去查看大图的界面
+            //去查看大图的界面
+            //如果有相机入口需要调整传递的数据
+            int p = position;
+            ArrayList<ImageBean> dataList = new ArrayList<>();
+            dataList.addAll(mAdapter.getDatas());
+            if (mOptions.isNeedCamera())
+            {
+                p--;
+                dataList.remove(0);
+            }
+            ImagePagerActivity.start(this, dataList, p, mOptions, ImageContants.REQUEST_CODE_DETAIL);
         }
     }
 
     @Override
     public void onSelectNumChanged(int curNum)
     {
-        if (mBtnOk != null)
+        mBtnOk.setText(getString(R.string.btn_imagepicker_ok, String.valueOf(curNum), String.valueOf(mOptions.getMaxNum())));
+        if (curNum == 0)
         {
-            mBtnOk.setText(getString(R.string.btn_imagepicker_ok, String.valueOf(curNum), String.valueOf(mOptions.getLimitNum())));
-            if (curNum == 0)
-                mBtnOk.setEnabled(false);
-            else
-                mBtnOk.setEnabled(true);
+            mBtnOk.setEnabled(false);
+            mActionBar.enablePreview(false);
+        } else
+        {
+            mBtnOk.setEnabled(true);
+            mActionBar.enablePreview(true);
         }
     }
 
     @Override
-    public void warningLimitNum()
+    public void warningMaxNum()
     {
-        showShortToast(getString(R.string.warning_imagepicker_limit_num, String.valueOf(mOptions.getLimitNum())));
+        showShortToast(getString(R.string.warning_imagepicker_max_num, String.valueOf(mOptions.getMaxNum())));
     }
 
     @Override
     protected void onClick(View v, int id)
     {
-        if (id == R.id.ll_image_data_bottom_floder)
+        if (id == R.id.tv_imagepicker_actionbar_preview)
+        {
+            //去预览界面
+            ImagePagerActivity.start(this, (ArrayList<ImageBean>) ImageDataModel.getInstance().getResultList()
+                    , 0, mOptions, ImageContants.REQUEST_CODE_PREVIEW);
+        } else if (id == R.id.ll_image_data_bottom_floder)
         {
             //弹出文件夹切换菜单
             new ImageFloderPop().showAtBottom(this, mContentView, mCurFloder, this);
@@ -309,16 +322,18 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         Log.i("ImagePicker", "ImageDataActivity.onActivityResult--->requestCode=" + requestCode
                 + ",resultCode=" + resultCode + ",data=" + data);
 
-        if (resultCode != RESULT_OK)
-        {
-            if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
-                finish();
-            return;
-        }
-
         //拍照返回
-        if (requestCode == REQUEST_CODE_TAKE_PHOTO)
+        if (requestCode == ImageContants.REQUEST_CODE_TAKE_PHOTO)
         {
+            if (resultCode != RESULT_OK)
+            {
+                Log.e("ImagePicker", "ImageDataActivity take photo result not OK");
+                if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
+                    finish();
+                return;
+            }
+
+            Log.i("ImagePicker", "ImageDataActivity take photo result OK--->" + mPhotoPath);
             //非多选模式下需要判断是否有裁剪的需求
             if (mOptions.getType() != ImagePickType.MUTIL && mOptions.isNeedCrop())
             {
@@ -326,6 +341,25 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             } else
             {
                 returnSingleImage(mPresenter.getImageBeanByPath(mPhotoPath));
+            }
+        }
+        //裁剪返回
+        if (requestCode == ImageContants.REQUEST_CODE_CROP)
+        {
+            //TODO 处理裁剪返回
+        }
+        //预览或者大图界面返回
+        else if (requestCode == ImageContants.REQUEST_CODE_PREVIEW
+                || requestCode == ImageContants.REQUEST_CODE_DETAIL)
+        {
+            if (resultCode == ImageContants.RESULT_CODE_OK)
+            {
+                returnAllSelectedImages();
+            } else
+            {
+                //刷新视图
+                mAdapter.notifyDataSetChanged();
+                onSelectNumChanged(ImageDataModel.getInstance().getResultNum());
             }
         }
     }
@@ -365,7 +399,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         boolean[] result;
         switch (requestCode)
         {
-            case REQUEST_CODE_PERMISSION_CAMERA:
+            case ImageContants.REQUEST_CODE_PERMISSION_CAMERA:
                 if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
                 {
                     result = PermissionChecker.onRequestPermissionsResult(this, permissions, grantResults, true
@@ -382,7 +416,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                         doTakePhoto();
                 }
                 break;
-            case REQUEST_CODE_PERMISSION_SDCARD:
+            case ImageContants.REQUEST_CODE_PERMISSION_SDCARD:
                 result = PermissionChecker.onRequestPermissionsResult(this, permissions, grantResults, false
                         , R.string.dialog_imagepicker_permission_sdcard_nerver_ask_message);
                 //                if (result[0])

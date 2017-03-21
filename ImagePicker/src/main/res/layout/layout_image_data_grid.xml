@@ -22,6 +22,7 @@
         android:horizontalSpacing="2dp"
         android:listSelector="@android:color/transparent"
         android:numColumns="3"
+        android:overScrollMode="never"
         android:paddingBottom="@dimen/imagepicker_bottomview_height"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"

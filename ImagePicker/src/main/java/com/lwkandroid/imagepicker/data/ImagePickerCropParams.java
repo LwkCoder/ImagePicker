@@ -17,12 +17,12 @@ public class ImagePickerCropParams implements Parcelable
     /**
      * 裁剪的宽高比
      */
-    private float ratio = Contants.DEF_CROP_RATIO;
+    private float ratio = ImageContants.DEF_CROP_RATIO;
 
     /**
      * 裁剪后最大宽度
       */
-    private int cropMaxWidth = Contants.DEF_CROP_MAX_WIDTH;
+    private int cropMaxWidth = ImageContants.DEF_CROP_MAX_WIDTH;
 
     public ImageCropType getType()
     {

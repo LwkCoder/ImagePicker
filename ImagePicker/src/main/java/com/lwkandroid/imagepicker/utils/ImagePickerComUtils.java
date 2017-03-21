@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -96,6 +97,32 @@ public class ImagePickerComUtils
     public static boolean isSdExist()
     {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    /**
+     * 获取屏幕宽度
+     */
+    public static int getScreenWidth(Context context)
+    {
+        int width;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        width = outMetrics.widthPixels;
+        return width;
+    }
+
+    /**
+     * 获取屏幕高度
+     */
+    public static int getScreenHeight(Context context)
+    {
+        int height;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        height = outMetrics.heightPixels;
+        return height;
     }
 
 }

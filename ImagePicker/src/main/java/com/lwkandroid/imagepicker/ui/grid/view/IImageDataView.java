@@ -26,9 +26,9 @@ public interface IImageDataView extends IImageBaseView
 
     void onFloderChanged(ImageFloderBean floderBean);
 
-    void onImageClicked(ImageBean imageBean);
+    void onImageClicked(ImageBean imageBean, int position);
 
     void onSelectNumChanged(int curNum);
 
-    void warningLimitNum();
+    void warningMaxNum();
 }

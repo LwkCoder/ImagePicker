@@ -2,14 +2,12 @@ package com.lwkandroid.imagepicker.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.R;
-import com.lwkandroid.imagepicker.ui.preview.ImagePreviewActivity;
 
 /**
  * 自定义ActionBar
@@ -51,14 +49,7 @@ public class ImagePickerActionBar extends FrameLayout
                 }
             });
 
-            mTvPreview.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    context.startActivity(new Intent(context, ImagePreviewActivity.class));
-                }
-            });
+
         }
     }
 
@@ -87,5 +78,32 @@ public class ImagePickerActionBar extends FrameLayout
     {
         if (mTvPreview != null)
             mTvPreview.setVisibility(View.GONE);
+    }
+
+    /**
+     * 显示预览入口
+     */
+    public void showPreview()
+    {
+        if (mTvPreview != null)
+            mTvPreview.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 设置预览入口是否可点击
+     */
+    public void enablePreview(boolean b)
+    {
+        if (mTvPreview != null)
+            mTvPreview.setEnabled(b);
+    }
+
+    /**
+     * 预览入口点击监听
+     */
+    public void setOnPreviewClickListener(OnClickListener listener)
+    {
+        if (mTvPreview != null)
+            mTvPreview.setOnClickListener(listener);
     }
 }

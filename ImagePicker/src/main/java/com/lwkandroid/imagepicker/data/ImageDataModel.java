@@ -154,7 +154,7 @@ public class ImageDataModel
             mResultList.clear();
             //创建“全部图片”的文件夹
             ImageFloderBean allImgFloder = new ImageFloderBean(
-                    Contants.ID_ALL_IMAGE_FLODER, context.getResources().getString(R.string.imagepicker_all_image_floder));
+                    ImageContants.ID_ALL_IMAGE_FLODER, context.getResources().getString(R.string.imagepicker_all_image_floder));
             mAllFloderList.add(allImgFloder);
             //临时存储所有文件夹对象的Map
             ArrayMap<String, ImageFloderBean> floderMap = new ArrayMap();
@@ -265,7 +265,7 @@ public class ImageDataModel
             return null;
 
         String floderId = floderBean.getFloderId();
-        if (ImagePickerComUtils.isEquals(Contants.ID_ALL_IMAGE_FLODER, floderId))
+        if (ImagePickerComUtils.isEquals(ImageContants.ID_ALL_IMAGE_FLODER, floderId))
         {
             return mAllImgList;
         } else

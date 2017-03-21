@@ -11,11 +11,11 @@ import android.os.Parcelable;
 public class ImagePickerOptions implements Parcelable
 {
     private ImagePickType type = ImagePickType.SINGLE;
-    private int limitNum = 1;
+    private int maxNum = 1;
     private boolean needCamera = true;
     private boolean needCrop;
     private ImagePickerCropParams cropParams;
-    private String cachePath = Contants.DEF_CACHE_PATH;
+    private String cachePath = ImageContants.DEF_CACHE_PATH;
 
     public ImagePickType getType()
     {
@@ -27,15 +27,15 @@ public class ImagePickerOptions implements Parcelable
         this.type = type;
     }
 
-    public int getLimitNum()
+    public int getMaxNum()
     {
-        return limitNum;
+        return maxNum;
     }
 
-    public void setLimitNum(int limitNum)
+    public void setMaxNum(int maxNum)
     {
-        if (limitNum > 0)
-            this.limitNum = limitNum;
+        if (maxNum > 0)
+            this.maxNum = maxNum;
     }
 
     public boolean isNeedCamera()
@@ -83,7 +83,7 @@ public class ImagePickerOptions implements Parcelable
     {
         return "ImagePickerOptions{" +
                 "type=" + type +
-                ", limitNum=" + limitNum +
+                ", maxNum=" + maxNum +
                 ", needCamera=" + needCamera +
                 ", needCrop=" + needCrop +
                 ", cropParams=" + cropParams +
@@ -101,7 +101,7 @@ public class ImagePickerOptions implements Parcelable
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeInt(this.type == null ? -1 : this.type.ordinal());
-        dest.writeInt(this.limitNum);
+        dest.writeInt(this.maxNum);
         dest.writeByte(this.needCamera ? (byte) 1 : (byte) 0);
         dest.writeByte(this.needCrop ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.cropParams, flags);
@@ -116,7 +116,7 @@ public class ImagePickerOptions implements Parcelable
     {
         int tmpMode = in.readInt();
         this.type = tmpMode == -1 ? null : ImagePickType.values()[tmpMode];
-        this.limitNum = in.readInt();
+        this.maxNum = in.readInt();
         this.needCamera = in.readByte() != 0;
         this.needCrop = in.readByte() != 0;
         this.cropParams = in.readParcelable(ImagePickerCropParams.class.getClassLoader());

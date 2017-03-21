@@ -3,7 +3,7 @@ package com.lwkandroid.imagepicker;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.lwkandroid.imagepicker.data.Contants;
+import com.lwkandroid.imagepicker.data.ImageContants;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
@@ -49,8 +49,8 @@ public class ImagePicker
     public void start(Activity activity, int requestCode, int resultCode)
     {
         Intent intent = new Intent(activity, ImageDataActivity.class);
-        intent.putExtra(Contants.INTENT_OPTIONS_KEY, mOptions);
-        intent.putExtra(Contants.INTENT_RESULTCODE_KEY, resultCode);
+        intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
+        intent.putExtra(ImageContants.INTENT_KEY_RESULTCODE, resultCode);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -69,9 +69,9 @@ public class ImagePicker
             return this;
         }
 
-        public Builder limitNum(int limitNum)
+        public Builder maxNum(int maxNum)
         {
-                mOptions.setLimitNum(limitNum);
+            mOptions.setMaxNum(maxNum);
             return this;
         }
 
@@ -89,7 +89,7 @@ public class ImagePicker
 
         public Builder doCrop(ImagePickerCropParams params)
         {
-            mOptions.setNeedCrop(true);
+            mOptions.setNeedCrop(params != null);
             mOptions.setCropParams(params);
             return this;
         }

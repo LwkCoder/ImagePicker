@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.base.adapter.IImagePickerItemView;
 import com.lwkandroid.imagepicker.base.adapter.ImagePickerViewHolder;
-import com.lwkandroid.imagepicker.data.Contants;
+import com.lwkandroid.imagepicker.data.ImageContants;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -44,7 +44,7 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
     }
 
     @Override
-    public void setData(ImagePickerViewHolder holder, final ImageBean imageBean, int position, ViewGroup parent)
+    public void setData(ImagePickerViewHolder holder, final ImageBean imageBean, final int position, ViewGroup parent)
     {
         ImageView imgContent = holder.findView(R.id.img_imagepicker_grid_content);
         View viewIndicator = holder.findView(R.id.ck_imagepicker_grid_content);
@@ -54,14 +54,14 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
             ImageDataModel.getInstance().getDisplayer()
                     .display(holder.getContext(), imageBean.getImagePath(), imgContent
                             , R.drawable.glide_default_picture, R.drawable.glide_default_picture
-                            , Contants.DISPLAY_THUMB_SIZE, Contants.DISPLAY_THUMB_SIZE);
+                            , ImageContants.DISPLAY_THUMB_SIZE, ImageContants.DISPLAY_THUMB_SIZE);
         imgContent.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 if (mViewImpl != null)
-                    mViewImpl.onImageClicked(imageBean);
+                    mViewImpl.onImageClicked(imageBean, position);
             }
         });
 
@@ -72,9 +72,9 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
         {
             viewIndicator.setVisibility(View.VISIBLE);
             if (ImageDataModel.getInstance().hasDataInResult(imageBean))
-                viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_selected);
+                viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_grid_selected);
             else
-                viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_normal);
+                viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_grid_normal);
 
             viewIndicator.setOnClickListener(new View.OnClickListener()
             {
@@ -82,9 +82,9 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
                 public void onClick(View v)
                 {
                     int curNum = ImageDataModel.getInstance().getResultNum();
-                    if (curNum == mOptions.getLimitNum())
+                    if (curNum == mOptions.getMaxNum())
                     {
-                        mViewImpl.warningLimitNum();
+                        mViewImpl.warningMaxNum();
                         return;
                     } else
                     {

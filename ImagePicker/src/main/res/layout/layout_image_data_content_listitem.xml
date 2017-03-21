@@ -17,6 +17,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="top|right"
-        android:background="@drawable/ck_imagepicker_normal"/>
+        android:background="@drawable/ck_imagepicker_grid_normal"/>
 
 </FrameLayout>

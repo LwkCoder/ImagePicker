@@ -9,7 +9,6 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="@string/fileprovider_authorities"
@@ -27,7 +26,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".ui.preview.ImagePreviewActivity"
+            android:name=".ui.pager.view.ImagePagerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">

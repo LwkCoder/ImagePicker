@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="选择图片"
         android:textColor="@color/imagepicker_text_white"
         android:textSize="@dimen/imagepicker_title_size"/>
 
@@ -22,7 +21,7 @@
         android:paddingLeft="@dimen/imagepicker_padding"
         android:paddingRight="@dimen/imagepicker_padding"
         android:text="@string/imagepicker_preview"
-        android:textColor="@color/imagepicker_text_white"
+        android:textColor="@color/actionbar_preview_colorlist"
         android:textSize="@dimen/imagepicker_text_size"/>
 
     <TextView
