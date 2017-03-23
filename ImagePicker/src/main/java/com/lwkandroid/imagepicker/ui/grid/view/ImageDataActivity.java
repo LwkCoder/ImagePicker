@@ -39,7 +39,8 @@ import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermission
 /**
  * 展示图片数据的Activity
  */
-public class ImageDataActivity extends ImagePickerBaseActivity implements IImageDataView, ImageFloderPop.onFloderItemClickListener
+public class ImageDataActivity extends ImagePickerBaseActivity implements IImageDataView
+        , ImageFloderPop.onFloderItemClickListener
 {
 
     private ImageDataPresenter mPresenter;

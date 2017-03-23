@@ -18,6 +18,26 @@ public class ImageContants
     public static final String INTENT_KEY_RESULTCODE = "resultCode";
 
     /**
+     * 传递数据的key
+     */
+    public static final String INTENT_KEY_DATA = "dataList";
+
+    /**
+     * 传递起始位置的key
+     */
+    public static final String INTENT_KEY_START_POSITION = "startP";
+
+    /**
+     * 传递Pager页面中是否为预览模式的key
+     */
+    public static final String INTENT_KEY_IS_PREVIEW = "isPreview";
+
+    /**
+     * 传递待裁剪图片路径的key
+     */
+    public static final String INTENT_KEY_ORIGIN_PATH = "originPath";
+
+    /**
      * “所有图片”文件夹的id
      */
     public static final String ID_ALL_IMAGE_FLODER = "-100";
@@ -73,22 +93,12 @@ public class ImageContants
     public static final int REQUEST_CODE_DETAIL = 115;
 
     /**
-     * 传递数据的key
+     * 裁剪结果码
      */
-    public static final String INTENT_KEY_DATA = "dataList";
+    public static final int RESULT_CODE_CROP = 116;
 
     /**
-     * 传递起始位置的key
-     */
-    public static final String INTENT_KEY_START_POSITION = "startP";
-
-    /**
-     * 传递Pager页面中是否为预览模式的key
-     */
-    public static final String INTENT_KEY_IS_PREVIEW = "isPreview";
-
-    /**
-     * 点击完成/确定后的ResultCode
+     * 代表操作完成的ResultCode
      */
     public static final int RESULT_CODE_OK = 123;
 }

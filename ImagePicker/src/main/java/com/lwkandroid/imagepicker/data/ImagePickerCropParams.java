@@ -9,58 +9,70 @@ import android.os.Parcelable;
  */
 public class ImagePickerCropParams implements Parcelable
 {
-    /**
-     * 裁剪模式
-     */
-    private ImageCropType type = ImageCropType.RECT;
+    private int aspectX = 1;
 
-    /**
-     * 裁剪的宽高比
-     */
-    private float ratio = ImageContants.DEF_CROP_RATIO;
+    private int aspectY = 1;
 
-    /**
-     * 裁剪后最大宽度
-      */
-    private int cropMaxWidth = ImageContants.DEF_CROP_MAX_WIDTH;
+    private int outputX;
 
-    public ImageCropType getType()
+    private int outputY;
+
+    public ImagePickerCropParams(int aspectX, int aspectY, int outputX, int outputY)
     {
-        return type;
+        this.aspectX = aspectX;
+        this.aspectY = aspectY;
+        this.outputX = outputX;
+        this.outputY = outputY;
     }
 
-    public void setType(ImageCropType type)
+    public int getAspectX()
     {
-        this.type = type;
+        return aspectX;
     }
 
-    public float getRatio()
+    public void setAspectX(int aspectX)
     {
-        return ratio;
+        this.aspectX = aspectX;
     }
 
-    public void setRatio(float ratio)
+    public int getAspectY()
     {
-        this.ratio = ratio;
+        return aspectY;
     }
 
-    public int getCropMaxWidth()
+    public void setAspectY(int aspectY)
     {
-        return cropMaxWidth;
+        this.aspectY = aspectY;
     }
 
-    public void setCropMaxWidth(int cropMaxWidth)
+    public int getOutputX()
     {
-        this.cropMaxWidth = cropMaxWidth;
+        return outputX;
+    }
+
+    public void setOutputX(int outputX)
+    {
+        this.outputX = outputX;
+    }
+
+    public int getOutputY()
+    {
+        return outputY;
+    }
+
+    public void setOutputY(int outputY)
+    {
+        this.outputY = outputY;
     }
 
     @Override
     public String toString()
     {
         return "ImagePickerCropParams{" +
-                "type=" + type +
-                ", ratio=" + ratio +
-                ", cropMaxWidth=" + cropMaxWidth +
+                "aspectX=" + aspectX +
+                ", aspectY=" + aspectY +
+                ", outputX=" + outputX +
+                ", outputY=" + outputY +
                 '}';
     }
 
@@ -73,9 +85,10 @@ public class ImagePickerCropParams implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeInt(this.type == null ? -1 : this.type.ordinal());
-        dest.writeFloat(this.ratio);
-        dest.writeInt(this.cropMaxWidth);
+        dest.writeInt(this.aspectX);
+        dest.writeInt(this.aspectY);
+        dest.writeInt(this.outputX);
+        dest.writeInt(this.outputY);
     }
 
     public ImagePickerCropParams()
@@ -84,13 +97,14 @@ public class ImagePickerCropParams implements Parcelable
 
     protected ImagePickerCropParams(Parcel in)
     {
-        int tmpMode = in.readInt();
-        this.type = tmpMode == -1 ? null : ImageCropType.values()[tmpMode];
-        this.ratio = in.readFloat();
-        this.cropMaxWidth = in.readInt();
+        int tmpType = in.readInt();
+        this.aspectX = in.readInt();
+        this.aspectY = in.readInt();
+        this.outputX = in.readInt();
+        this.outputY = in.readInt();
     }
 
-    public static final Parcelable.Creator<ImagePickerCropParams> CREATOR = new Parcelable.Creator<ImagePickerCropParams>()
+    public static final Creator<ImagePickerCropParams> CREATOR = new Creator<ImagePickerCropParams>()
     {
         @Override
         public ImagePickerCropParams createFromParcel(Parcel source)

@@ -69,7 +69,7 @@
 
         <Button
             android:id="@+id/btn_image_data_ok"
-            style="@style/ImagePickerBtnOkStyle"
+            style="@style/BtnOkStyle"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="@dimen/imagepicker_padding"/>
 

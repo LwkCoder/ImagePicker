@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.lwkandroid.imagepicker.R;
@@ -34,6 +35,8 @@ public abstract class ImagePickerBaseActivity extends AppCompatActivity implemen
 
     protected void beforSetContentView(Bundle savedInstanceState)
     {
+        //去掉ActionBar
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //改变状态栏颜色
         ImagePickerComUtils.changeStatusBarColor(this, getResources().getColor(R.color.imagepicker_statusbar));
     }
@@ -69,6 +72,7 @@ public abstract class ImagePickerBaseActivity extends AppCompatActivity implemen
 
     /**
      * 弹出Toast
+     *
      * @param resId 文字提示的资源id
      */
     public void showShortToast(final int resId)
@@ -85,6 +89,7 @@ public abstract class ImagePickerBaseActivity extends AppCompatActivity implemen
 
     /**
      * 弹出Toast
+     *
      * @param msg 文字提示的字符串
      */
     public void showShortToast(final String msg)

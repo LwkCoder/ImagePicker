@@ -1,6 +1,7 @@
 package com.lwkandroid.imagepicker;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 
 import com.lwkandroid.imagepicker.data.ImageContants;
@@ -54,6 +55,21 @@ public class ImagePicker
         activity.startActivityForResult(intent, requestCode);
     }
 
+    /**
+     * 发起选择图片
+     *
+     * @param fragment    发起的Fragment
+     * @param requestCode 请求码
+     * @param resultCode  结果码
+     */
+    public void start(Fragment fragment, int requestCode, int resultCode)
+    {
+        Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
+        intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
+        intent.putExtra(ImageContants.INTENT_KEY_RESULTCODE, resultCode);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
     public static final class Builder
     {
         private ImagePickerOptions mOptions;
@@ -87,10 +103,10 @@ public class ImagePicker
             return this;
         }
 
-        public Builder doCrop(ImagePickerCropParams params)
+        public Builder doCrop(int aspectX, int aspectY, int outputX, int outputY)
         {
-            mOptions.setNeedCrop(params != null);
-            mOptions.setCropParams(params);
+            mOptions.setNeedCrop(true);
+            mOptions.setCropParams(new ImagePickerCropParams(aspectX, aspectY, outputX, outputY));
             return this;
         }
 

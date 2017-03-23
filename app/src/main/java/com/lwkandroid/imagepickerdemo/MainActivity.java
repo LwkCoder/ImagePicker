@@ -13,7 +13,6 @@ import android.widget.RadioGroup;
 
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
-import com.lwkandroid.imagepicker.data.ImageCropType;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
 
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .pickType(getPickType())
                         .maxNum(getMaxNum())
                         .needCamera(mCkNeedCamera.isChecked())
-                        .doCrop(getCropParams())
                         .cachePath(cachePath)//自定义缓存路径
                         .build()
                         .start(this, REQUEST_CODE, RESULT_CODE);
@@ -129,19 +127,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!mCkNeedCrop.isChecked())
             return null;
 
-        ImagePickerCropParams cropParams = new ImagePickerCropParams();
-
-        int shapeId = mRgCrop.getCheckedRadioButtonId();
-        if (shapeId == R.id.rb_main_crop_shape_circle)
-            cropParams.setType(ImageCropType.CIRCLE);
-        else
-            cropParams.setType(ImageCropType.RECT);
-
-        String maxWidth = mEdMaxWidth.getText().toString();
-        cropParams.setCropMaxWidth((maxWidth != null && maxWidth.length() > 0) ? Integer.valueOf(maxWidth) : 100);
-
-        String ratio = mEdRatio.getText().toString();
-        cropParams.setRatio((ratio != null && ratio.length() > 0) ? Float.valueOf(ratio) : 1.0f);
-        return cropParams;
+        //        ImagePickerCropParams cropParams = new ImagePickerCropParams();
+        //
+        //        int shapeId = mRgCrop.getCheckedRadioButtonId();
+        //        if (shapeId == R.id.rb_main_crop_shape_circle)
+        //            cropParams.setType(ImageCropType.CIRCLE);
+        //        else
+        //            cropParams.setType(ImageCropType.RECT);
+        //
+        //        String maxWidth = mEdMaxWidth.getText().toString();
+        //        cropParams.setCropMaxWidth((maxWidth != null && maxWidth.length() > 0) ? Integer.valueOf(maxWidth) : 100);
+        //
+        //        String ratio = mEdRatio.getText().toString();
+        //        cropParams.setRatio((ratio != null && ratio.length() > 0) ? Float.valueOf(ratio) : 1.0f);
+        //        return cropParams;
+        return null;
     }
 }

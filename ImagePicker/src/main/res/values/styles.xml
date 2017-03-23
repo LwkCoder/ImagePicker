@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ImagePickerBtnOkStyle">
+
+    <style name="BtnOkStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:enabled">false</item>
@@ -15,5 +16,14 @@
     <style name="FloderPopAnimStyle">
         <item name="android:windowEnterAnimation">@anim/imagepicker_pop_slide_in</item>
         <item name="android:windowExitAnimation">@anim/imagepicker_pop_slide_out</item>
+    </style>
+
+    <style name="CropBtnStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/imagepicker_actionbar_menu_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>
