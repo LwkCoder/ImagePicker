@@ -3,13 +3,15 @@
 ###Android自定义图片选择器，适配Android7.0
 ----
 <br/>
-###效果图:<br/>
+###效果图:
+<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot04.png)<br/>
 <br/>
-###使用方法:<br/>
+###使用方法:
+<br/>
 1.添加Gradle依赖：
 ```
 dependencies{
@@ -17,7 +19,8 @@ dependencies{
     }
 ```
 <br/>
-2.代码中使用：<br/>
+2.代码中使用：
+<br/>
 ```
     //发起图片选择
     new ImagePicker.Builder()
@@ -43,14 +46,18 @@ dependencies{
     }
 ```
 <br/>
-##注意事项<br/>
+##注意事项
+<br/>
 由于Android7.0以上StrictMode策略的存在，本库中拍照使用了FileProvider，如果引用该库的工程中也使用到了FileProvider，为了避免清单文件合并出错，需要做出以下调整：<br/>
 **1.在主module的`strings.xml`中定义FileProvider的`authorities`,代码如下：**
+<br/>
 ```
 //ImagePicker中使用的名字就是app_fileprovider_authorities，这样就可以覆盖掉库中的authorities
 <string name="app_fileprovider_authorities">com.sample.fileprovider</string>
 ```
+<br/>
 **2.在主module中定义`临时授权目录的xml文件`中添加该库的授权目录，代码如下：**
+<br/>
 ```
 <paths>
     <external-path
@@ -58,7 +65,9 @@ dependencies{
         path=""/>
 </paths>
 ```
+<br/>
 **3.修改主module的`AndroidManiFest`文件中FileProvider模块，代码如下：**
+<br/>
 ```
 <provider
       android:name="android.support.v4.content.FileProvider"
