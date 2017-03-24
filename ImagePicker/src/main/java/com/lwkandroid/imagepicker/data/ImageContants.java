@@ -38,6 +38,11 @@ public class ImageContants
     public static final String INTENT_KEY_ORIGIN_PATH = "originPath";
 
     /**
+     * 裁剪后图片路径的key
+     */
+    public static final String INTENT_KEY_CROP_PATH = "cropPath";
+
+    /**
      * “所有图片”文件夹的id
      */
     public static final String ID_ALL_IMAGE_FLODER = "-100";
@@ -46,16 +51,6 @@ public class ImageContants
      * 默认缓存路径
      */
     public static final String DEF_CACHE_PATH = ImagePickerComUtils.getSdPath() + "/";
-
-    /**
-     * 裁剪的默认宽高比
-     */
-    public static final float DEF_CROP_RATIO = 1.0f;
-
-    /**
-     * 裁剪的默认最大宽度
-     */
-    public static final int DEF_CROP_MAX_WIDTH = 100;
 
     /**
      * 展示小图时最大分辨率
@@ -95,10 +90,25 @@ public class ImageContants
     /**
      * 裁剪结果码
      */
-    public static final int RESULT_CODE_CROP = 116;
+    public static final int RESULT_CODE_CROP_OK = 116;
 
     /**
      * 代表操作完成的ResultCode
      */
     public static final int RESULT_CODE_OK = 123;
+
+    /**
+     * 拍照后图片名字前缀
+     */
+    public static final String PHOTO_NAME_PREFIX = "IMG_";
+
+    /**
+     * 裁剪后图片名字前缀
+     */
+    public static final String CROP_NAME_PREFIX = "CROP_";
+
+    /**
+     * 图片文件名后缀
+     */
+    public static final String IMG_NAME_POSTFIX = ".jpg";
 }

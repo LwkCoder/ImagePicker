@@ -3,7 +3,7 @@ package com.lwkandroid.imagepicker.widget.crop.gestures;
 import android.content.Context;
 import android.view.MotionEvent;
 
-import com.lwkandroid.imagepicker.widget.crop.Compat;
+import com.lwkandroid.imagepicker.widget.crop.CropCompat;
 
 
 public class EclairGestureDetector extends CupcakeGestureDetector
@@ -34,7 +34,7 @@ public class EclairGestureDetector extends CupcakeGestureDetector
                 // Ignore deprecation, ACTION_POINTER_ID_MASK and
                 // ACTION_POINTER_ID_SHIFT has same value and are deprecated
                 // You can have either deprecation or lint target api warning
-                final int pointerIndex = Compat.getPointerIndex(ev.getAction());
+                final int pointerIndex = CropCompat.getPointerIndex(ev.getAction());
                 final int pointerId = ev.getPointerId(pointerIndex);
                 if (pointerId == mActivePointerId)
                 {

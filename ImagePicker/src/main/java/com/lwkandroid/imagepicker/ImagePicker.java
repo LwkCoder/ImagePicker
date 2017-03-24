@@ -103,6 +103,13 @@ public class ImagePicker
             return this;
         }
 
+        public Builder doCrop(ImagePickerCropParams cropParams)
+        {
+            mOptions.setNeedCrop(cropParams != null);
+            mOptions.setCropParams(cropParams);
+            return this;
+        }
+
         public Builder doCrop(int aspectX, int aspectY, int outputX, int outputY)
         {
             mOptions.setNeedCrop(true);

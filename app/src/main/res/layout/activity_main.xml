@@ -111,64 +111,64 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="裁剪形状(默认方形)"
+                android:text="填写裁剪比例"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"/>
 
-            <RadioGroup
-                android:id="@+id/rg_main_crop_shape"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rb_main_crop_shape_circle"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/ed_main_asX"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="圆形"
-                    android:textSize="16sp"/>
+                    android:hint="填写AspectX"
+                    android:inputType="number"/>
 
-                <RadioButton
-                    android:id="@+id/rb_main_crop_shape_rect"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/ed_main_asY"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:checked="true"
-                    android:text="方形"
-                    android:textSize="16sp"/>
-            </RadioGroup>
+                    android:hint="填写AspectY"
+                    android:inputType="number"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="裁剪后保留的最大宽度(单位px，默认100)"
+                android:text="填写输出宽高"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="15sp"/>
 
-            <EditText
-                android:id="@+id/ed_main_crop_maxwidth"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="填写最大宽度"
-                android:inputType="number"
-                android:textColor="@android:color/black"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="裁剪后的宽高比(仅针对方形裁剪有效，默认为1.0f)"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"/>
+                <EditText
+                    android:id="@+id/ed_main_opX"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="填写OutputX"
+                    android:inputType="number"/>
 
-            <EditText
-                android:id="@+id/ed_main_crop_ratio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="填写宽高比"
-                android:textColor="@android:color/black"/>
+                <EditText
+                    android:id="@+id/ed_main_opY"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="填写OutputY"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <Button

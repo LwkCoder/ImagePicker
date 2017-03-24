@@ -97,7 +97,6 @@ public class ImagePickerCropParams implements Parcelable
 
     protected ImagePickerCropParams(Parcel in)
     {
-        int tmpType = in.readInt();
         this.aspectX = in.readInt();
         this.aspectY = in.readInt();
         this.outputX = in.readInt();

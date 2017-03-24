@@ -1,12 +1,20 @@
 package com.lwkandroid.imagepicker.widget.crop;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.v4.content.FileProvider;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Compat
+import com.lwkandroid.imagepicker.R;
+
+import java.io.File;
+
+public class CropCompat
 {
     private static final int SIXTY_FPS_INTERVAL = 1000 / 60;
 
@@ -49,5 +57,19 @@ public class Compat
     private static int getPointerIndexHoneyComb(int action)
     {
         return (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+    }
+
+    /**
+     * 获取某个File对应的Uri
+     */
+    public static Uri getUriFromFile(Context context, File file)
+    {
+        if (Build.VERSION.SDK_INT >= 24)
+        {
+            return FileProvider.getUriForFile(context, context.getResources().getString(R.string.fileprovider_authorities), file);
+        } else
+        {
+            return Uri.fromFile(file);
+        }
     }
 }

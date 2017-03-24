@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
 import com.lwkandroid.imagepicker.R;
+import com.lwkandroid.imagepicker.data.ImageContants;
 
 import java.io.File;
 
@@ -27,6 +28,7 @@ public class TakePhotoCompatUtils
      * @param activity    发起拍照的帮助类
      * @param requestCode 请求码
      * @param cachePath   缓存地址
+     * @return 拍照后图片地址
      */
     public static String takePhoto(Activity activity, int requestCode, String cachePath)
     {
@@ -57,9 +59,9 @@ public class TakePhotoCompatUtils
      */
     private static File getPhotoTempFile(String cachePath)
     {
-        String name = new StringBuilder().append(NAME_PREFIX)
+        String name = new StringBuilder().append(ImageContants.PHOTO_NAME_PREFIX)
                 .append(String.valueOf(System.currentTimeMillis()))
-                .append(NAME_POSTFIX).toString();
+                .append(ImageContants.IMG_NAME_POSTFIX).toString();
         return new File(cachePath, name);
     }
 }

@@ -85,10 +85,10 @@ public class ImageDataPresenter
             imageBean.setImagePath(path);
             imageBean.setLastModified(Long.valueOf(file.lastModified()));
             ExifInterface exifInterface = new ExifInterface(path);
-            String width = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
-            String height = exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
-            imageBean.setWidth(Integer.valueOf(width));
-            imageBean.setHeight(Integer.valueOf(height));
+            int width = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+            int height = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0);
+            imageBean.setWidth(width);
+            imageBean.setHeight(height);
             return imageBean;
         } catch (Exception e)
         {

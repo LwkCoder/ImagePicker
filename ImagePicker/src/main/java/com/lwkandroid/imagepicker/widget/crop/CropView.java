@@ -26,8 +26,8 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -39,10 +39,6 @@ import android.widget.ImageView;
 import com.lwkandroid.imagepicker.widget.crop.gestures.OnGestureListener;
 import com.lwkandroid.imagepicker.widget.crop.gestures.VersionedGestureDetector;
 import com.lwkandroid.imagepicker.widget.crop.scrollerproxy.ScrollerProxy;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
@@ -88,17 +84,16 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
     private Path path = new Path();
     private Rect viewDrawingRect = new Rect();
 
-    private Uri mSource;
+    private String mOriginPath;
     private int mAspectX = 1;
     private int mAspectY = 1;
     private int mOutputX;
     private int mOutputY;
-
     private int mSampleSize;
 
-    public CropView load(Uri source)
+    public CropView load(String path)
     {
-        mSource = source;
+        mOriginPath = path;
         return this;
     }
 
@@ -116,38 +111,23 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
         return this;
     }
 
-    public void initialize(Context context)
+    public void start(Context context)
     {
-        if (mSource != null)
+        if (!TextUtils.isEmpty(mOriginPath))
         {
-            File imageFile = CropUtil.getFromMediaUri(context, mSource);
-
-            InputStream is = null;
-            try
-            {
-                mSampleSize = CropUtil.calculateBitmapSampleSize(context, mSource);
-
-                is = context.getContentResolver().openInputStream(mSource);
-                BitmapFactory.Options option = new BitmapFactory.Options();
-                option.inSampleSize = mSampleSize;
-                RotateBitmap rotateBitmap = new RotateBitmap(BitmapFactory.decodeStream(is, null, option)
-                        , CropUtil.getExifRotation(imageFile));
-
-                if (rotateBitmap != null)
-                {
-                    setImageRotateBitmap(rotateBitmap);
-                }
-            } catch (IOException e)
-            {
-            } catch (OutOfMemoryError e)
-            {
-            } finally
-            {
-                CropUtil.closeSilently(is);
-            }
+            mSampleSize = CropUtil.calculateBitmapSampleSize(context, mOriginPath);
+            BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inSampleSize = mSampleSize;
+            RotateBitmap rotateBitmap = new RotateBitmap(BitmapFactory.decodeFile(mOriginPath, option)
+                    , CropUtil.getExifRotation(mOriginPath));
+            if (rotateBitmap != null)
+                setImageRotateBitmap(rotateBitmap);
         }
     }
 
+    /**
+     * 获取裁剪框内Bitmap
+     */
     public Bitmap getOutput()
     {
         if (getDrawable() == null || mCropRect == null)
@@ -173,7 +153,7 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
                 (int) ((topOffset + mCropRect.height()) / scale * mSampleSize)
         );
 
-        return CropUtil.decodeRegionCrop(getContext(), mSource, cropRect, mOutputX, mOutputY, mBitmapDisplayed.getRotation());
+        return CropUtil.decodeRegionCrop(getContext(), mOriginPath, cropRect, mOutputX, mOutputY, mBitmapDisplayed.getRotation());
     }
 
     public CropView(Context context)
@@ -193,7 +173,6 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
         setScaleType(ScaleType.MATRIX);
 
         mDragScaleDetector = VersionedGestureDetector.newInstance(context, this);
-
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener());
         mGestureDetector.setOnDoubleTapListener(new DefaultOnDoubleTapListener());
 
@@ -559,7 +538,7 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
                 mCurrentX = newX;
                 mCurrentY = newY;
 
-                Compat.postOnAnimation(CropView.this, this);
+                CropCompat.postOnAnimation(CropView.this, this);
             }
         }
     }
@@ -648,7 +627,7 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
 
             if (t < 1f)
             {
-                Compat.postOnAnimation(CropView.this, this);
+                CropCompat.postOnAnimation(CropView.this, this);
             }
         }
 

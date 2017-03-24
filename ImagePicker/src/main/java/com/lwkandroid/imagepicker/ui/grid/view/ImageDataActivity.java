@@ -21,6 +21,7 @@ import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.data.ImageFloderBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerOptions;
+import com.lwkandroid.imagepicker.ui.crop.ImageCropActivity;
 import com.lwkandroid.imagepicker.ui.grid.adapter.ImageDataAdapter;
 import com.lwkandroid.imagepicker.ui.grid.presenter.ImageDataPresenter;
 import com.lwkandroid.imagepicker.ui.pager.view.ImagePagerActivity;
@@ -255,7 +256,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         {
             if (mOptions.isNeedCrop())
             {
-                //TODO 执行裁剪
+                //执行裁剪
+                ImageCropActivity.start(this, imageBean.getImagePath(), mOptions);
             } else
             {
                 returnSingleImage(imageBean);
@@ -328,7 +330,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         {
             if (resultCode != RESULT_OK)
             {
-                Log.e("ImagePicker", "ImageDataActivity take photo result not OK");
+                Log.e("ImagePicker", "ImageDataActivity take photo result not OK !!!");
                 if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
                     finish();
                 return;
@@ -338,7 +340,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             //非多选模式下需要判断是否有裁剪的需求
             if (mOptions.getType() != ImagePickType.MUTIL && mOptions.isNeedCrop())
             {
-                //TODO 执行裁剪
+                //执行裁剪
+                ImageCropActivity.start(this, mPhotoPath, mOptions);
             } else
             {
                 returnSingleImage(mPresenter.getImageBeanByPath(mPhotoPath));
@@ -347,7 +350,15 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         //裁剪返回
         if (requestCode == ImageContants.REQUEST_CODE_CROP)
         {
-            //TODO 处理裁剪返回
+            if (resultCode == ImageContants.RESULT_CODE_CROP_OK)
+            {
+                //裁剪成功返回数据
+                String cropPath = data.getStringExtra(ImageContants.INTENT_KEY_CROP_PATH);
+                returnSingleImage(mPresenter.getImageBeanByPath(cropPath));
+            } else if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
+            {
+                finish();
+            }
         }
         //预览或者大图界面返回
         else if (requestCode == ImageContants.REQUEST_CODE_PREVIEW

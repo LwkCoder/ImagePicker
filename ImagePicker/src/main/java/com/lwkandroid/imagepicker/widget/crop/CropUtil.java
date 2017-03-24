@@ -1,7 +1,6 @@
 package com.lwkandroid.imagepicker.widget.crop;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
@@ -10,140 +9,36 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Build;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import java.io.Closeable;
+import com.lwkandroid.imagepicker.data.ImageContants;
+
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class CropUtil
 {
-    private static final boolean DEBUG = false;
-    private static final String TAG = CropUtil.class.getSimpleName();
-
-    private static final String SCHEME_FILE = "file";
-    private static final String SCHEME_CONTENT = "content";
-
-    public static File getFromMediaUri(Context context, Uri uri)
+    /**
+     * 获取图片旋转角度
+     *
+     * @param path 图片路径
+     * @return 旋转角度
+     */
+    public static int getExifRotation(String path)
     {
-        if (uri == null)
-            return null;
-
-        if (SCHEME_FILE.equals(uri.getScheme()))
-        {
-            return new File(uri.getPath());
-        } else if (SCHEME_CONTENT.equals(uri.getScheme()))
-        {
-            final String[] filePathColumn = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME};
-            Cursor cursor = null;
-            try
-            {
-                cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
-                if (cursor != null && cursor.moveToFirst())
-                {
-                    final int columnIndex = (uri.toString().startsWith("content://com.google.android.gallery3d")) ?
-                            cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME) :
-                            cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
-                    // Picasa images on API 13+
-                    if (columnIndex != -1)
-                    {
-                        String filePath = cursor.getString(columnIndex);
-                        if (!TextUtils.isEmpty(filePath))
-                        {
-                            return new File(filePath);
-                        }
-                    }
-                }
-            } catch (IllegalArgumentException e)
-            {
-                // Google Drive images
-                return getFromMediaUriPfd(context, uri);
-            } catch (SecurityException ignored)
-            {
-                // Nothing we can do
-            } finally
-            {
-                if (cursor != null)
-                    cursor.close();
-            }
-        }
-        return null;
-    }
-
-    private static File getFromMediaUriPfd(Context context, Uri uri)
-    {
-        if (uri == null)
-            return null;
-
-        FileInputStream input = null;
-        FileOutputStream output = null;
-        try
-        {
-            ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-            FileDescriptor fd = pfd.getFileDescriptor();
-            input = new FileInputStream(fd);
-
-            String tempFilename = getTempFilename(context);
-            output = new FileOutputStream(tempFilename);
-
-            int read;
-            byte[] bytes = new byte[4096];
-            while ((read = input.read(bytes)) != -1)
-            {
-                output.write(bytes, 0, read);
-            }
-            return new File(tempFilename);
-        } catch (IOException ignored)
-        {
-            // Nothing we can do
-        } finally
-        {
-            closeSilently(input);
-            closeSilently(output);
-        }
-        return null;
-    }
-
-    private static String getTempFilename(Context context) throws IOException
-    {
-        File outputDir = context.getCacheDir();
-        File outputFile = File.createTempFile("image", "tmp", outputDir);
-        return outputFile.getAbsolutePath();
-    }
-
-    public static void closeSilently(Closeable c)
-    {
-        if (c == null)
-            return;
-        try
-        {
-            c.close();
-        } catch (Throwable t)
-        {
-            // Do nothing
-        }
-    }
-
-    public static int getExifRotation(File imageFile)
-    {
-        if (imageFile == null)
+        if (TextUtils.isEmpty(path))
             return 0;
+
         try
         {
-            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            ExifInterface exif = new ExifInterface(path);
             // We only recognize a subset of orientation tag values
             switch (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED))
             {
@@ -162,37 +57,19 @@ public class CropUtil
         }
     }
 
-    public static boolean copyExifRotation(File sourceFile, File destFile)
+    /**
+     * 解析待裁剪图片时计算SampleSize
+     *
+     * @param context context
+     * @param path    图片路径
+     * @return SampleSize
+     */
+    public static int calculateBitmapSampleSize(Context context, String path)
     {
-        if (sourceFile == null || destFile == null)
-            return false;
-        try
-        {
-            ExifInterface exifSource = new ExifInterface(sourceFile.getAbsolutePath());
-            ExifInterface exifDest = new ExifInterface(destFile.getAbsolutePath());
-            exifDest.setAttribute(ExifInterface.TAG_ORIENTATION, exifSource.getAttribute(ExifInterface.TAG_ORIENTATION));
-            exifDest.saveAttributes();
-            return true;
-        } catch (IOException e)
-        {
-            return false;
-        }
-    }
-
-    public static int calculateBitmapSampleSize(Context context, Uri uri) throws IOException
-    {
-        InputStream is = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inJustDecodeBounds = true;
-        try
-        {
-            is = context.getContentResolver().openInputStream(uri);
-            BitmapFactory.decodeStream(is, null, options); // Just get image size
-        } finally
-        {
-            closeSilently(is);
-        }
-
+        BitmapFactory.decodeFile(path, options);
         int maxSize = getMaxImageSize(context);
         int sampleSize = 1;
         while (options.outHeight / sampleSize > maxSize || options.outWidth / sampleSize > maxSize)
@@ -203,6 +80,7 @@ public class CropUtil
         return sampleSize;
     }
 
+    //比较屏幕，获取图片解析后的最大尺寸
     private static int getMaxImageSize(Context context)
     {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -223,25 +101,20 @@ public class CropUtil
         return (int) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
     }
 
-    public static Bitmap decodeRegionCrop(Context context, Uri sourceUri, Rect rect, int outWidth, int outHeight, int exifRotation)
+    /**
+     * 获取裁剪框内Bitmap
+     */
+    public static Bitmap decodeRegionCrop(Context context, String path, Rect rect, int outWidth, int outHeight, int exifRotation)
     {
         InputStream is = null;
         Bitmap croppedImage = null;
         try
         {
-            is = context.getContentResolver().openInputStream(sourceUri);
+            is = new FileInputStream(path);
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
 
             final int width = decoder.getWidth();
             final int height = decoder.getHeight();
-
-            if (DEBUG)
-            {
-                Log.i(TAG, "image width：" + width + " height：" + height);
-                Log.i(TAG, "crop width：" + rect.width() + " height：" + rect.height());
-                Log.i(TAG, "out width：" + outWidth + " height：" + outHeight);
-                Log.i(TAG, "exif rotation：" + exifRotation);
-            }
 
             if (exifRotation != 0)
             {
@@ -257,103 +130,92 @@ public class CropUtil
                 rect = new Rect((int) adjusted.left, (int) adjusted.top, (int) adjusted.right, (int) adjusted.bottom);
             }
 
-            if (DEBUG)
+            int maxSize = getMaxImageSize(context);
+            int sampleSize = 1;
+            while (rect.width() / sampleSize > maxSize || rect.height() / sampleSize > maxSize)
             {
-                Log.i(TAG, "rotate crop width：" + rect.width() + " height：" + rect.height());
+                sampleSize = sampleSize << 1;
             }
 
-            try
+            BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inSampleSize = sampleSize;
+            croppedImage = decoder.decodeRegion(rect, option);
+
+            boolean isRequired = false;
+            Matrix matrix = new Matrix();
+            if (exifRotation != 0)
             {
-                int maxSize = getMaxImageSize(context);
-                int sampleSize = 1;
-                while (rect.width() / sampleSize > maxSize || rect.height() / sampleSize > maxSize)
-                {
-                    sampleSize = sampleSize << 1;
-                }
-
-                if (DEBUG)
-                {
-                    Log.i(TAG, "max size：" + maxSize + " sample size：" + sampleSize);
-                }
-
-                BitmapFactory.Options option = new BitmapFactory.Options();
-                option.inSampleSize = sampleSize;
-
-                croppedImage = decoder.decodeRegion(rect, option);
-
-                if (DEBUG)
-                {
-                    Log.i(TAG, "cropped image width：" + croppedImage.getWidth() + " height：" + croppedImage.getHeight());
-                }
-
-                boolean isRequired = false;
-
-                Matrix matrix = new Matrix();
-                if (exifRotation != 0)
-                {
-                    matrix.postRotate(exifRotation);
-
-                    isRequired = true;
-                }
-
-                if (outWidth > 0 && outHeight > 0)
-                {
-                    RotateBitmap rotateBitmap = new RotateBitmap(croppedImage, exifRotation);
-                    matrix.postScale((float) outWidth / rotateBitmap.getWidth(), (float) outHeight / rotateBitmap.getHeight());
-
-                    isRequired = true;
-                }
-
-                if (isRequired)
-                {
-                    croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, croppedImage.getWidth(), croppedImage.getHeight(), matrix, true);
-
-                    if (DEBUG)
-                    {
-                        Log.i(TAG, "is required cropped image width：" + croppedImage.getWidth() + " height：" + croppedImage.getHeight());
-                    }
-                }
-            } catch (IllegalArgumentException e)
-            {
-                croppedImage = null;
+                matrix.postRotate(exifRotation);
+                isRequired = true;
             }
-        } catch (FileNotFoundException e)
-        {
-            croppedImage = null;
-        } catch (IOException e)
-        {
-            croppedImage = null;
-        } catch (OutOfMemoryError e)
+
+            if (outWidth > 0 && outHeight > 0)
+            {
+                RotateBitmap rotateBitmap = new RotateBitmap(croppedImage, exifRotation);
+                matrix.postScale((float) outWidth / rotateBitmap.getWidth(), (float) outHeight / rotateBitmap.getHeight());
+
+                isRequired = true;
+            }
+
+            if (isRequired)
+            {
+                croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, croppedImage.getWidth(), croppedImage.getHeight(), matrix, true);
+            }
+        } catch (Exception e)
         {
             croppedImage = null;
         } finally
         {
-            closeSilently(is);
+            try
+            {
+                if (is != null)
+                    is.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
         return croppedImage;
     }
 
-    public static boolean saveOutput(Context context, Uri saveUri, Bitmap croppedImage, int quality)
+    /**
+     * 创建裁剪图片的名字
+     */
+    public static String createCropName()
     {
-        if (saveUri != null)
+        return new StringBuilder().append(ImageContants.CROP_NAME_PREFIX)
+                .append(String.valueOf(System.currentTimeMillis()))
+                .append(ImageContants.IMG_NAME_POSTFIX).toString();
+    }
+
+    /**
+     * 保存图片
+     *
+     * @param bitmap   需要保存的图片
+     * @param saveName 图片保存的名称
+     * @return 返回保存后的图片地址
+     */
+    public static String saveBmp(Bitmap bitmap, String savePath, String saveName)
+    {
+        String resultPath = null;
+        try
         {
-            OutputStream outputStream = null;
-            try
-            {
-                outputStream = context.getContentResolver().openOutputStream(saveUri);
-                if (outputStream != null)
-                {
-                    croppedImage.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-                }
-            } catch (FileNotFoundException e)
-            {
-                return false;
-            } finally
-            {
-                closeSilently(outputStream);
-            }
-            return true;
+            //保存位置
+            File file = new File(savePath, saveName);
+            if (file.exists())
+                file.delete();
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            bitmap.recycle();
+            bitmap = null;
+            System.gc();
+            resultPath = file.getAbsolutePath();
+        } catch (IOException e)
+        {
+            Log.e("CropUtils", "saveBmp(): savePath = " + savePath + "\nsaveName = " + saveName + "\n保存图片失败：" + e.toString());
         }
-        return false;
+        return resultPath;
     }
 }

@@ -3,6 +3,7 @@ package com.lwkandroid.imagepickerdemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -33,11 +34,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CheckBox mCkNeedCamera;
     private CheckBox mCkNeedCrop;
     private View mViewCrop;
-    private RadioGroup mRgCrop;
-    private RadioButton mRbCircle;
-    private RadioButton mRbRect;
-    private EditText mEdMaxWidth;
-    private EditText mEdRatio;
+    private EditText mEdAsX;
+    private EditText mEdAsY;
+    private EditText mEdOpX;
+    private EditText mEdOpY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,11 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCkNeedCamera = (CheckBox) findViewById(R.id.ck_main_need_camera);
         mCkNeedCrop = (CheckBox) findViewById(R.id.ck_main_need_crop);
         mViewCrop = findViewById(R.id.ll_main_crop_params);
-        mRgCrop = (RadioGroup) findViewById(R.id.rg_main_crop_shape);
-        mRbCircle = (RadioButton) findViewById(R.id.rb_main_crop_shape_circle);
-        mRbRect = (RadioButton) findViewById(R.id.rb_main_crop_shape_rect);
-        mEdMaxWidth = (EditText) findViewById(R.id.ed_main_crop_maxwidth);
-        mEdRatio = (EditText) findViewById(R.id.ed_main_crop_ratio);
+        mEdAsX = (EditText) findViewById(R.id.ed_main_asX);
+        mEdAsY = (EditText) findViewById(R.id.ed_main_asY);
+        mEdOpX = (EditText) findViewById(R.id.ed_main_opX);
+        mEdOpY = (EditText) findViewById(R.id.ed_main_opY);
 
         mCkNeedCrop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -99,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .maxNum(getMaxNum())
                         .needCamera(mCkNeedCamera.isChecked())
                         .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(getCropParams())
                         .build()
                         .start(this, REQUEST_CODE, RESULT_CODE);
                 break;
@@ -127,20 +127,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!mCkNeedCrop.isChecked())
             return null;
 
-        //        ImagePickerCropParams cropParams = new ImagePickerCropParams();
-        //
-        //        int shapeId = mRgCrop.getCheckedRadioButtonId();
-        //        if (shapeId == R.id.rb_main_crop_shape_circle)
-        //            cropParams.setType(ImageCropType.CIRCLE);
-        //        else
-        //            cropParams.setType(ImageCropType.RECT);
-        //
-        //        String maxWidth = mEdMaxWidth.getText().toString();
-        //        cropParams.setCropMaxWidth((maxWidth != null && maxWidth.length() > 0) ? Integer.valueOf(maxWidth) : 100);
-        //
-        //        String ratio = mEdRatio.getText().toString();
-        //        cropParams.setRatio((ratio != null && ratio.length() > 0) ? Float.valueOf(ratio) : 1.0f);
-        //        return cropParams;
-        return null;
+        String asXString = mEdAsX.getText().toString().trim();
+        String asYString = mEdAsY.getText().toString().trim();
+        String opXString = mEdOpX.getText().toString().trim();
+        String opYString = mEdOpY.getText().toString().trim();
+
+        int asX = TextUtils.isEmpty(asXString) ? 1 : Integer.valueOf(asXString);
+        int asY = TextUtils.isEmpty(asYString) ? 1 : Integer.valueOf(asYString);
+        int opX = TextUtils.isEmpty(opXString) ? 0 : Integer.valueOf(opXString);
+        int opY = TextUtils.isEmpty(opYString) ? 0 : Integer.valueOf(opYString);
+
+        return new ImagePickerCropParams(asX, asY, opX, opY);
     }
 }
