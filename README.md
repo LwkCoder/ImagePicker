@@ -4,10 +4,10 @@
 ----
 <br/>
 ###效果图:<br/>
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot04.png)
+![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
+![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)<br/>
+![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)<br/>
+![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot04.png)<br/>
 <br/>
 ###使用方法:<br/>
 1.添加Gradle依赖：
