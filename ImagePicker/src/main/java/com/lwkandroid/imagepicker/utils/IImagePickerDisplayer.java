@@ -11,15 +11,6 @@ import android.widget.ImageView;
 public interface IImagePickerDisplayer
 {
     /**
-     * 加载图片
-     *
-     * @param context   Context
-     * @param url       图片地址
-     * @param imageView 待加载控件
-     */
-    void display(Context context, String url, ImageView imageView);
-
-    /**
      *
      * 加载图片
      *

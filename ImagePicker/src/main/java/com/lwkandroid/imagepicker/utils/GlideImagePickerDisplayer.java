@@ -10,14 +10,6 @@ import com.bumptech.glide.Glide;
  */
 public class GlideImagePickerDisplayer implements IImagePickerDisplayer
 {
-    @Override
-    public void display(Context context, String url, ImageView imageView)
-    {
-        Glide.with(context)
-                .load(url)
-                .asBitmap()
-                .into(imageView);
-    }
 
     @Override
     public void display(Context context, String url, ImageView imageView, int maxWidth, int maxHeight)

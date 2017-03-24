@@ -4,18 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 
 import java.util.List;
 
@@ -27,9 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String cachePath;
 
     private RadioGroup mRgType;
-    private RadioButton mRbCamera;
-    private RadioButton mRbSinlge;
-    private RadioButton mRbMutil;
     private EditText mEdMaxNum;
     private CheckBox mCkNeedCamera;
     private CheckBox mCkNeedCrop;
@@ -38,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mEdAsY;
     private EditText mEdOpX;
     private EditText mEdOpY;
+    private TextView mTvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,9 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cachePath = getExternalCacheDir().getAbsolutePath();
 
         mRgType = (RadioGroup) findViewById(R.id.rg_main_mode);
-        mRbCamera = (RadioButton) findViewById(R.id.rb_main_mode_camera);
-        mRbSinlge = (RadioButton) findViewById(R.id.rb_main_mode_single);
-        mRbMutil = (RadioButton) findViewById(R.id.rb_main_mode_mutil);
         mEdMaxNum = (EditText) findViewById(R.id.ed_main_max_num);
         mCkNeedCamera = (CheckBox) findViewById(R.id.ck_main_need_camera);
         mCkNeedCrop = (CheckBox) findViewById(R.id.ck_main_need_crop);
@@ -59,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mEdAsY = (EditText) findViewById(R.id.ed_main_asY);
         mEdOpX = (EditText) findViewById(R.id.ed_main_opX);
         mEdOpY = (EditText) findViewById(R.id.ed_main_opY);
+        mTvResult = (TextView) findViewById(R.id.tv_main_result);
 
         mCkNeedCrop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -79,11 +75,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("MainActivity", "onActivityResult: requestCode=" + requestCode + " resultCode=" + resultCode + " data=" + data);
         if (resultCode == RESULT_CODE && data != null)
         {
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
-            Log.e("MainActivity", "结果：" + resultList);
+            for (ImageBean imageBean : resultList)
+            {
+                mTvResult.setText(imageBean.toString() + "\n");
+            }
         }
     }
 
@@ -94,11 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.btn_main_start:
                 new ImagePicker.Builder()
-                        .pickType(getPickType())
-                        .maxNum(getMaxNum())
-                        .needCamera(mCkNeedCamera.isChecked())
+                        .pickType(getPickType())//设置选取类型(拍照、单选、多选)
+                        .maxNum(getMaxNum())//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(mCkNeedCamera.isChecked())//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
-                        .doCrop(getCropParams())
+                        .doCrop(getCropParams())//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .build()
                         .start(this, REQUEST_CODE, RESULT_CODE);
                 break;

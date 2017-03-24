@@ -25,7 +25,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by LWK
- * TODO 展示文件夹的
+ * TODO 展示文件夹的PopupWindow
  */
 
 public class ImageFloderPop implements PopupWindow.OnDismissListener, AdapterView.OnItemClickListener

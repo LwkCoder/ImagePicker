@@ -23,3 +23,13 @@ dependencies {
     compile "com.github.bumptech.glide:glide:${LIB_GLIDE_VERSION}"
     compile "com.github.chrisbanes.photoview:library:${LIB_PHOTOVIEW_VERSION}"
 }
+
+allprojects {
+    tasks.withType(Javadoc) {//兼容中文字符
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
