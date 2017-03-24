@@ -3,6 +3,9 @@
 ###Android自定义图片选择器，适配Android7.0
 ----
 <br/>
+**不知道为什么README文档在Github上排版变混乱了，希望了解该项目的朋友可参考下面的博客 **<br/>
+http://blog.csdn.net/lwk520136/article/details/65647033
+
 ###效果图:
 <br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
