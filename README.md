@@ -3,7 +3,7 @@
 ###Android自定义图片选择器，适配Android7.0
 ----
 <br/>
-###效果图:
+###效果图:<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)
