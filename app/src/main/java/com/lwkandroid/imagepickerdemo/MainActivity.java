@@ -78,10 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (resultCode == RESULT_CODE && data != null)
         {
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = null;
             for (ImageBean imageBean : resultList)
             {
-                mTvResult.setText(imageBean.toString() + "\n");
+                content = content + imageBean.toString() + "\n";
             }
+            mTvResult.setText(content);
         }
     }
 

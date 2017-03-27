@@ -7,7 +7,6 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
-import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.data.ImageContants;
 
 import java.io.File;
@@ -19,9 +18,6 @@ import java.io.File;
 
 public class TakePhotoCompatUtils
 {
-    private static final String NAME_PREFIX = "IMG_";
-    private static final String NAME_POSTFIX = ".jpg";
-
     /**
      * 拍照
      *
@@ -39,7 +35,7 @@ public class TakePhotoCompatUtils
         //7.0以上需要适配StickMode
         if (Build.VERSION.SDK_INT >= 24)
         {
-            Uri imageUri = FileProvider.getUriForFile(activity, activity.getResources().getString(R.string.fileprovider_authorities), tempFile);
+            Uri imageUri = FileProvider.getUriForFile(activity, ImagePickerFileProvider.getAuthorities(activity), tempFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
             activity.startActivityForResult(intent, requestCode);
