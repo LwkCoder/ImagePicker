@@ -1,13 +1,14 @@
 # ImagePicker
 
-###Android自定义图片选择器，适配Android7.0
+Android自定义图片选择器，适配Android7.0
 ----
 <br/>
-**不知道为什么README文档在Github上排版变混乱了，希望了解该项目的朋友可参考下面的博客 **<br/>
-http://blog.csdn.net/lwk520136/article/details/65647033
-
-###效果图:
+**不知道为什么README文档在Github上排版变混乱了，希望了解该项目的朋友可参考下面的博客**
 <br/>
+http://blog.csdn.net/lwk520136/article/details/65647033
+<br/>
+###效果图:
+<br />
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)<br/>
 ![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)<br/>
@@ -18,7 +19,7 @@ http://blog.csdn.net/lwk520136/article/details/65647033
 1.添加Gradle依赖：
 ```
 dependencies{
-         compile 'com.lwkandroid:ImagePicker:1.0.0'
+         compile 'com.lwkandroid:ImagePicker:1.0.1'
     }
 ```
 <br/>
@@ -51,39 +52,8 @@ dependencies{
 <br/>
 ##注意事项
 <br/>
-由于Android7.0以上StrictMode策略的存在，本库中拍照使用了FileProvider，如果引用该库的工程中也使用到了FileProvider，为了避免清单文件合并出错，需要做出以下调整：<br/>
-**1.在主module的`strings.xml`中定义FileProvider的`authorities`,代码如下：**
-<br/>
-```
-//ImagePicker中使用的名字就是app_fileprovider_authorities，这样就可以覆盖掉库中的authorities
-<string name="app_fileprovider_authorities">com.sample.fileprovider</string>
-```
-<br/>
-**2.在主module中定义`临时授权目录的xml文件`中添加该库的授权目录，代码如下：**
-<br/>
-```
-<paths>
-    <external-path
-        name="imagepicker"
-        path=""/>
-</paths>
-```
-<br/>
-**3.修改主module的`AndroidManiFest`文件中FileProvider模块，代码如下：**
-<br/>
-```
-<provider
-      android:name="android.support.v4.content.FileProvider"
-      android:authorities="@string/app_fileprovider_authorities"
-      android:exported="false"
-      android:grantUriPermissions="true"
-      tools:replace="android:authorities"> //避免冲突
-      <meta-data
-          android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/fileprovider_path"
-          tools:replace="android:resource"/> //避免冲突
-</provider>
-```
+最新版本采用了自定义FileProvider的策略，故不用再修改清单文件。<br/>
+参考博客：http://www.cnblogs.com/liushilin/p/6602364.html
 <br/>
 <br/>
 ####感谢<br/>

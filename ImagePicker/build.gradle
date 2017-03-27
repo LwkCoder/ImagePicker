@@ -39,7 +39,7 @@ allprojects {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-version = "1.0.0"
+version = "1.0.1"
 def siteUrl = 'https://github.com/Vanish136/ImagePicker'
 def gitUrl = 'https://github.com/Vanish136/ImagePicker.git'
 def bintrayuser = properties.getProperty("user")
@@ -98,7 +98,7 @@ javadoc {
         author true
         version true
         links "http://docs.oracle.com/javase/7/docs/api"
-        title "ImagePicker 1.0.0"
+        title "ImagePicker 1.0.1"
     }
 }
 
