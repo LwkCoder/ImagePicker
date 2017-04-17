@@ -50,6 +50,12 @@ dependencies{
     }
 ```
 <br/>
+###混淆配置<br/>
+```
+-dontwarn com.lwkandroid.imagepicker.**
+-keep class com.lwkandroid.imagepicker.**{*;}
+```
+<br/>
 ##注意事项
 <br/>
 最新版本采用了自定义FileProvider的策略，故不用再修改清单文件。<br/>
