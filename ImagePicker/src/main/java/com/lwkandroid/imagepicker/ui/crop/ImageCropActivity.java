@@ -140,7 +140,7 @@ public class ImageCropActivity extends ImagePickerBaseActivity
                     //保存成功后返回给上级界面
                     Intent intent = new Intent();
                     intent.putExtra(ImageContants.INTENT_KEY_CROP_PATH, resultPath);
-                    setResult(ImageContants.RESULT_CODE_CROP_OK, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
             }

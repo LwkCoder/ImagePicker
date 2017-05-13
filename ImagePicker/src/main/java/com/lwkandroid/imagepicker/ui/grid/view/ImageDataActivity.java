@@ -46,8 +46,6 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
 
     private ImageDataPresenter mPresenter;
     private ImagePickerOptions mOptions;
-    //    private ImagePickType mPickType;
-    private int mResultCode;
 
     private ImagePickerActionBar mActionBar;
     private GridView mGridView;
@@ -66,7 +64,6 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         super.beforSetContentView(savedInstanceState);
         Intent intent = getIntent();
         mOptions = intent.getParcelableExtra(ImageContants.INTENT_KEY_OPTIONS);
-        mResultCode = intent.getIntExtra(ImageContants.INTENT_KEY_RESULTCODE, ImagePicker.DEF_RESULT_CODE);
     }
 
     @Override
@@ -350,7 +347,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         //裁剪返回
         if (requestCode == ImageContants.REQUEST_CODE_CROP)
         {
-            if (resultCode == ImageContants.RESULT_CODE_CROP_OK)
+            if (resultCode == RESULT_OK)
             {
                 //裁剪成功返回数据
                 String cropPath = data.getStringExtra(ImageContants.INTENT_KEY_CROP_PATH);
@@ -364,7 +361,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         else if (requestCode == ImageContants.REQUEST_CODE_PREVIEW
                 || requestCode == ImageContants.REQUEST_CODE_DETAIL)
         {
-            if (resultCode == ImageContants.RESULT_CODE_OK)
+            if (resultCode == RESULT_OK)
             {
                 returnAllSelectedImages();
             } else
@@ -389,7 +386,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         list.add(imageBean);
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA, list);
-        setResult(mResultCode, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -401,7 +398,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
 
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA, resultList);
-        setResult(mResultCode, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

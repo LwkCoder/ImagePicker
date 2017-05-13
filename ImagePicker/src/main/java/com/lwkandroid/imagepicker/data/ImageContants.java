@@ -13,11 +13,6 @@ public class ImageContants
     public static final String INTENT_KEY_OPTIONS = "options";
 
     /**
-     * 界面跳转resultCode的键值
-     */
-    public static final String INTENT_KEY_RESULTCODE = "resultCode";
-
-    /**
      * 传递数据的key
      */
     public static final String INTENT_KEY_DATA = "dataList";
@@ -86,16 +81,6 @@ public class ImageContants
      * 看大图请求码
      */
     public static final int REQUEST_CODE_DETAIL = 115;
-
-    /**
-     * 裁剪结果码
-     */
-    public static final int RESULT_CODE_CROP_OK = 116;
-
-    /**
-     * 代表操作完成的ResultCode
-     */
-    public static final int RESULT_CODE_OK = 123;
 
     /**
      * 拍照后图片名字前缀

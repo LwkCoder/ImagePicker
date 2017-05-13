@@ -19,7 +19,7 @@ http://blog.csdn.net/lwk520136/article/details/65647033
 1.添加Gradle依赖：
 ```
 dependencies{
-         compile 'com.lwkandroid:ImagePicker:1.0.1'
+         compile 'com.lwkandroid:ImagePicker:1.2.0'
     }
 ```
 <br/>
@@ -35,14 +35,14 @@ dependencies{
                    .doCrop(1,1,300,300) //裁剪功能需要调用这个方法，多选模式下无效，参数：aspectX,aspectY,outputX,outputY
                    .displayer(new GlideImagePickerDisplayer()) //自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                    .build()
-                   .start(this, REQUEST_CODE, RESULT_CODE); //自定义RequestCode和ResultCode
+                   .start(this, REQUEST_CODE); //自定义RequestCode
 
     //重写Activity或Fragment中OnActivityResult()
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CODE && data != null)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null)
         {
             //获取选择的图片数据
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);

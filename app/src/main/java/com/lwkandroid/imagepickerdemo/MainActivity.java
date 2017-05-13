@@ -22,7 +22,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private final int REQUEST_CODE = 111;
-    private final int RESULT_CODE = 112;
 
     private String cachePath;
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CODE && data != null)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null)
         {
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
             String content = "";
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .doCrop(getCropParams())//裁剪功能需要调用这个方法，多选模式下无效
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .build()
-                        .start(this, REQUEST_CODE, RESULT_CODE);
+                        .start(this, REQUEST_CODE);
                 break;
         }
     }

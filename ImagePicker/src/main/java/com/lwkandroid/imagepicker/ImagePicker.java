@@ -20,11 +20,6 @@ import com.lwkandroid.imagepicker.utils.IImagePickerDisplayer;
 public class ImagePicker
 {
     /**
-     * 默认的ResultCode
-     */
-    public static final int DEF_RESULT_CODE = 136;
-
-    /**
      * 返回结果中包含图片数据的Intent的键值
      */
     public static final String INTENT_RESULT_DATA = "ImageBeans";
@@ -45,13 +40,11 @@ public class ImagePicker
      *
      * @param activity    发起的Activity
      * @param requestCode 请求码
-     * @param resultCode  结果码
      */
-    public void start(Activity activity, int requestCode, int resultCode)
+    public void start(Activity activity, int requestCode)
     {
         Intent intent = new Intent(activity, ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
-        intent.putExtra(ImageContants.INTENT_KEY_RESULTCODE, resultCode);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -60,13 +53,11 @@ public class ImagePicker
      *
      * @param fragment    发起的Fragment
      * @param requestCode 请求码
-     * @param resultCode  结果码
      */
-    public void start(Fragment fragment, int requestCode, int resultCode)
+    public void start(Fragment fragment, int requestCode)
     {
         Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
-        intent.putExtra(ImageContants.INTENT_KEY_RESULTCODE, resultCode);
         fragment.startActivityForResult(intent, requestCode);
     }
 

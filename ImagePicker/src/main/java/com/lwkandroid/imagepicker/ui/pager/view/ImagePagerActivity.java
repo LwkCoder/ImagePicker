@@ -130,7 +130,7 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
         } else if (id == R.id.btn_image_pager_ok)
         {
             //返回上级界面选择完毕
-            setResult(ImageContants.RESULT_CODE_OK);
+            setResult(RESULT_OK);
             finish();
         }
     }
@@ -219,9 +219,9 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ImageContants.REQUEST_CODE_PREVIEW)
         {
-            if (resultCode == ImageContants.RESULT_CODE_OK)
+            if (resultCode == RESULT_OK)
             {
-                setResult(ImageContants.RESULT_CODE_OK);
+                setResult(RESULT_OK);
                 finish();
             } else
             {
