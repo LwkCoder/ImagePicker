@@ -43,19 +43,20 @@ allprojects {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+def lib_name = "ImagePicker";
 version = "1.2.0"
+group = "com.lwkandroid"
 def siteUrl = 'https://github.com/Vanish136/ImagePicker'
 def gitUrl = 'https://github.com/Vanish136/ImagePicker.git'
 def bintrayuser = properties.getProperty("user")
 def bintrayapikey = properties.getProperty("apikey")
-group = "com.lwkandroid"
 
 install {
     repositories.mavenInstaller {
         pom {
             project {
                 packaging 'aar'
-                name 'ImagePicker for Android'
+                name lib_name
                 url siteUrl
                 licenses {
                     license {
@@ -102,7 +103,6 @@ javadoc {
         author true
         version true
         links "http://docs.oracle.com/javase/7/docs/api"
-        title "ImagePicker 1.2.0"
     }
 }
 
@@ -117,7 +117,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "ImagePicker"
+        name = lib_name
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
