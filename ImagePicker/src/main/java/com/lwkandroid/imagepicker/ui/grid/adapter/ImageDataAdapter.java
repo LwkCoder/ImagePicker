@@ -24,23 +24,16 @@ public class ImageDataAdapter extends ImagePickerBaseAdapter<ImageBean>
     //每个元素的宽高
     private int mImageLayoutSize;
 
-    public ImageDataAdapter(Context context, IImageDataView viewImpl)
+    public ImageDataAdapter(Context context, int layoutSize, IImageDataView viewImpl)
     {
         super(context, null);
         mOptions = viewImpl.getOptions();
+        this.mImageLayoutSize = layoutSize;
 
         //创建子布局
         if (mOptions.isNeedCamera())
             addItemView(new ImageCameraItemView(viewImpl));
         addItemView(new ImageContentItemView(viewImpl, this));
-
-        //计算每个元素的宽高
-        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-        int densityDpi = context.getResources().getDisplayMetrics().densityDpi;
-        int cols = screenWidth / densityDpi;
-        cols = cols < 3 ? 3 : cols;
-        int columnSpace = (int) (2 * context.getResources().getDisplayMetrics().density);
-        mImageLayoutSize = (screenWidth - columnSpace * (cols - 1)) / cols;
     }
 
     @Override
@@ -48,7 +41,18 @@ public class ImageDataAdapter extends ImagePickerBaseAdapter<ImageBean>
     {
         super.onCreateConvertView(position, convertView, holder, parent);
         //设置每个item为正方形
-        convertView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageLayoutSize));
+        convertView.setLayoutParams(new AbsListView.LayoutParams(mImageLayoutSize, mImageLayoutSize));
+    }
+
+    @Override
+    protected void onReuseConvertView(int position, View convertView, ImagePickerViewHolder holder, ViewGroup parent)
+    {
+        super.onReuseConvertView(position, convertView, holder, parent);
+        //设置每个item为正方形
+        AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) convertView.getLayoutParams();
+        layoutParams.width = mImageLayoutSize;
+        layoutParams.height = mImageLayoutSize;
+        convertView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -61,4 +65,10 @@ public class ImageDataAdapter extends ImagePickerBaseAdapter<ImageBean>
             datalist.add(0, null);
         super.refreshDatas(datalist);
     }
+
+    public void adjustLayoutSize(int layoutSize)
+    {
+        mImageLayoutSize = layoutSize;
+    }
+
 }

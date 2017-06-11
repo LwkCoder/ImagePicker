@@ -2,8 +2,10 @@ package com.lwkandroid.imagepicker.ui.grid.view;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
@@ -57,6 +59,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     private ImageDataAdapter mAdapter;
     private ImageFloderBean mCurFloder;
     private String mPhotoPath;
+    private int mColumnWidth;
+    private int mColumnNum;
 
     @Override
     protected void beforSetContentView(Bundle savedInstanceState)
@@ -126,7 +130,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
 
         if (mOptions.getType() != ImagePickType.ONLY_CAMERA)
         {
-            mAdapter = new ImageDataAdapter(this, this);
+            calColumn();
+            mAdapter = new ImageDataAdapter(this, mColumnWidth, this);
             mGridView.setAdapter(mAdapter);
             doScanData();
         }
@@ -435,6 +440,38 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                 break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        calColumn();
+    }
+
+    //计算列数和每列宽度
+    private void calColumn()
+    {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenWidth = metrics.widthPixels;
+        int densityDpi = metrics.densityDpi;
+        int orientation = getResources().getConfiguration().orientation;
+        int minColumn = orientation == Configuration.ORIENTATION_LANDSCAPE ? 4 : 3;
+
+        //计算列数
+        mColumnNum = screenWidth / densityDpi;
+        mColumnNum = mColumnNum < minColumn ? minColumn : mColumnNum;
+        //计算每列宽度
+        int columnSpace = (int) (2 * metrics.density);
+        mColumnWidth = (screenWidth - columnSpace * (mColumnNum - 1)) / mColumnNum;
+
+        if (mGridView != null)
+        {
+            mGridView.setColumnWidth(mColumnWidth);
+            mGridView.setNumColumns(mColumnNum);
+        }
+        if (mAdapter != null)
+            mAdapter.adjustLayoutSize(mColumnWidth);
     }
 
     @Override
