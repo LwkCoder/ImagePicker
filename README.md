@@ -20,7 +20,7 @@ http://www.jianshu.com/p/46b5918976e1 <br />
 
 ```
 dependencies{
-         compile 'com.lwkandroid:ImagePicker:1.2.0'
+         compile 'com.lwkandroid:ImagePicker:1.2.1'
     }
 ```
 <br/>
