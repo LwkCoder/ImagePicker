@@ -41,7 +41,7 @@ public class ImageDataAdapter extends ImagePickerBaseAdapter<ImageBean>
     {
         super.onCreateConvertView(position, convertView, holder, parent);
         //设置每个item为正方形
-        convertView.setLayoutParams(new AbsListView.LayoutParams(mImageLayoutSize, mImageLayoutSize));
+        convertView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageLayoutSize));
     }
 
     @Override
@@ -50,7 +50,6 @@ public class ImageDataAdapter extends ImagePickerBaseAdapter<ImageBean>
         super.onReuseConvertView(position, convertView, holder, parent);
         //设置每个item为正方形
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) convertView.getLayoutParams();
-        layoutParams.width = mImageLayoutSize;
         layoutParams.height = mImageLayoutSize;
         convertView.setLayoutParams(layoutParams);
     }

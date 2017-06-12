@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -43,7 +45,7 @@ import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermission
  * 展示图片数据的Activity
  */
 public class ImageDataActivity extends ImagePickerBaseActivity implements IImageDataView
-        , ImageFloderPop.onFloderItemClickListener
+        , ImageFloderPop.onFloderItemClickListener, AbsListView.OnScrollListener
 {
 
     private ImageDataPresenter mPresenter;
@@ -61,6 +63,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     private String mPhotoPath;
     private int mColumnWidth;
     private int mColumnNum;
+    private Parcelable mState;
 
     @Override
     protected void beforSetContentView(Bundle savedInstanceState)
@@ -100,6 +103,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             ViewStub viewStub = findView(R.id.vs_image_data);
             viewStub.inflate();
             mGridView = findView(R.id.gv_image_data);
+            mGridView.setOnScrollListener(this);
             mPgbLoading = findView(R.id.pgb_image_data);
             mViewBottom = findView(R.id.fl_image_data_bottom);
             mViewFloder = findView(R.id.ll_image_data_bottom_floder);
@@ -447,6 +451,8 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     {
         super.onConfigurationChanged(newConfig);
         calColumn();
+        if (mGridView != null && mState != null)
+            mGridView.onRestoreInstanceState(mState);
     }
 
     //计算列数和每列宽度
@@ -479,5 +485,18 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     {
         mPresenter.onDestory();
         super.onDestroy();
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState)
+    {
+        //记录下滚动位置
+        mState = view.onSaveInstanceState();
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+    {
+        //nothing to do
     }
 }
