@@ -71,7 +71,8 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
         } else
         {
             viewIndicator.setVisibility(View.VISIBLE);
-            if (ImageDataModel.getInstance().hasDataInResult(imageBean))
+            final boolean isSelected = ImageDataModel.getInstance().hasDataInResult(imageBean);
+            if (isSelected)
                 viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_grid_selected);
             else
                 viewIndicator.setBackgroundResource(R.drawable.ck_imagepicker_grid_normal);
@@ -81,19 +82,22 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
                 @Override
                 public void onClick(View v)
                 {
-                    int curNum = ImageDataModel.getInstance().getResultNum();
-                    if (curNum == mOptions.getMaxNum())
+                    if (isSelected)
                     {
-                        mViewImpl.warningMaxNum();
-                        return;
-                    } else
-                    {
-                        if (ImageDataModel.getInstance().hasDataInResult(imageBean))
-                            ImageDataModel.getInstance().delDataFromResult(imageBean);
-                        else
-                            ImageDataModel.getInstance().addDataToResult(imageBean);
+                        ImageDataModel.getInstance().delDataFromResult(imageBean);
                         mAdapter.notifyDataSetChanged();
                         mViewImpl.onSelectNumChanged(ImageDataModel.getInstance().getResultNum());
+                    } else
+                    {
+                        if (ImageDataModel.getInstance().getResultNum() == mOptions.getMaxNum())
+                        {
+                            mViewImpl.warningMaxNum();
+                        } else
+                        {
+                            ImageDataModel.getInstance().addDataToResult(imageBean);
+                            mAdapter.notifyDataSetChanged();
+                            mViewImpl.onSelectNumChanged(ImageDataModel.getInstance().getResultNum());
+                        }
                     }
                 }
             });
