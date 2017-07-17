@@ -26,13 +26,53 @@ public class ImagePicker
 
     private ImagePickerOptions mOptions;
 
-    private ImagePicker()
+    public ImagePicker()
     {
+        mOptions = new ImagePickerOptions();
     }
 
-    private ImagePicker(ImagePickerOptions options)
+    public ImagePicker pickType(ImagePickType mode)
     {
-        this.mOptions = options;
+        mOptions.setType(mode);
+        return this;
+    }
+
+    public ImagePicker maxNum(int maxNum)
+    {
+        mOptions.setMaxNum(maxNum);
+        return this;
+    }
+
+    public ImagePicker needCamera(boolean b)
+    {
+        mOptions.setNeedCamera(b);
+        return this;
+    }
+
+    public ImagePicker cachePath(String path)
+    {
+        mOptions.setCachePath(path);
+        return this;
+    }
+
+    public ImagePicker doCrop(ImagePickerCropParams cropParams)
+    {
+        mOptions.setNeedCrop(cropParams != null);
+        mOptions.setCropParams(cropParams);
+        return this;
+    }
+
+    public ImagePicker doCrop(int aspectX, int aspectY, int outputX, int outputY)
+    {
+        mOptions.setNeedCrop(true);
+        mOptions.setCropParams(new ImagePickerCropParams(aspectX, aspectY, outputX, outputY));
+        return this;
+    }
+
+    public ImagePicker displayer(IImagePickerDisplayer displayer)
+    {
+        ImageDataModel.getInstance().setDisplayer(displayer);
+        return this;
     }
 
     /**
@@ -59,64 +99,5 @@ public class ImagePicker
         Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
         fragment.startActivityForResult(intent, requestCode);
-    }
-
-    public static final class Builder
-    {
-        private ImagePickerOptions mOptions;
-
-        public Builder()
-        {
-            mOptions = new ImagePickerOptions();
-        }
-
-        public Builder pickType(ImagePickType mode)
-        {
-            mOptions.setType(mode);
-            return this;
-        }
-
-        public Builder maxNum(int maxNum)
-        {
-            mOptions.setMaxNum(maxNum);
-            return this;
-        }
-
-        public Builder needCamera(boolean b)
-        {
-            mOptions.setNeedCamera(b);
-            return this;
-        }
-
-        public Builder cachePath(String path)
-        {
-            mOptions.setCachePath(path);
-            return this;
-        }
-
-        public Builder doCrop(ImagePickerCropParams cropParams)
-        {
-            mOptions.setNeedCrop(cropParams != null);
-            mOptions.setCropParams(cropParams);
-            return this;
-        }
-
-        public Builder doCrop(int aspectX, int aspectY, int outputX, int outputY)
-        {
-            mOptions.setNeedCrop(true);
-            mOptions.setCropParams(new ImagePickerCropParams(aspectX, aspectY, outputX, outputY));
-            return this;
-        }
-
-        public Builder displayer(IImagePickerDisplayer displayer)
-        {
-            ImageDataModel.getInstance().setDisplayer(displayer);
-            return this;
-        }
-
-        public ImagePicker build()
-        {
-            return new ImagePicker(mOptions);
-        }
     }
 }

@@ -92,14 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.btn_main_start:
-                new ImagePicker.Builder()
+                new ImagePicker()
                         .pickType(getPickType())//设置选取类型(拍照、单选、多选)
                         .maxNum(getMaxNum())//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(mCkNeedCamera.isChecked())//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
                         .doCrop(getCropParams())//裁剪功能需要调用这个方法，多选模式下无效
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
-                        .build()
                         .start(this, REQUEST_CODE);
                 break;
         }
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (id == R.id.rb_main_mode_single)
             return ImagePickType.SINGLE;
         else
-            return ImagePickType.MUTIL;
+            return ImagePickType.MULTI;
     }
 
     private int getMaxNum()
