@@ -344,7 +344,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
 
             Log.i("ImagePicker", "ImageDataActivity take photo result OK--->" + mPhotoPath);
             //非多选模式下需要判断是否有裁剪的需求
-            if (mOptions.getType() != ImagePickType.MUTIL && mOptions.isNeedCrop())
+            if (mOptions.getType() != ImagePickType.MULTI && mOptions.isNeedCrop())
             {
                 //执行裁剪
                 ImageCropActivity.start(this, mPhotoPath, mOptions);
