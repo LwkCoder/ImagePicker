@@ -20,10 +20,10 @@ http://www.jianshu.com/p/46b5918976e1 <br />
 
 ```
 dependencies{
-         compile 'com.lwkandroid:ImagePicker:1.3.0'
+         compile 'com.lwkandroid:ImagePicker:1.3.1'
     }
 ```
-<br/>
+<br />
 
 **2.代码中使用：**
 
@@ -51,6 +51,39 @@ dependencies{
     }
 ```
 <br/>
+
+### 解决冲突
+
+**库中有依赖`SupportV4` 、`Glide`，为防止和主项目冲突，可参考以下做法：** <br />
+
+1.对于`SupportV4`，该库中引用的是`25.3.1`版本，解决冲突可以尝试两种做法： <br />
+
+①可以选择在gradle中引用时exclude掉该库中的V4包：
+```
+compile('com.lwkandroid:ImagePicker:1.3.1') {
+        exclude module: 'support-v4'
+    }
+```
+②在项目的`gradle.properties`文件中添加版本号指定：
+```
+LIB_ANDROID_SUPPORT_VERSION=25.3.1 //这里指定为你自己的Support版本号
+```
+<br />
+
+2.对于`Glide`，该库中使用的是`4.0.0-RC1`版本，解决冲突可以尝试两种做法： <br />
+①可以选择在gradle中引用时exclude掉该库中的Glide包：
+```
+compile('com.lwkandroid:ImagePicker:1.3.1') {
+        exclude module: 'glide'
+    }
+```
+**使用这种方式就必须在代码中手动调用`.displayer(Your displayer)` !!!**
+
+②在项目的`gradle.properties`文件中添加版本号指定：
+```
+LIB_GLIDE_VERSION=4.0.0-RC1 //这里指定为你自己的版本号
+```
+**这里要注意，Glide3.X版本和4.X版本api有变动，无法互相兼容，如果主项目使用的是3.X版本，这种方式是无效的，会导致崩溃！**
 
 ### 混淆配置
 
