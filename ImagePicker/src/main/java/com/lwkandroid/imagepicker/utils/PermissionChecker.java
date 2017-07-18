@@ -1,5 +1,6 @@
 package com.lwkandroid.imagepicker.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.lwkandroid.imagepicker.R;
@@ -32,6 +32,8 @@ public class PermissionChecker
      * @param dialogMsgForRationale 为权限用途作解释的Dialog内容
      * @return 是否有权限，没有权限时会发起请求权限
      */
+    @SuppressLint("NewApi")
+    @TargetApi(Build.VERSION_CODES.M)
     public static boolean checkPermissions(final Activity activity, String[] permissions
             , final int requestCode, final int dialogMsgForRationale)
     {
@@ -46,11 +48,11 @@ public class PermissionChecker
         for (int i = 0; i < length; i++)
         {
             String permisson = permissions[i];
-            if (ActivityCompat.checkSelfPermission(activity, permisson)
+            if (activity.checkSelfPermission(permisson)
                     != PackageManager.PERMISSION_GRANTED)
             {
                 needList.add(permisson);
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permisson))
+                if (activity.shouldShowRequestPermissionRationale(permisson))
                     needShowRationale = true;
             }
         }
@@ -64,18 +66,17 @@ public class PermissionChecker
                         .setMessage(dialogMsgForRationale)
                         .setPositiveButton(R.string.dialog_imagepicker_permission_confirm, new DialogInterface.OnClickListener()
                         {
-                            @TargetApi(Build.VERSION_CODES.M)
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
                                 dialog.dismiss();
-                                ActivityCompat.requestPermissions(activity, needList.toArray(new String[needList.size()]), requestCode);
+                                activity.requestPermissions(needList.toArray(new String[needList.size()]), requestCode);
                             }
                         }).create().show();
                 return false;
             }
 
-            ActivityCompat.requestPermissions(activity, needList.toArray(new String[needList.size()]), requestCode);
+            activity.requestPermissions(needList.toArray(new String[needList.size()]), requestCode);
             return false;
         } else
         {
@@ -93,6 +94,8 @@ public class PermissionChecker
      * @param dialogMsgForNerverAsk   “不再提醒”的Dialog提示内容
      * @return 检查结果、是否显示NerverAsk
      */
+    @SuppressLint("NewApi")
+    @TargetApi(Build.VERSION_CODES.M)
     public static boolean[] onRequestPermissionsResult(final Activity activity, String[] permissions, int[] grantResults,
                                                        final boolean finishAfterCancelDialog, int dialogMsgForNerverAsk)
     {
@@ -107,7 +110,7 @@ public class PermissionChecker
             if (grandResult == PackageManager.PERMISSION_DENIED)
             {
                 result = false;
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission))
+                if (!activity.shouldShowRequestPermissionRationale(permission))
                     isNerverAsk = true;
             }
         }

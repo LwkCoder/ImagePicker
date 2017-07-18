@@ -157,7 +157,7 @@ public class ImageDataModel
                     ImageContants.ID_ALL_IMAGE_FLODER, context.getResources().getString(R.string.imagepicker_all_image_floder));
             mAllFloderList.add(allImgFloder);
             //临时存储所有文件夹对象的Map
-            ArrayMap<String, ImageFloderBean> floderMap = new ArrayMap();
+            ArrayMap<String, ImageFloderBean> floderMap = new ArrayMap<>();
 
             //索引字段
             String columns[] =

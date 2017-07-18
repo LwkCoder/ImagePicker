@@ -1,9 +1,8 @@
 package com.lwkandroid.imagepicker.base.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -14,13 +13,13 @@ import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 /**
  * 基类Activity
  */
-public abstract class ImagePickerBaseActivity extends AppCompatActivity implements View.OnClickListener
+public abstract class ImagePickerBaseActivity extends Activity implements View.OnClickListener
 {
     protected View mContentView;
     protected Handler mHandler;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         beforSetContentView(savedInstanceState);
@@ -36,7 +35,7 @@ public abstract class ImagePickerBaseActivity extends AppCompatActivity implemen
     protected void beforSetContentView(Bundle savedInstanceState)
     {
         //去掉ActionBar
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         //改变状态栏颜色
         ImagePickerComUtils.changeStatusBarColor(this, getResources().getColor(R.color.imagepicker_statusbar));
     }
