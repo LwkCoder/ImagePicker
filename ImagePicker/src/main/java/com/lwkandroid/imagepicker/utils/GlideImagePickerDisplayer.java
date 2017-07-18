@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 /**
@@ -17,7 +18,9 @@ public class GlideImagePickerDisplayer implements IImagePickerDisplayer
         Glide.with(context)
                 .asBitmap()
                 .load(url)
-                .apply(new RequestOptions().override(maxWidth, maxHeight))
+                .apply(new RequestOptions()
+                        .override(maxWidth, maxHeight)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(imageView);
     }
 
@@ -27,7 +30,11 @@ public class GlideImagePickerDisplayer implements IImagePickerDisplayer
         Glide.with(context)
                 .asBitmap()
                 .load(url)
-                .apply(new RequestOptions().placeholder(placeHolder).error(errorHolder).override(maxWidth, maxHeight))
+                .apply(new RequestOptions()
+                        .placeholder(placeHolder)
+                        .error(errorHolder)
+                        .override(maxWidth, maxHeight)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(imageView);
     }
 }
