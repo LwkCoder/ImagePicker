@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.OnPhotoTapListener;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 
 import java.util.ArrayList;
 
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by LWK
@@ -55,10 +55,10 @@ public class ImagePagerAdapter extends PagerAdapter
         photoView.setEnabled(true);
         ImageBean imageItem = mAllmageList.get(position);
         ImageDataModel.getInstance().getDisplayer().display(mActivity, imageItem.getImagePath(), photoView, mScreenWidth, mScreenHeight);
-        photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener()
+        photoView.setOnPhotoTapListener(new OnPhotoTapListener()
         {
             @Override
-            public void onPhotoTap(View view, float x, float y)
+            public void onPhotoTap(ImageView view, float x, float y)
             {
                 if (mListener != null)
                     mListener.OnPhotoTapListener(view, x, y);
