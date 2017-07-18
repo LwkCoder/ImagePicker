@@ -150,6 +150,12 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     @Override
     public void startTakePhoto()
     {
+        //检查摄像头和sd卡是否存在
+        if (!TakePhotoCompatUtils.hasCamera())
+        {
+            showShortToast(R.string.error_no_camera);
+            return;
+        }
         if (!ImagePickerComUtils.isSdExist())
         {
             showShortToast(R.string.error_no_sdcard);

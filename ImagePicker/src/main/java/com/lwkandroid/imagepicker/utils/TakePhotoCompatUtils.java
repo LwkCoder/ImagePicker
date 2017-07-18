@@ -2,6 +2,7 @@ package com.lwkandroid.imagepicker.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -18,6 +19,29 @@ import java.io.File;
 
 public class TakePhotoCompatUtils
 {
+    static final int CAMERA_FACING_BACK = 0;
+    static final int CAMERA_FACING_FRONT = 1;
+
+    /**
+     * 检查设备是否有摄像头
+     *
+     * @return
+     */
+    public static boolean hasCamera()
+    {
+        final int cameraCount = Camera.getNumberOfCameras();
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        for (int i = 0; i < cameraCount; i++)
+        {
+            Camera.getCameraInfo(i, info);
+            if (info.facing == CAMERA_FACING_BACK)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 拍照
      *
