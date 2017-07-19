@@ -73,7 +73,7 @@ LIB_ANDROID_SUPPORT_VERSION=25.3.1 //这里指定为你自己的Support版本号
 2.对于`Glide`，该库中使用的是`4.0.0-RC1`版本，解决冲突可以尝试两种做法： <br />
 ①可以选择在gradle中引用时exclude掉该库中的Glide包：
 ```
-compile('com.lwkandroid:ImagePicker:1.3.1') {
+compile('com.lwkandroid:ImagePicker:1.3.2') {
         exclude module: 'glide'
     }
 ```
