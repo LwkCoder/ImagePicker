@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.data.ImageContants;
 
 import java.io.File;
@@ -56,19 +58,26 @@ public class TakePhotoCompatUtils
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         //自定义缓存路径
         File tempFile = getPhotoTempFile(cachePath);
-        //7.0以上需要适配StickMode
-        if (Build.VERSION.SDK_INT >= 24)
+        try
         {
-            Uri imageUri = FileProvider.getUriForFile(activity, ImagePickerFileProvider.getAuthorities(activity), tempFile);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
-            activity.startActivityForResult(intent, requestCode);
-        } else
+            //7.0以上需要适配StickMode
+            if (Build.VERSION.SDK_INT >= 24)
+            {
+                Uri imageUri = FileProvider.getUriForFile(activity, ImagePickerFileProvider.getAuthorities(activity), tempFile);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+                activity.startActivityForResult(intent, requestCode);
+            } else
+            {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));//将拍取的照片保存到指定URI
+                activity.startActivityForResult(intent, requestCode);
+            }
+            return tempFile.getAbsolutePath();
+        } catch (Exception e)
         {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));//将拍取的照片保存到指定URI
-            activity.startActivityForResult(intent, requestCode);
+            Toast.makeText(activity, R.string.error_can_not_takephoto, Toast.LENGTH_SHORT).show();
+            return null;
         }
-        return tempFile.getAbsolutePath();
     }
 
     /**
