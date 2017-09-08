@@ -19,10 +19,42 @@ http://www.jianshu.com/p/46b5918976e1 <br />
 **1.添加Gradle依赖：**
 
 ```
-dependencies{
-         compile 'com.lwkandroid:ImagePicker:1.3.2'
-    }
+  //在自己项目里添加support-V4、Glide的引用（Glide要求4.0版本以上）
+  compile("com.github.bumptech.glide:glide:4.1.1") {
+      exclude(group: 'com.google.android', module: 'support-v4')
+  }
+  compile "com.android.support:support-v4:26.0.1"
+
+  //添加该库引用，并去除自带的support-V4、Glide引用，防止版本冲突
+  compile("com.lwkandroid:ImagePicker:${LIB_IMAGEPICKER_VERSION}") {
+      exclude(group: 'com.google.android', module: 'support-v4')
+      exclude(group: 'com.github.bumptech.glide', module: 'glide')
+  }
 ```
+- 注意：如果自己项目里的`Glide`版本低于4.0，那么需要实现接口`IImagePickerDisplayer`,调用的时候传进去：
+ ```
+ //代码中实现IImagePickerDisplayer接口
+ public class YourDisplayer implements IImagePickerDisplayer
+ {
+     @Override
+     public void display(Context context, String url, ImageView imageView, int maxWidth, int maxHeight)
+     {
+         //TODO 实现加载图片的方法
+     }
+
+     @Override
+     public void display(Context context, String url, ImageView imageView, int placeHolder, int errorHolder, int maxWidth, int maxHeight)
+     {
+         //TODO 实现加载图片的方法
+     }
+ }
+
+ //调用的时候手动添加.displayer()
+     new ImagePicker()
+         ... //省略配置参数
+         .displayer(new YourDisplayer()) //改为自定义图片加载器，必须调用!!!
+         .start(this, REQUEST_CODE); //自定义RequestCode
+ ```
 <br />
 
 **2.代码中使用：**
@@ -50,66 +82,8 @@ dependencies{
         }
     }
 ```
-<br/>
-
-### 解决冲突
-
-**库中有依赖`SupportV4` 、`Glide`，为防止和主项目冲突，可参考以下做法：** <br />
-
-1.对于`SupportV4`，该库中引用的是`25.3.1`版本，解决冲突可以尝试两种做法： <br />
-
-①可以选择在gradle中引用时exclude掉该库中的V4包：
-```
-compile('com.lwkandroid:ImagePicker:lastest-version') {
-        exclude module: 'support-v4'
-    }
-```
-②在项目的`gradle.properties`文件中添加版本号指定：
-```
-LIB_ANDROID_SUPPORT_VERSION=25.3.1 //这里指定为你自己的Support版本号
-```
 <br />
 
-2.对于`Glide`，该库中使用的是`4.0.0-RC1`版本，解决冲突可以尝试两种做法： <br />
-①可以选择在gradle中引用时exclude掉该库中的Glide包，然后实现`IImagePickerDisplayer`,调用的时候传进去：
-```
-//gradle中引用时去掉自带的Glide
-compile('com.lwkandroid:ImagePicker:lastest-version') {
-        exclude module: 'glide'
-    }
-
-
-//代码中实现IImagePickerDisplayer接口
-public class YourDisplayer implements IImagePickerDisplayer
-{
-    @Override
-    public void display(Context context, String url, ImageView imageView, int maxWidth, int maxHeight)
-    {
-        //TODO 实现加载图片的方法
-    }
-
-    @Override
-    public void display(Context context, String url, ImageView imageView, int placeHolder, int errorHolder, int maxWidth, int maxHeight)
-    {
-        //TODO 实现加载图片的方法
-    }
-}
-
-//调用的时候手动添加.displayer()
-    new ImagePicker()
-        ... //省略配置参数
-        .displayer(new YourDisplayer()) //改为自定义图片加载器，必须调用!!!
-        .start(this, REQUEST_CODE); //自定义RequestCode
-```
-**使用这种方式就必须在代码中手动调用`.displayer(Your displayer)` !!!**
-
-②在项目的`gradle.properties`文件中添加版本号指定：
-```
-LIB_GLIDE_VERSION=4.0.0-RC1 //这里指定为你自己的版本号
-```
-**这里要注意，Glide3.X版本和4.X版本api有变动，无法互相兼容，如果主项目使用的是3.X版本，这种方式是无效的，会导致崩溃！**
-<br />
-<br />
 ### 混淆配置
 
 ```

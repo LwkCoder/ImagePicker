@@ -20,7 +20,7 @@ public class GlideImagePickerDisplayer implements IImagePickerDisplayer
                 .load(url)
                 .apply(new RequestOptions()
                         .override(maxWidth, maxHeight)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                 .into(imageView);
     }
 
@@ -34,7 +34,7 @@ public class GlideImagePickerDisplayer implements IImagePickerDisplayer
                         .placeholder(placeHolder)
                         .error(errorHolder)
                         .override(maxWidth, maxHeight)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                 .into(imageView);
     }
 }
