@@ -26,7 +26,7 @@ http://www.jianshu.com/p/46b5918976e1 <br />
   compile "com.android.support:support-v4:26.0.1"
 
   //添加该库引用，并去除自带的support-V4、Glide引用，防止版本冲突
-  compile("com.lwkandroid:ImagePicker:${LIB_IMAGEPICKER_VERSION}") {
+  compile("com.lwkandroid:ImagePicker:1.3.3") {
       exclude(group: 'com.google.android', module: 'support-v4')
       exclude(group: 'com.github.bumptech.glide', module: 'glide')
   }
