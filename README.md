@@ -21,13 +21,13 @@ http://www.jianshu.com/p/46b5918976e1 <br />
 ```
   //在自己项目里添加support-V4、Glide的引用（Glide要求4.0版本以上）
   compile("com.github.bumptech.glide:glide:4.1.1") {
-      exclude(group: 'com.google.android', module: 'support-v4')
+      exclude(group: 'com.android.support', module: 'support-v4')
   }
   compile "com.android.support:support-v4:26.0.1"
 
   //添加该库引用，并去除自带的support-V4、Glide引用，防止版本冲突
   compile("com.lwkandroid:ImagePicker:1.3.3") {
-      exclude(group: 'com.google.android', module: 'support-v4')
+      exclude(group: 'com.android.support', module: 'support-v4')
       exclude(group: 'com.github.bumptech.glide', module: 'glide')
   }
 ```
