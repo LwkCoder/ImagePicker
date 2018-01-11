@@ -45,7 +45,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 def lib_name = "ImagePicker";
-version = "1.3.3"
+version = "1.3.4"
 group = "com.lwkandroid"
 def siteUrl = 'https://github.com/Vanish136/ImagePicker'
 def gitUrl = 'https://github.com/Vanish136/ImagePicker.git'

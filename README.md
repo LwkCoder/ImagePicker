@@ -18,15 +18,34 @@ http://www.jianshu.com/p/46b5918976e1 <br />
 ### 使用方法:
 **1.添加Gradle依赖：**
 
+最新的版本号以[这里](https://github.com/Vanish136/ImagePicker/releases)为准
+
 ```
-  //在自己项目里添加support-V4、Glide的引用（Glide要求4.0版本以上）
-  compile("com.github.bumptech.glide:glide:4.1.1") {
+  #your-version是指的你自己项目里引用的版本号
+  #last-version请查看上面的最新版本号
+
+  #AndroidStudio3.0以下
+  //在自己项目里添加Glide的引用（Glide要求4.0版本以上）
+  compile("com.github.bumptech.glide:glide:your-version") {
       exclude(group: 'com.android.support', module: 'support-v4')
   }
-  compile "com.android.support:support-v4:26.0.1"
-
+  //在自己项目里添加support-V4的引用
+  compile "com.android.support:support-v4:your-version"
   //添加该库引用，并去除自带的support-V4、Glide引用，防止版本冲突
-  compile("com.lwkandroid:ImagePicker:1.3.3") {
+  compile("com.lwkandroid:ImagePicker:last-verison") {
+      exclude(group: 'com.android.support', module: 'support-v4')
+      exclude(group: 'com.github.bumptech.glide', module: 'glide')
+  }
+
+  #AndroidStudio3.0以上
+  //在自己项目里添加Glide的引用（Glide要求4.0版本以上）
+  implementation("com.github.bumptech.glide:glide:your-version") {
+      exclude(group: 'com.android.support', module: 'support-v4')
+  }
+  //在自己项目里添加support-V4的引用
+  implementation "com.android.support:support-v4:your-version"
+  //添加该库引用，并去除自带的support-V4、Glide引用，防止版本冲突
+  implementation("com.lwkandroid:ImagePicker:last-verison") {
       exclude(group: 'com.android.support', module: 'support-v4')
       exclude(group: 'com.github.bumptech.glide', module: 'glide')
   }
