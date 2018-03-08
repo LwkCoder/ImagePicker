@@ -44,6 +44,7 @@
             android:id="@+id/btn_image_pager_ok"
             style="@style/BtnOkStyle"
             android:layout_gravity="right|center_vertical"
+            android:textAllCaps="false"
             android:layout_marginRight="@dimen/imagepicker_padding"/>
 
     </FrameLayout>
