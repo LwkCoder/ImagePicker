@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ImagePicker</string>
+    <string name="imagepicker_app_name">ImagePicker</string>
     <string name="imagepicker_title_take_photo">拍摄照片</string>
     <string name="imagepicker_title_select_image">选择图片</string>
     <string name="imagepicker_back">返回</string>

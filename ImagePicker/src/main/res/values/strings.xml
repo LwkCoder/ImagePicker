@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ImagePicker</string>
+    <string name="imagepicker_app_name">ImagePicker</string>
     <string name="imagepicker_title_take_photo">Camera</string>
-    <string name="imagepicker_title_select_image">Select Image</string>
+    <string name="imagepicker_title_select_image">Select Images</string>
     <string name="imagepicker_back">Back</string>
     <string name="imagepicker_preview">Preview</string>
     <string name="error_no_sdcard">SdCard not exist</string>
