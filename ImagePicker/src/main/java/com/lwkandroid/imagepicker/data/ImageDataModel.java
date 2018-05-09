@@ -46,6 +46,9 @@ public class ImageDataModel
     //选中的图片List
     private List<ImageBean> mResultList = new ArrayList<>();
 
+    //大图/预览模式下所有图片
+    private List<ImageBean> mPagerList = new ArrayList<>();
+
     //图片显示器
     private IImagePickerDisplayer mDisplayer;
 
@@ -129,6 +132,34 @@ public class ImageDataModel
     public int getResultNum()
     {
         return mResultList != null ? mResultList.size() : 0;
+    }
+
+    /**
+     * 临时存储大图/预览界面所有图片数据
+     */
+    public void setPagerDataList(List<ImageBean> list)
+    {
+        if (mPagerList == null)
+            mPagerList = new ArrayList<>();
+        mPagerList.clear();
+        mPagerList.addAll(list);
+    }
+
+    /**
+     * 获取大图/预览界面所有图片数据
+     */
+    public List<ImageBean> getPagerDataList()
+    {
+        return mPagerList;
+    }
+
+    /**
+     * 清除大图/预览界面所有图片数据
+     */
+    public void clearPagerDataList()
+    {
+        if (mPagerList != null)
+            mPagerList.clear();
     }
 
     /**
@@ -288,8 +319,13 @@ public class ImageDataModel
     public void clear()
     {
         mDisplayer = null;
-        mAllImgList.clear();
-        mAllFloderList.clear();
-        mResultList.clear();
+        if (mAllImgList != null)
+            mAllImgList.clear();
+        if (mAllFloderList != null)
+            mAllFloderList.clear();
+        if (mResultList != null)
+            mResultList.clear();
+        if (mPagerList != null)
+            mPagerList.clear();
     }
 }

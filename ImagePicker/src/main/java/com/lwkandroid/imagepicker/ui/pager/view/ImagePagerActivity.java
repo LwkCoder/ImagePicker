@@ -29,7 +29,7 @@ import java.util.ArrayList;
  */
 public class ImagePagerActivity extends ImagePickerBaseActivity
 {
-    private ArrayList<ImageBean> mDataList;
+    private ArrayList<ImageBean> mDataList = new ArrayList<>();
     private int mCurPosition;
     private boolean mIsPreview;
     private ImagePickerOptions mOptions;
@@ -55,7 +55,7 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
         intent.putExtra(ImageContants.INTENT_KEY_START_POSITION, startPosition);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, options);
         intent.putExtra(ImageContants.INTENT_KEY_IS_PREVIEW, requestCode == ImageContants.REQUEST_CODE_PREVIEW);
-        intent.putParcelableArrayListExtra(ImageContants.INTENT_KEY_DATA, dataList);
+        ImageDataModel.getInstance().setPagerDataList(dataList);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -66,7 +66,7 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
         Intent intent = getIntent();
         mCurPosition = intent.getIntExtra(ImageContants.INTENT_KEY_START_POSITION, 0);
         mIsPreview = intent.getBooleanExtra(ImageContants.INTENT_KEY_IS_PREVIEW, false);
-        mDataList = intent.getParcelableArrayListExtra(ImageContants.INTENT_KEY_DATA);
+        mDataList.addAll(ImageDataModel.getInstance().getPagerDataList());
         mOptions = intent.getParcelableExtra(ImageContants.INTENT_KEY_OPTIONS);
     }
 
@@ -260,5 +260,13 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
             if (Build.VERSION.SDK_INT >= 16)
                 mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        mDataList.clear();
+        ImageDataModel.getInstance().clearPagerDataList();
     }
 }

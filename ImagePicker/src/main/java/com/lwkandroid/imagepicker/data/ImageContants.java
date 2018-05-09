@@ -13,11 +13,6 @@ public class ImageContants
     public static final String INTENT_KEY_OPTIONS = "options";
 
     /**
-     * 传递数据的key
-     */
-    public static final String INTENT_KEY_DATA = "dataList";
-
-    /**
      * 传递起始位置的key
      */
     public static final String INTENT_KEY_START_POSITION = "startP";
