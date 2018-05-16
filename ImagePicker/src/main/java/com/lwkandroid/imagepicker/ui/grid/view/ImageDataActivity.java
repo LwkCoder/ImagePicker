@@ -43,6 +43,7 @@ import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermission
 
 /**
  * 展示图片数据的Activity
+ * [入口]
  */
 public class ImageDataActivity extends ImagePickerBaseActivity implements IImageDataView
         , ImageFloderPop.onFloderItemClickListener, AbsListView.OnScrollListener
