@@ -67,9 +67,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     private Parcelable mState;
 
     @Override
-    protected void beforSetContentView(Bundle savedInstanceState)
+    protected void beforeSetContentView(Bundle savedInstanceState)
     {
-        super.beforSetContentView(savedInstanceState);
+        super.beforeSetContentView(savedInstanceState);
         Intent intent = getIntent();
         mOptions = intent.getParcelableExtra(ImageContants.INTENT_KEY_OPTIONS);
     }

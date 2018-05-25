@@ -38,12 +38,15 @@ public class ImageDataPresenter
             @Override
             public void run()
             {
-                mViewImpl.showLoading();
+                if (mViewImpl != null)
+                    mViewImpl.showLoading();
                 boolean success = ImageDataModel.getInstance().scanAllData(context);
-                mViewImpl.hideLoading();
-                if (!success)
+                if (mViewImpl != null)
+                    mViewImpl.hideLoading();
+                if (!success && mViewImpl != null)
                     mViewImpl.showShortToast(R.string.error_imagepicker_scanfail);
-                mViewImpl.onFloderChanged(ImageDataModel.getInstance().getAllFloderList().get(0));
+                if (mViewImpl != null)
+                    mViewImpl.onFloderChanged(ImageDataModel.getInstance().getAllFloderList().get(0));
             }
         });
     }
@@ -60,7 +63,8 @@ public class ImageDataPresenter
             @Override
             public void run()
             {
-                mViewImpl.onDataChanged(ImageDataModel.getInstance().getImagesByFloder(floderBean));
+                if (mViewImpl != null)
+                    mViewImpl.onDataChanged(ImageDataModel.getInstance().getImagesByFloder(floderBean));
             }
         });
     }
@@ -109,7 +113,14 @@ public class ImageDataPresenter
      */
     public void onDestory()
     {
-        ImageDataModel.getInstance().clear();
-        mViewImpl = null;
+        try
+        {
+            mCachedThreadService.shutdownNow();
+            ImageDataModel.getInstance().clear();
+            mViewImpl = null;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

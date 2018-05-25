@@ -47,9 +47,9 @@ public class ImageCropActivity extends ImagePickerBaseActivity
     private ImagePickerCropParams mCropParams;
 
     @Override
-    protected void beforSetContentView(Bundle savedInstanceState)
+    protected void beforeSetContentView(Bundle savedInstanceState)
     {
-        super.beforSetContentView(savedInstanceState);
+        super.beforeSetContentView(savedInstanceState);
         Intent intent = getIntent();
         mOriginPath = intent.getStringExtra(ImageContants.INTENT_KEY_ORIGIN_PATH);
         mOptions = intent.getParcelableExtra(ImageContants.INTENT_KEY_OPTIONS);

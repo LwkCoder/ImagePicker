@@ -60,9 +60,9 @@ public class ImagePagerActivity extends ImagePickerBaseActivity
     }
 
     @Override
-    protected void beforSetContentView(Bundle savedInstanceState)
+    protected void beforeSetContentView(Bundle savedInstanceState)
     {
-        super.beforSetContentView(savedInstanceState);
+        super.beforeSetContentView(savedInstanceState);
         Intent intent = getIntent();
         mCurPosition = intent.getIntExtra(ImageContants.INTENT_KEY_START_POSITION, 0);
         mIsPreview = intent.getBooleanExtra(ImageContants.INTENT_KEY_IS_PREVIEW, false);

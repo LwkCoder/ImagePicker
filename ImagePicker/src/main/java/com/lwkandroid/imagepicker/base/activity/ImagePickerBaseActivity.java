@@ -22,7 +22,7 @@ public abstract class ImagePickerBaseActivity extends Activity implements View.O
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        beforSetContentView(savedInstanceState);
+        beforeSetContentView(savedInstanceState);
         if (mContentView == null)
             mContentView = getLayoutInflater().inflate(getContentViewResId(), null);
         setContentView(mContentView);
@@ -32,7 +32,7 @@ public abstract class ImagePickerBaseActivity extends Activity implements View.O
         initData();
     }
 
-    protected void beforSetContentView(Bundle savedInstanceState)
+    protected void beforeSetContentView(Bundle savedInstanceState)
     {
         //去掉ActionBar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
