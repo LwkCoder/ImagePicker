@@ -11,13 +11,49 @@
         android:allowBackup="true"
         android:supportsRtl="true">
         <provider
-            android:name=".utils.ImagePickerFileProvider"
-            android:authorities="${applicationId}.provider"
+            android:name=".utils.IPCacheProvider"
+            android:authorities="${applicationId}_c.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/imagepicker_path"/>
+                android:resource="@xml/ip_cache_path"/>
+        </provider>
+        <provider
+            android:name=".utils.IPExCacheProvider"
+            android:authorities="${applicationId}_ex_c.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ip_external_cache_path"/>
+        </provider>
+        <provider
+            android:name=".utils.IPExFilesProvider"
+            android:authorities="${applicationId}_ex_f.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ip_external_files_path"/>
+        </provider>
+        <provider
+            android:name=".utils.IPExProvider"
+            android:authorities="${applicationId}_ex.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ip_external_path"/>
+        </provider>
+        <provider
+            android:name=".utils.IPFilesProvider"
+            android:authorities="${applicationId}_f.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ip_files_path"/>
         </provider>
 
         <activity
@@ -30,9 +66,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".ui.crop.ImageCropActivity"
-                  android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+            android:name=".ui.crop.ImageCropActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

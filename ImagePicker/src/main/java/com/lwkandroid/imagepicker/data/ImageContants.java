@@ -40,7 +40,7 @@ public class ImageContants
     /**
      * 默认缓存路径
      */
-    public static final String DEF_CACHE_PATH = ImagePickerComUtils.getSdPath() + "/";
+    public static final String DEF_CACHE_PATH = ImagePickerComUtils.getSdPath() + "/imagepicker/";
 
     /**
      * 展示小图时最大分辨率

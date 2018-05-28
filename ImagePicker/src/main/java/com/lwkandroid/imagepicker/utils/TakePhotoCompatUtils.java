@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.lwkandroid.imagepicker.R;
@@ -57,13 +59,29 @@ public class TakePhotoCompatUtils
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         //自定义缓存路径
+        if (cachePath == null || cachePath.length() == 0)
+            cachePath = ImageContants.DEF_CACHE_PATH;
         File tempFile = getPhotoTempFile(cachePath);
+        Log.d("ImagePicker", "TakePhoto temp file path:" + tempFile.getAbsolutePath());
         try
         {
             //7.0以上需要适配StickMode
-            if (Build.VERSION.SDK_INT >= 24)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
-                Uri imageUri = FileProvider.getUriForFile(activity, ImagePickerFileProvider.getAuthorities(activity), tempFile);
+                Uri imageUri = null;
+                if (cachePath.startsWith(activity.getCacheDir().getAbsolutePath()))
+                    imageUri = FileProvider.getUriForFile(activity, IPCacheProvider.getAuthorities(activity), tempFile);
+                else if (cachePath.startsWith(activity.getExternalCacheDir().getAbsolutePath()))
+                    imageUri = FileProvider.getUriForFile(activity, IPExCacheProvider.getAuthorities(activity), tempFile);
+                else if (cachePath.startsWith(activity.getExternalFilesDir(null).getAbsolutePath()))
+                    imageUri = FileProvider.getUriForFile(activity, IPExFilesProvider.getAuthorities(activity), tempFile);
+                else if (cachePath.startsWith(Environment.getExternalStorageDirectory().getAbsolutePath()))
+                    imageUri = FileProvider.getUriForFile(activity, IPExProvider.getAuthorities(activity), tempFile);
+                else if (cachePath.startsWith(activity.getFilesDir().getAbsolutePath()))
+                    imageUri = FileProvider.getUriForFile(activity, IPFilesProvider.getAuthorities(activity), tempFile);
+                else
+                    Log.w("ImageIicker", "No FileProvider matched cache's path");
+
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
                 activity.startActivityForResult(intent, requestCode);
@@ -75,6 +93,7 @@ public class TakePhotoCompatUtils
             return tempFile.getAbsolutePath();
         } catch (Exception e)
         {
+            e.printStackTrace();
             Toast.makeText(activity, R.string.error_can_not_takephoto, Toast.LENGTH_SHORT).show();
             return null;
         }

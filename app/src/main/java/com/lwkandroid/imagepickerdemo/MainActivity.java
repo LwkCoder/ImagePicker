@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        cachePath = getExternalCacheDir().getAbsolutePath();
+        cachePath = getFilesDir().getAbsolutePath();
 
         mRgType = (RadioGroup) findViewById(R.id.rg_main_mode);
         mEdMaxNum = (EditText) findViewById(R.id.ed_main_max_num);
