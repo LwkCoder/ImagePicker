@@ -61,6 +61,9 @@ public class TakePhotoCompatUtils
         //自定义缓存路径
         if (cachePath == null || cachePath.length() == 0)
             cachePath = ImageContants.DEF_CACHE_PATH;
+        File cacheFile = new File(cachePath);
+        if (!cacheFile.exists())
+            cacheFile.mkdirs();
         File tempFile = getPhotoTempFile(cachePath);
         Log.d("ImagePicker", "TakePhoto temp file path:" + tempFile.getAbsolutePath());
         try

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -42,7 +43,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        cachePath = getFilesDir().getAbsolutePath();
+        //        cachePath = getFilesDir().getAbsolutePath() + "/mypics/photos/";
+        //        cachePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/mypics/photos/";
+        //        cachePath = getCacheDir().getAbsolutePath() + "/mypics/photos/";
+        //        cachePath = getExternalCacheDir().getAbsolutePath() + "/mypics/photos/";
+        cachePath = getExternalFilesDir(null) + "/mypics/photos/";
 
         mRgType = (RadioGroup) findViewById(R.id.rg_main_mode);
         mEdMaxNum = (EditText) findViewById(R.id.ed_main_max_num);
@@ -76,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null)
         {
-            List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            List<ImageBean> resultList = data.getExtras().getParcelableArrayList(ImagePicker.INTENT_RESULT_DATA);
+            Log.i("ImagePickerDemo", "选择的图片：" + resultList.toString());
             String content = "";
             for (ImageBean imageBean : resultList)
             {

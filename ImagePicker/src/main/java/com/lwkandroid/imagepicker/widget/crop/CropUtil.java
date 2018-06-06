@@ -201,6 +201,9 @@ public class CropUtil
         try
         {
             //保存位置
+            File cacheFile = new File(savePath);
+            if (!cacheFile.exists())
+                cacheFile.mkdirs();
             File file = new File(savePath, saveName);
             if (file.exists())
                 file.delete();
