@@ -198,6 +198,8 @@ public class CropUtil
     public static String saveBmp(Bitmap bitmap, String savePath, String saveName)
     {
         String resultPath = null;
+        if (bitmap == null)
+            return resultPath;
         try
         {
             //保存位置
@@ -215,7 +217,7 @@ public class CropUtil
             bitmap = null;
             System.gc();
             resultPath = file.getAbsolutePath();
-        } catch (IOException e)
+        } catch (Exception e)
         {
             Log.e("CropUtils", "saveBmp(): savePath = " + savePath + "\nsaveName = " + saveName + "\n保存图片失败：" + e.toString());
         }

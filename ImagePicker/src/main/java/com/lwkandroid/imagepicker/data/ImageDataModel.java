@@ -52,6 +52,13 @@ public class ImageDataModel
     //图片显示器
     private IImagePickerDisplayer mDisplayer;
 
+    //jpg图片的后缀
+    private static final String JPG_POSTFIX = ".jpg";
+    //jpeg图片的后缀
+    private static final String JPEG_POSTFIX = ".jpeg";
+    //png图片的后缀
+    private static final String PNG_POSTFIX = ".png";
+
     /**
      * 获取图片加载器对象
      *
@@ -198,7 +205,7 @@ public class ImageDataModel
                             MediaStore.Images.Media.DATA,//图片地址
                             MediaStore.Images.Media.WIDTH,//图片宽度
                             MediaStore.Images.Media.HEIGHT,//图片高度
-                            //                        MediaStore.Images.Media.DISPLAY_NAME,//图片全名，带后缀
+                            MediaStore.Images.Media.DISPLAY_NAME,//图片全名，带后缀
                             //                        MediaStore.Images.Media.TITLE,
                             //                        MediaStore.Images.Media.DATE_ADDED,//创建时间？
                             MediaStore.Images.Media.DATE_MODIFIED,//最后修改时间
@@ -208,6 +215,9 @@ public class ImageDataModel
                     };
 
 
+            //            String selection = MediaStore.Images.Media.MIME_TYPE + "=?";
+            //            String[] selectionArgs = {"image/jpeg"};
+            //            String sortOrder = MediaStore.Images.Media.DATE_MODIFIED + " desc";
             //得到一个游标
             ContentResolver cr = context.getContentResolver();
             Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, null);
@@ -223,6 +233,7 @@ public class ImageDataModel
                 int imageModifyIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED);
                 int imageWidthIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH);
                 int imageHeightIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT);
+                int imageNameIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
                 int floderIdIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID);
                 int floderNameIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
 
@@ -235,15 +246,19 @@ public class ImageDataModel
                     String height = cur.getString(imageHeightIndex);
                     String floderId = cur.getString(floderIdIndex);
                     String floderName = cur.getString(floderNameIndex);
-                    //                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
-                    //                            + "imagePath=" + imagePath + "\n"
-                    //                            + "lastModify=" + lastModify + "\n"
-                    //                            + "width=" + width + "\n"
-                    //                            + "height=" + height + "\n"
-                    //                            + "floderId=" + floderId + "\n"
-                    //                            + "floderName=" + floderName);
+                    String name = cur.getString(imageNameIndex).toLowerCase();
+                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
+                            + "imagePath=" + imagePath + "\n"
+                            + "lastModify=" + lastModify + "\n"
+                            + "width=" + width + "\n"
+                            + "height=" + height + "\n"
+                            + "name=" + name + "\n"
+                            + "floderId=" + floderId + "\n"
+                            + "floderName=" + floderName);
 
-                    if (new File(imagePath).exists())
+                    //只筛选jpg、jpeg、png
+                    if (new File(imagePath).exists() && (name.endsWith(PNG_POSTFIX) ||
+                            name.endsWith(JPG_POSTFIX) || name.endsWith(JPEG_POSTFIX)))
                     {
                         //创建图片对象
                         ImageBean imageBean = new ImageBean();
