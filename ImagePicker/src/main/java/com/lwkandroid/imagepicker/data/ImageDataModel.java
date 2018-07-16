@@ -247,14 +247,14 @@ public class ImageDataModel
                     String floderId = cur.getString(floderIdIndex);
                     String floderName = cur.getString(floderNameIndex);
                     String name = cur.getString(imageNameIndex).toLowerCase();
-                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
-                            + "imagePath=" + imagePath + "\n"
-                            + "lastModify=" + lastModify + "\n"
-                            + "width=" + width + "\n"
-                            + "height=" + height + "\n"
-                            + "name=" + name + "\n"
-                            + "floderId=" + floderId + "\n"
-                            + "floderName=" + floderName);
+                    //                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
+                    //                            + "imagePath=" + imagePath + "\n"
+                    //                            + "lastModify=" + lastModify + "\n"
+                    //                            + "width=" + width + "\n"
+                    //                            + "height=" + height + "\n"
+                    //                            + "name=" + name + "\n"
+                    //                            + "floderId=" + floderId + "\n"
+                    //                            + "floderName=" + floderName);
 
                     //只筛选jpg、jpeg、png
                     if (new File(imagePath).exists() && (name.endsWith(PNG_POSTFIX) ||
