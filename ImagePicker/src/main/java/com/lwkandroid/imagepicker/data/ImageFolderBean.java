@@ -8,40 +8,40 @@ import android.os.Parcelable;
  */
 public class ImageFolderBean implements Parcelable
 {
-    private String floderId;
-    private String floderName;
+    private String folderId;
+    private String folderName;
     private String firstImgPath;
     private int num;
 
-    public ImageFolderBean(String floderId)
+    public ImageFolderBean(String folderId)
     {
-        this.floderId = floderId;
+        this.folderId = folderId;
     }
 
-    public ImageFolderBean(String floderId, String floderName)
+    public ImageFolderBean(String folderId, String folderName)
     {
-        this.floderId = floderId;
-        this.floderName = floderName;
+        this.folderId = folderId;
+        this.folderName = folderName;
     }
 
-    public String getFloderId()
+    public String getFolderId()
     {
-        return floderId;
+        return folderId;
     }
 
-    public void setFloderId(String floderId)
+    public void setFolderId(String folderId)
     {
-        this.floderId = floderId;
+        this.folderId = folderId;
     }
 
-    public String getFloderName()
+    public String getFolderName()
     {
-        return floderName;
+        return folderName;
     }
 
-    public void setFloderName(String floderName)
+    public void setFolderName(String folderName)
     {
-        this.floderName = floderName;
+        this.folderName = folderName;
     }
 
     public int getNum()
@@ -73,8 +73,8 @@ public class ImageFolderBean implements Parcelable
     public String toString()
     {
         return "ImageFolderBean{" +
-                "floderId='" + floderId + '\'' +
-                ", floderName='" + floderName + '\'' +
+                "folderId='" + folderId + '\'' +
+                ", folderName='" + folderName + '\'' +
                 ", firstImgPath='" + firstImgPath + '\'' +
                 ", num=" + num +
                 '}';
@@ -89,14 +89,14 @@ public class ImageFolderBean implements Parcelable
     @Override
     public boolean equals(Object obj)
     {
-        return (obj instanceof ImageFolderBean && ((ImageFolderBean) obj).getFloderId().equals(floderId));
+        return (obj instanceof ImageFolderBean && ((ImageFolderBean) obj).getFolderId().equals(folderId));
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeString(this.floderId);
-        dest.writeString(this.floderName);
+        dest.writeString(this.folderId);
+        dest.writeString(this.folderName);
         dest.writeString(this.firstImgPath);
         dest.writeInt(this.num);
     }
@@ -107,8 +107,8 @@ public class ImageFolderBean implements Parcelable
 
     protected ImageFolderBean(Parcel in)
     {
-        this.floderId = in.readString();
-        this.floderName = in.readString();
+        this.folderId = in.readString();
+        this.folderName = in.readString();
         this.firstImgPath = in.readString();
         this.num = in.readInt();
     }

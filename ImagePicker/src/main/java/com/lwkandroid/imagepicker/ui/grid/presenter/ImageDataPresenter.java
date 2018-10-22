@@ -64,7 +64,7 @@ public class ImageDataPresenter
             public void run()
             {
                 if (mViewImpl != null)
-                    mViewImpl.onDataChanged(ImageDataModel.getInstance().getImagesByFloder(floderBean));
+                    mViewImpl.onDataChanged(ImageDataModel.getInstance().getImagesByFolder(floderBean));
             }
         });
     }

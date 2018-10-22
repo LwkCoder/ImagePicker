@@ -71,7 +71,7 @@ public class ImagePicker
 
     public ImagePicker displayer(IImagePickerDisplayer displayer)
     {
-        ImageDataModel.getInstance().setDisplayer(displayer);
+        ImageDataModel.getInstance().setDisPlayer(displayer);
         return this;
     }
 

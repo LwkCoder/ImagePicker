@@ -9,10 +9,10 @@
     <string name="error_can_not_takephoto">无法发起拍照请求</string>
     <string name="error_imagepicker_scanfail">无法扫描本地图片数据</string>
     <string name="error_imagepicker_lack_params">参数错误</string>
-    <string name="imagepicker_all_image_floder">全部图片</string>
+    <string name="imagepicker_all_image_folder">全部图片</string>
     <string name="btn_imagepicker_ok">完成(%1$s/%2$s)</string>
     <string name="warning_imagepicker_max_num">只能选择%1$s张图片</string>
-    <string name="imagepicker_floder_image_num">%1$s张图片</string>
+    <string name="imagepicker_folder_image_num">%1$s张图片</string>
     <string name="imagepicker_pager_title_count">%1$s/%2$s</string>
     <string name="imagepicker_pager_selected">选中</string>
     <string name="warning_imagepicker_permission_sdcard_denied">无法获取外部存储卡读写权限</string>

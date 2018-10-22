@@ -256,7 +256,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             public void run()
             {
                 if (mTvFloderName != null)
-                    mTvFloderName.setText(mCurFloder.getFloderName());
+                    mTvFloderName.setText(mCurFloder.getFolderName());
             }
         });
         mPresenter.checkDataByFloder(floderBean);

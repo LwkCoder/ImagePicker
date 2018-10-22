@@ -54,7 +54,7 @@ public class ImagePagerAdapter extends PagerAdapter
         photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         photoView.setEnabled(true);
         ImageBean imageItem = mAllmageList.get(position);
-        ImageDataModel.getInstance().getDisplayer().display(mActivity, imageItem.getImagePath(), photoView, mScreenWidth, mScreenHeight);
+        ImageDataModel.getInstance().getDisPlayer().display(mActivity, imageItem.getImagePath(), photoView, mScreenWidth, mScreenHeight);
         photoView.setOnPhotoTapListener(new OnPhotoTapListener()
         {
             @Override

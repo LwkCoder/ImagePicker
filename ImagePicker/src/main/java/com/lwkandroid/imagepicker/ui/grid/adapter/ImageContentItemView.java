@@ -51,7 +51,7 @@ public class ImageContentItemView implements IImagePickerItemView<ImageBean>
 
         //显示UI
         if (imageBean != null)
-            ImageDataModel.getInstance().getDisplayer()
+            ImageDataModel.getInstance().getDisPlayer()
                     .display(holder.getContext(), imageBean.getImagePath(), imgContent
                             , R.drawable.glide_default_picture, R.drawable.glide_default_picture
                             , ImageContants.DISPLAY_THUMB_SIZE, ImageContants.DISPLAY_THUMB_SIZE);

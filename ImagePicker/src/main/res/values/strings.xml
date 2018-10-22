@@ -9,10 +9,10 @@
     <string name="error_can_not_takephoto">Open camera failed</string>
     <string name="error_imagepicker_scanfail">Local image data unavailable</string>
     <string name="error_imagepicker_lack_params">Options error</string>
-    <string name="imagepicker_all_image_floder">All Images</string>
+    <string name="imagepicker_all_image_folder">All Images</string>
     <string name="btn_imagepicker_ok">Done(%1$s/%2$s)</string>
     <string name="warning_imagepicker_max_num">You can only select %1$s images</string>
-    <string name="imagepicker_floder_image_num">%1$s images</string>
+    <string name="imagepicker_folder_image_num">%1$s images</string>
     <string name="imagepicker_pager_title_count">%1$s/%2$s</string>
     <string name="imagepicker_pager_selected">Select</string>
     <string name="warning_imagepicker_permission_sdcard_denied">Unable to access the SdCard permissions</string>

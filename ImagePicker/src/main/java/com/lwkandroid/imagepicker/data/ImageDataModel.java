@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.lwkandroid.imagepicker.R;
@@ -51,33 +52,26 @@ public class ImageDataModel
     private List<ImageBean> mPagerList = new ArrayList<>();
 
     //图片显示器
-    private IImagePickerDisplayer mDisplayer;
-
-    //jpg图片的后缀
-    private static final String JPG_POSTFIX = ".jpg";
-    //jpeg图片的后缀
-    private static final String JPEG_POSTFIX = ".jpeg";
-    //png图片的后缀
-    private static final String PNG_POSTFIX = ".png";
+    private IImagePickerDisplayer mDisPlayer;
 
     /**
      * 获取图片加载器对象
      *
-     * @return 如果未设置则默认为GlideImagePickerDisplayer
+     * @return 如果未设置则默认为GlideImagePickerDisPlayer
      */
-    public IImagePickerDisplayer getDisplayer()
+    public IImagePickerDisplayer getDisPlayer()
     {
-        return mDisplayer != null ? mDisplayer : (mDisplayer = new GlideImagePickerDisplayer());
+        return mDisPlayer != null ? mDisPlayer : (mDisPlayer = new GlideImagePickerDisplayer());
     }
 
     /**
      * 设置图片加载器对象
      *
-     * @param displayer 需要实现IImagePickerDisplayer接口
+     * @param player 需要实现IImagePickerDisPlayer接口
      */
-    public void setDisplayer(IImagePickerDisplayer displayer)
+    public void setDisPlayer(IImagePickerDisplayer player)
     {
-        this.mDisplayer = displayer;
+        this.mDisPlayer = player;
     }
 
     /**
@@ -193,7 +187,7 @@ public class ImageDataModel
             mResultList.clear();
             //创建“全部图片”的文件夹
             ImageFolderBean allImgFolder = new ImageFolderBean(
-                    ImageContants.ID_ALL_IMAGE_FOLDER, context.getResources().getString(R.string.imagepicker_all_image_floder));
+                    ImageContants.ID_ALL_IMAGE_FOLDER, context.getResources().getString(R.string.imagepicker_all_image_folder));
             mAllFolderList.add(allImgFolder);
             //临时存储所有文件夹对象的Map
             ArrayMap<String, ImageFolderBean> folderMap = new ArrayMap<>();
@@ -216,12 +210,15 @@ public class ImageDataModel
                     };
 
 
-            //            String selection = MediaStore.Images.Media.MIME_TYPE + "=?";
-            //            String[] selectionArgs = {"image/jpeg"};
-            //            String sortOrder = MediaStore.Images.Media.DATE_MODIFIED + " desc";
+            String selection = MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or "
+                    + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or "
+                    + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?";
+            //只筛选png、jpg、jpeg、PNG、JPG、JPEG
+            String[] selectionArgs = {"image/png", "image/jpg", "image/jpeg", "image/PNG", "image/JPG", "image/JPEG"};
+            String sortOrder = MediaStore.Images.Media.DATE_MODIFIED + " desc";
             //得到一个游标
             ContentResolver cr = context.getContentResolver();
-            Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, null);
+            Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, selection, selectionArgs, sortOrder);
 
             if (cur != null && cur.moveToFirst())
             {
@@ -247,7 +244,16 @@ public class ImageDataModel
                     String height = cur.getString(imageHeightIndex);
                     String folderId = cur.getString(folderIdIndex);
                     String folderName = cur.getString(folderNameIndex);
-                    String name = cur.getString(imageNameIndex).toLowerCase();
+                    String name = cur.getString(imageNameIndex);
+                    if (TextUtils.isEmpty(name))
+                    {
+                        if (TextUtils.isEmpty(imagePath))
+                            continue;
+                        int index = imagePath.lastIndexOf(File.separator);
+                        name = imagePath.substring(index + 1);
+                        if (TextUtils.isEmpty(name))
+                            continue;
+                    }
                     //                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
                     //                            + "imagePath=" + imagePath + "\n"
                     //                            + "lastModify=" + lastModify + "\n"
@@ -257,30 +263,27 @@ public class ImageDataModel
                     //                            + "folderId=" + folderId + "\n"
                     //                            + "folderName=" + folderName);
 
-                    //只筛选jpg、jpeg、png
-                    if (new File(imagePath).exists() && (name.endsWith(PNG_POSTFIX) ||
-                            name.endsWith(JPG_POSTFIX) || name.endsWith(JPEG_POSTFIX)))
+                    //创建图片对象
+                    ImageBean imageBean = new ImageBean();
+                    imageBean.setImageId(imageId);
+                    imageBean.setImagePath(imagePath);
+                    imageBean.setLastModified(ImagePickerComUtils.isNotEmpty(lastModify) ? Long.valueOf(lastModify) : 0);
+                    imageBean.setWidth(ImagePickerComUtils.isNotEmpty(width) ? Integer.valueOf(width) : 0);
+                    imageBean.setHeight(ImagePickerComUtils.isNotEmpty(height) ? Integer.valueOf(height) : 0);
+                    imageBean.setFolderId(folderId);
+                    mAllImgList.add(imageBean);
+                    //更新文件夹对象
+                    ImageFolderBean folderBean = null;
+                    if (!TextUtils.isEmpty(folderId) && folderMap.containsKey(folderId))
+                        folderBean = folderMap.get(folderId);
+                    else
+                        folderBean = new ImageFolderBean(folderId, folderName);
+                    if (folderBean != null)
                     {
-                        //创建图片对象
-                        ImageBean imageBean = new ImageBean();
-                        imageBean.setImageId(imageId);
-                        imageBean.setImagePath(imagePath);
-                        imageBean.setLastModified(ImagePickerComUtils.isNotEmpty(lastModify) ? Long.valueOf(lastModify) : 0);
-                        imageBean.setWidth(ImagePickerComUtils.isNotEmpty(width) ? Integer.valueOf(width) : 0);
-                        imageBean.setHeight(ImagePickerComUtils.isNotEmpty(height) ? Integer.valueOf(height) : 0);
-                        imageBean.setFolderId(folderId);
-                        mAllImgList.add(imageBean);
-                        //更新文件夹对象
-                        ImageFolderBean folderBean = null;
-                        if (folderMap.containsKey(folderId))
-                            folderBean = folderMap.get(folderId);
-                        else
-                            folderBean = new ImageFolderBean(folderId, folderName);
                         folderBean.setFirstImgPath(imagePath);
                         folderBean.gainNum();
                         folderMap.put(folderId, folderBean);
                     }
-
                 } while (cur.moveToNext());
                 cur.close();
             }
@@ -303,16 +306,16 @@ public class ImageDataModel
     /**
      * 根据文件夹获取该文件夹下所有图片数据
      *
-     * @param floderBean 文件夹对象
+     * @param folderBean 文件夹对象
      * @return 图片数据list
      */
-    public List<ImageBean> getImagesByFloder(ImageFolderBean floderBean)
+    public List<ImageBean> getImagesByFolder(ImageFolderBean folderBean)
     {
-        if (floderBean == null)
+        if (folderBean == null)
             return null;
 
-        String floderId = floderBean.getFloderId();
-        if (ImagePickerComUtils.isEquals(ImageContants.ID_ALL_IMAGE_FOLDER, floderId))
+        String folderId = folderBean.getFolderId();
+        if (ImagePickerComUtils.isEquals(ImageContants.ID_ALL_IMAGE_FOLDER, folderId))
         {
             return mAllImgList;
         } else
@@ -322,7 +325,7 @@ public class ImageDataModel
             for (int i = 0; i < size; i++)
             {
                 ImageBean imageBean = mAllImgList.get(i);
-                if (imageBean != null && ImagePickerComUtils.isEquals(floderId, imageBean.getFolderId()))
+                if (imageBean != null && ImagePickerComUtils.isEquals(folderId, imageBean.getFolderId()))
                     resultList.add(imageBean);
             }
             return resultList;
@@ -334,7 +337,7 @@ public class ImageDataModel
      */
     public void clear()
     {
-        mDisplayer = null;
+        mDisPlayer = null;
         if (mAllImgList != null)
             mAllImgList.clear();
         if (mAllFolderList != null)

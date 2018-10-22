@@ -49,13 +49,13 @@ public class ImageFloderAdapter extends ImagePickerBaseAdapter<ImageFolderBean>
 
             if (imageFolderBean != null)
             {
-                ImageDataModel.getInstance().getDisplayer().display(holder.getContext()
+                ImageDataModel.getInstance().getDisPlayer().display(holder.getContext()
                         , imageFolderBean.getFirstImgPath(), imgFirst,
                         R.drawable.glide_default_picture, R.drawable.glide_default_picture,
                         300, 300);
-                holder.setTvText(R.id.tv_floder_pop_listitem_name, imageFolderBean.getFloderName());
+                holder.setTvText(R.id.tv_floder_pop_listitem_name, imageFolderBean.getFolderName());
                 holder.setTvText(R.id.tv_floder_pop_listitem_num,
-                        holder.getContext().getResources().getString(R.string.imagepicker_floder_image_num
+                        holder.getContext().getResources().getString(R.string.imagepicker_folder_image_num
                                 , String.valueOf(imageFolderBean.getNum())));
                 if (position == mCurfloderPosition)
                     holder.setVisibility(R.id.img_floder_pop_listitem_selected, View.VISIBLE);
