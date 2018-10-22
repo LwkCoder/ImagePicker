@@ -35,7 +35,7 @@ public class ImageContants
     /**
      * “所有图片”文件夹的id
      */
-    public static final String ID_ALL_IMAGE_FLODER = "-100";
+    public static final String ID_ALL_IMAGE_FOLDER = "-100";
 
     /**
      * 默认缓存路径

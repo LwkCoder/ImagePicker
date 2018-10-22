@@ -104,10 +104,10 @@ public class ImagePicker
     /**
      * 发起选择图片
      *
-     * @param fragment    发起的Fragment(V4包)
+     * @param fragment    发起的Fragment(support包)
      * @param requestCode 请求码
      */
-    public void start(android.support.v4.app.Fragment fragment, int requestCode)
+    public void start(androidx.fragment.app.Fragment fragment, int requestCode)
     {
         Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);

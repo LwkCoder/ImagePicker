@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +22,7 @@ import com.lwkandroid.imagepicker.base.activity.ImagePickerBaseActivity;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImageContants;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
-import com.lwkandroid.imagepicker.data.ImageFloderBean;
+import com.lwkandroid.imagepicker.data.ImageFolderBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerOptions;
 import com.lwkandroid.imagepicker.ui.crop.ImageCropActivity;
@@ -60,7 +60,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     private TextView mTvFloderName;
     private Button mBtnOk;
     private ImageDataAdapter mAdapter;
-    private ImageFloderBean mCurFloder;
+    private ImageFolderBean mCurFloder;
     private String mPhotoPath;
     private int mColumnWidth;
     private int mColumnNum;
@@ -244,7 +244,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     }
 
     @Override
-    public void onFloderChanged(ImageFloderBean floderBean)
+    public void onFloderChanged(ImageFolderBean floderBean)
     {
         if (mCurFloder != null && floderBean != null && mCurFloder.equals(floderBean))
             return;
@@ -390,7 +390,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     }
 
     @Override
-    public void onFloderItemClicked(ImageFloderBean floderBean)
+    public void onFloderItemClicked(ImageFolderBean floderBean)
     {
         onFloderChanged(floderBean);
     }

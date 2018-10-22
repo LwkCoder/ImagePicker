@@ -31,7 +31,7 @@ public class ImageBean implements Parcelable
     /**
      * 所在文件夹的id【扫描sd卡后才有的】
      */
-    private String floderId;
+    private String folderId;
 
     public ImageBean()
     {
@@ -67,14 +67,14 @@ public class ImageBean implements Parcelable
         this.lastModified = lastModified;
     }
 
-    public String getFloderId()
+    public String getFolderId()
     {
-        return floderId;
+        return folderId;
     }
 
-    public void setFloderId(String floderId)
+    public void setFolderId(String folderId)
     {
-        this.floderId = floderId;
+        this.folderId = folderId;
     }
 
     public int getWidth()
@@ -106,7 +106,7 @@ public class ImageBean implements Parcelable
                 ", lastModified=" + lastModified +
                 ", width=" + width +
                 ", height=" + height +
-                ", floderId='" + floderId + '\'' +
+                ", folderId='" + folderId + '\'' +
                 '}';
     }
 
@@ -130,7 +130,7 @@ public class ImageBean implements Parcelable
         dest.writeValue(this.lastModified);
         dest.writeInt(this.width);
         dest.writeInt(this.height);
-        dest.writeString(this.floderId);
+        dest.writeString(this.folderId);
     }
 
     protected ImageBean(Parcel in)
@@ -140,7 +140,7 @@ public class ImageBean implements Parcelable
         this.lastModified = (Long) in.readValue(Long.class.getClassLoader());
         this.width = in.readInt();
         this.height = in.readInt();
-        this.floderId = in.readString();
+        this.folderId = in.readString();
     }
 
     public static final Creator<ImageBean> CREATOR = new Creator<ImageBean>()

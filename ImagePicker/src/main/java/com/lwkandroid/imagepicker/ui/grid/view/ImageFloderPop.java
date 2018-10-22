@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
-import com.lwkandroid.imagepicker.data.ImageFloderBean;
+import com.lwkandroid.imagepicker.data.ImageFolderBean;
 import com.lwkandroid.imagepicker.ui.grid.adapter.ImageFloderAdapter;
 
 import java.lang.ref.WeakReference;
@@ -48,7 +48,7 @@ public class ImageFloderPop implements PopupWindow.OnDismissListener, AdapterVie
     /**
      * 从Activity底部弹出来
      */
-    public void showAtBottom(Activity activity, View parent, ImageFloderBean curFloder, onFloderItemClickListener listener)
+    public void showAtBottom(Activity activity, View parent, ImageFolderBean curFloder, onFloderItemClickListener listener)
     {
         this.mActReference = new WeakReference<>(activity);
         this.mListener = listener;
@@ -63,7 +63,7 @@ public class ImageFloderPop implements PopupWindow.OnDismissListener, AdapterVie
         mPopupWindow.setOnDismissListener(this);
 
         mListView = (ListView) contentView.findViewById(R.id.lv_image_floder_pop);
-        final int position = ImageDataModel.getInstance().getAllFloderList().indexOf(curFloder);
+        final int position = ImageDataModel.getInstance().getAllFolderList().indexOf(curFloder);
         mAdapter = new ImageFloderAdapter(activity, position);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
@@ -170,6 +170,6 @@ public class ImageFloderPop implements PopupWindow.OnDismissListener, AdapterVie
 
     public interface onFloderItemClickListener
     {
-        void onFloderItemClicked(ImageFloderBean floderBean);
+        void onFloderItemClicked(ImageFolderBean floderBean);
     }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
-import com.lwkandroid.imagepicker.data.ImageFloderBean;
+import com.lwkandroid.imagepicker.data.ImageFolderBean;
 import com.lwkandroid.imagepicker.ui.grid.view.IImageDataView;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class ImageDataPresenter
                 if (!success && mViewImpl != null)
                     mViewImpl.showShortToast(R.string.error_imagepicker_scanfail);
                 if (mViewImpl != null)
-                    mViewImpl.onFloderChanged(ImageDataModel.getInstance().getAllFloderList().get(0));
+                    mViewImpl.onFloderChanged(ImageDataModel.getInstance().getAllFolderList().get(0));
             }
         });
     }
@@ -56,7 +56,7 @@ public class ImageDataPresenter
      *
      * @param floderBean 文件夹对象
      */
-    public void checkDataByFloder(final ImageFloderBean floderBean)
+    public void checkDataByFloder(final ImageFolderBean floderBean)
     {
         addNewRunnable(new Runnable()
         {

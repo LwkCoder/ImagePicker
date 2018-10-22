@@ -21,6 +21,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:${LIB_ANDROID_SUPPORT_VERSION}"
+    implementation "androidx.appcompat:appcompat:${LIB_ANDROIDX_APPCOMPAT_VERSION}"
     implementation project(':ImagePicker')
 }
