@@ -246,7 +246,12 @@ public class ImageDataModel
                     String height = cur.getString(imageHeightIndex);
                     String floderId = cur.getString(floderIdIndex);
                     String floderName = cur.getString(floderNameIndex);
-                    String name = cur.getString(imageNameIndex).toLowerCase();
+                    String name = cur.getString(imageNameIndex);
+                    name = name == null?imagePath:name;
+                    if (name == null) {
+                        continue;
+                    }
+                    name = name.toLowerCase();
                     //                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
                     //                            + "imagePath=" + imagePath + "\n"
                     //                            + "lastModify=" + lastModify + "\n"
@@ -275,9 +280,11 @@ public class ImageDataModel
                             floderBean = floderMap.get(floderId);
                         else
                             floderBean = new ImageFloderBean(floderId, floderName);
-                        floderBean.setFirstImgPath(imagePath);
-                        floderBean.gainNum();
-                        floderMap.put(floderId, floderBean);
+                        if (floderBean != null) {
+                            floderBean.setFirstImgPath(imagePath);
+                            floderBean.gainNum();
+                            floderMap.put(floderId, floderBean);
+                        }
                     }
 
                 } while (cur.moveToNext());
