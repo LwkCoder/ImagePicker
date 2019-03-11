@@ -29,7 +29,7 @@ dependencies {
 //        exclude(group: 'com.google.android', module: 'support-v4')
 //    }
     api "com.github.bumptech.glide:glide:${LIB_GLIDE_VERSION}"
-    api "androidx.legacy:legacy-support-v4:${LIB_ANDROIDX_APPCOMPAT_VERSION}"
+    compileOnly "androidx.legacy:legacy-support-v4:${LIB_ANDROIDX_APPCOMPAT_VERSION}"
 }
 
 allprojects {
@@ -46,7 +46,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 def lib_name = "ImagePicker";
-version = "1.4.3"
+version = "1.4.4"
 group = "com.lwkandroid"
 def siteUrl = 'https://github.com/Vanish136/ImagePicker'
 def gitUrl = 'https://github.com/Vanish136/ImagePicker.git'
