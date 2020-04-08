@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +14,8 @@ import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.data.ImageContants;
 
 import java.io.File;
+
+import androidx.core.content.FileProvider;
 
 /**
  * Created by LWK
@@ -83,7 +84,7 @@ public class TakePhotoCompatUtils
                 else if (cachePath.startsWith(activity.getFilesDir().getAbsolutePath()))
                     imageUri = FileProvider.getUriForFile(activity, IPFilesProvider.getAuthorities(activity), tempFile);
                 else
-                    Log.w("ImageIicker", "No FileProvider matched cache's path");
+                    Log.w("ImagePicker", "No FileProvider matched cache's path");
 
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI

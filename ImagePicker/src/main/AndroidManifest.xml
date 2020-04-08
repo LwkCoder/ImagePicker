@@ -9,7 +9,8 @@
 
     <application
         android:allowBackup="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true">
         <provider
             android:name=".utils.IPCacheProvider"
             android:authorities="${applicationId}_c.provider"
