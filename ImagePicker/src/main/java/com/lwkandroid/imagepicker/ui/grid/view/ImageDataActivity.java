@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +36,8 @@ import com.lwkandroid.imagepicker.widget.ImagePickerActionBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 import static com.lwkandroid.imagepicker.data.ImageContants.REQUEST_CODE_PERMISSION_CAMERA;
 import static com.lwkandroid.imagepicker.data.ImageContants.REQUEST_CODE_PERMISSION_SDCARD;
 import static com.lwkandroid.imagepicker.utils.PermissionChecker.checkPermissions;
@@ -56,11 +57,11 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     private GridView mGridView;
     private ProgressBar mPgbLoading;
     private View mViewBottom;
-    private View mViewFloder;
-    private TextView mTvFloderName;
+    private View mViewFolder;
+    private TextView mTvFolderName;
     private Button mBtnOk;
     private ImageDataAdapter mAdapter;
-    private ImageFolderBean mCurFloder;
+    private ImageFolderBean mCurFolder;
     private String mPhotoPath;
     private int mColumnWidth;
     private int mColumnNum;
@@ -107,11 +108,11 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             mGridView.setOnScrollListener(this);
             mPgbLoading = findView(R.id.pgb_image_data);
             mViewBottom = findView(R.id.fl_image_data_bottom);
-            mViewFloder = findView(R.id.ll_image_data_bottom_floder);
-            mTvFloderName = findView(R.id.tv_image_data_bottom_flodername);
+            mViewFolder = findView(R.id.ll_image_data_bottom_floder);
+            mTvFolderName = findView(R.id.tv_image_data_bottom_flodername);
             mBtnOk = findView(R.id.btn_image_data_ok);
 
-            mViewFloder.setOnClickListener(this);
+            mViewFolder.setOnClickListener(this);
             if (mOptions.getType() == ImagePickType.SINGLE)
             {
                 mBtnOk.setVisibility(View.GONE);
@@ -131,7 +132,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     protected void initData()
     {
         if (mOptions == null)
+        {
             return;
+        }
 
         if (mOptions.getType() != ImagePickType.ONLY_CAMERA)
         {
@@ -151,24 +154,21 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     @Override
     public void startTakePhoto()
     {
-        //检查摄像头和sd卡是否存在
-        if (!TakePhotoCompatUtils.hasCamera())
-        {
-            showShortToast(R.string.error_no_camera);
-            return;
-        }
-        if (!ImagePickerComUtils.isSdExist())
-        {
-            showShortToast(R.string.error_no_sdcard);
-            return;
-        }
-
         boolean hasPermissions = checkPermissions(this
                 , new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}
                 , REQUEST_CODE_PERMISSION_CAMERA, R.string.dialog_imagepicker_permission_camera_message);
         //有权限就直接拍照
         if (hasPermissions)
+        {
+            //检查摄像头是否存在
+            if (!TakePhotoCompatUtils.hasCamera())
+            {
+                showShortToast(R.string.error_no_camera);
+                return;
+            }
+
             doTakePhoto();
+        }
     }
 
     //执行拍照的方法
@@ -190,7 +190,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                 REQUEST_CODE_PERMISSION_SDCARD, R.string.dialog_imagepicker_permission_sdcard_message);
         //有权限直接扫描
         if (hasPermission)
+        {
             mPresenter.scanData(this);
+        }
     }
 
     @Override
@@ -246,17 +248,19 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
     @Override
     public void onFloderChanged(ImageFolderBean floderBean)
     {
-        if (mCurFloder != null && floderBean != null && mCurFloder.equals(floderBean))
+        if (mCurFolder != null && floderBean != null && mCurFolder.equals(floderBean))
             return;
 
-        mCurFloder = floderBean;
+        mCurFolder = floderBean;
         mHandler.post(new Runnable()
         {
             @Override
             public void run()
             {
-                if (mTvFloderName != null)
-                    mTvFloderName.setText(mCurFloder.getFolderName());
+                if (mTvFolderName != null)
+                {
+                    mTvFolderName.setText(mCurFolder.getFolderName());
+                }
             }
         });
         mPresenter.checkDataByFloder(floderBean);
@@ -323,7 +327,7 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         } else if (id == R.id.ll_image_data_bottom_floder)
         {
             //弹出文件夹切换菜单
-            new ImageFloderPop().showAtBottom(this, mContentView, mCurFloder, this);
+            new ImageFloderPop().showAtBottom(this, mContentView, mCurFolder, this);
         } else if (id == R.id.btn_image_data_ok)
         {
             //返回选中的图片
@@ -345,7 +349,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             {
                 Log.e("ImagePicker", "ImageDataActivity take photo result not OK !!!");
                 if (mOptions.getType() == ImagePickType.ONLY_CAMERA)
+                {
                     finish();
+                }
                 return;
             }
 
@@ -430,15 +436,20 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
                     result = PermissionChecker.onRequestPermissionsResult(this, permissions, grantResults, true
                             , R.string.dialog_imagepicker_permission_camera_nerver_ask_message);
                     if (result[0])
+                    {
                         doTakePhoto();
-                    else if (!result[1])
+                    } else if (!result[1])
+                    {
                         finish();
+                    }
                 } else
                 {
                     result = PermissionChecker.onRequestPermissionsResult(this, permissions, grantResults, false
                             , R.string.dialog_imagepicker_permission_camera_nerver_ask_message);
                     if (result[0])
+                    {
                         doTakePhoto();
+                    }
                 }
                 break;
             case ImageContants.REQUEST_CODE_PERMISSION_SDCARD:
@@ -459,7 +470,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
         super.onConfigurationChanged(newConfig);
         calColumn();
         if (mGridView != null && mState != null)
+        {
             mGridView.onRestoreInstanceState(mState);
+        }
     }
 
     //计算列数和每列宽度
@@ -484,7 +497,9 @@ public class ImageDataActivity extends ImagePickerBaseActivity implements IImage
             mGridView.setNumColumns(mColumnNum);
         }
         if (mAdapter != null)
+        {
             mAdapter.adjustLayoutSize(mColumnWidth);
+        }
     }
 
     @Override

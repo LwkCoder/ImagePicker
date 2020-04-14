@@ -59,39 +59,48 @@ public class TakePhotoCompatUtils
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        //自定义缓存路径
-        if (cachePath == null || cachePath.length() == 0)
-            cachePath = ImageContants.DEF_CACHE_PATH;
-        File cacheFile = new File(cachePath);
-        if (!cacheFile.exists())
-            cacheFile.mkdirs();
-        File tempFile = getPhotoTempFile(cachePath);
-        Log.d("ImagePicker", "TakePhoto temp file path:" + tempFile.getAbsolutePath());
         try
         {
+            File cacheFile = new File(cachePath);
+            if (!cacheFile.exists())
+            {
+                cacheFile.mkdirs();
+            }
+            File tempFile = getPhotoTempFile(cachePath);
+            Log.d("ImagePicker", "TakePhoto temp file path:" + tempFile.getAbsolutePath());
             //7.0以上需要适配StickMode
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
                 Uri imageUri = null;
                 if (cachePath.startsWith(activity.getCacheDir().getAbsolutePath()))
+                {
                     imageUri = FileProvider.getUriForFile(activity, IPCacheProvider.getAuthorities(activity), tempFile);
-                else if (cachePath.startsWith(activity.getExternalCacheDir().getAbsolutePath()))
-                    imageUri = FileProvider.getUriForFile(activity, IPExCacheProvider.getAuthorities(activity), tempFile);
-                else if (cachePath.startsWith(activity.getExternalFilesDir(null).getAbsolutePath()))
-                    imageUri = FileProvider.getUriForFile(activity, IPExFilesProvider.getAuthorities(activity), tempFile);
-                else if (cachePath.startsWith(Environment.getExternalStorageDirectory().getAbsolutePath()))
-                    imageUri = FileProvider.getUriForFile(activity, IPExProvider.getAuthorities(activity), tempFile);
-                else if (cachePath.startsWith(activity.getFilesDir().getAbsolutePath()))
+                } else if (cachePath.startsWith(activity.getFilesDir().getAbsolutePath()))
+                {
                     imageUri = FileProvider.getUriForFile(activity, IPFilesProvider.getAuthorities(activity), tempFile);
-                else
+                } else if (cachePath.startsWith(activity.getExternalCacheDir().getAbsolutePath()))
+                {
+                    imageUri = FileProvider.getUriForFile(activity, IPExCacheProvider.getAuthorities(activity), tempFile);
+                } else if (cachePath.startsWith(activity.getExternalFilesDir(null).getAbsolutePath()))
+                {
+                    imageUri = FileProvider.getUriForFile(activity, IPExFilesProvider.getAuthorities(activity), tempFile);
+                } else if (cachePath.startsWith(Environment.getExternalStorageDirectory().getAbsolutePath()))
+                {
+                    imageUri = FileProvider.getUriForFile(activity, IPExProvider.getAuthorities(activity), tempFile);
+                } else
+                {
                     Log.w("ImagePicker", "No FileProvider matched cache's path");
+                }
 
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+                //添加这一句表示对目标应用临时授权该Uri所代表的文件
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                //将拍取的照片保存到指定URI
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 activity.startActivityForResult(intent, requestCode);
             } else
             {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));//将拍取的照片保存到指定URI
+                //将拍取的照片保存到指定URI
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
                 activity.startActivityForResult(intent, requestCode);
             }
             return tempFile.getAbsolutePath();
@@ -112,7 +121,7 @@ public class TakePhotoCompatUtils
     private static File getPhotoTempFile(String cachePath)
     {
         String name = new StringBuilder().append(ImageContants.PHOTO_NAME_PREFIX)
-                .append(String.valueOf(System.currentTimeMillis()))
+                .append(System.currentTimeMillis())
                 .append(ImageContants.IMG_NAME_POSTFIX).toString();
         return new File(cachePath, name);
     }

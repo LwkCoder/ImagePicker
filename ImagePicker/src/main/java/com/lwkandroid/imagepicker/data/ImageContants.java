@@ -1,7 +1,5 @@
 package com.lwkandroid.imagepicker.data;
 
-import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
-
 /**
  * 常量
  */
@@ -36,11 +34,6 @@ public class ImageContants
      * “所有图片”文件夹的id
      */
     public static final String ID_ALL_IMAGE_FOLDER = "-100";
-
-    /**
-     * 默认缓存路径
-     */
-    public static final String DEF_CACHE_PATH = ImagePickerComUtils.getSdPath() + "/imagepicker/";
 
     /**
      * 展示小图时最大分辨率

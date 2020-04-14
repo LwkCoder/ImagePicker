@@ -15,7 +15,7 @@ public class ImagePickerOptions implements Parcelable
     private boolean needCamera = true;
     private boolean needCrop;
     private ImagePickerCropParams cropParams;
-    private String cachePath = ImageContants.DEF_CACHE_PATH;
+    private String cachePath;
 
     public ImagePickType getType()
     {

@@ -84,14 +84,6 @@ public class ImagePickerComUtils
     }
 
     /**
-     * 获取sd卡绝对路径
-     */
-    public static String getSdPath()
-    {
-        return Environment.getExternalStorageDirectory().getAbsolutePath();
-    }
-
-    /**
      * 检查sd卡是否存在
      */
     public static boolean isSdExist()

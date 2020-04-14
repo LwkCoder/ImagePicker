@@ -112,12 +112,12 @@ public class ImageCropActivity extends ImagePickerBaseActivity
             finish();
         } else if (id == R.id.btn_crop_confirm)
         {
-            returnCropedImage();
+            returnCroppedImage();
         }
     }
 
     //保存并返回数据
-    private void returnCropedImage()
+    private void returnCroppedImage()
     {
         showDialog();
         new Thread(new Runnable()
@@ -171,7 +171,9 @@ public class ImageCropActivity extends ImagePickerBaseActivity
             public void run()
             {
                 if (mDialog != null && mDialog.isShowing())
+                {
                     mDialog.dismiss();
+                }
                 mDialog = null;
             }
         });

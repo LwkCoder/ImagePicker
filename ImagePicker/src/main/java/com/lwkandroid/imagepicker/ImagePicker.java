@@ -2,7 +2,9 @@ package com.lwkandroid.imagepicker;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 
 import com.lwkandroid.imagepicker.data.ImageContants;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
@@ -83,6 +85,7 @@ public class ImagePicker
      */
     public void start(Activity activity, int requestCode)
     {
+        checkCachePath(activity);
         Intent intent = new Intent(activity, ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
         activity.startActivityForResult(intent, requestCode);
@@ -96,6 +99,7 @@ public class ImagePicker
      */
     public void start(Fragment fragment, int requestCode)
     {
+        checkCachePath(fragment.getContext());
         Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
         fragment.startActivityForResult(intent, requestCode);
@@ -109,8 +113,17 @@ public class ImagePicker
      */
     public void start(androidx.fragment.app.Fragment fragment, int requestCode)
     {
+        checkCachePath(fragment.getContext());
         Intent intent = new Intent(fragment.getActivity(), ImageDataActivity.class);
         intent.putExtra(ImageContants.INTENT_KEY_OPTIONS, mOptions);
         fragment.startActivityForResult(intent, requestCode);
+    }
+
+    private void checkCachePath(Context context)
+    {
+        if (mOptions.getCachePath() == null || mOptions.getCachePath().length() == 0)
+        {
+            mOptions.setCachePath(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath());
+        }
     }
 }
