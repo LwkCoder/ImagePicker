@@ -1,7 +1,61 @@
 # ImagePicker
 
-Android自定义图片选择器，适配Android7.0
-----
+
+<br/>
+
+##  Android10以上的注意事项
+在Android10以上由于新增了作用域外部存储的访问限制，所以在设置ImagePicker的缓存路径时（拍照、裁剪），不可使用非App作用域的以外的存储路径当作缓存目录，比如以下路径就不能使用：
+```
+//不可设置这样的缓存路径
+Environment.getExternalStorageDirectory().getAbsolutePath()+"/mycache/"
+```
+
+否则会发生错误：
+```
+java.io.FileNotFoundException: /storage/emulated/0/mycache/IMG_1586834402947.jpg: open failed: ENOENT (No such file or directory)
+```
+
+进而导致在Activity的onActivityResult()中无法获取返回数据，引起崩溃：
+```
+2020-04-14 11:20:09.844 13553-13553/com.lwkandroid.imagepicker E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.lwkandroid.imagepicker, PID: 13553
+    java.lang.RuntimeException: Failure delivering result ResultInfo{who=null, request=111, result=-1, data=Intent { (has extras) }} to activity {com.lwkandroid.imagepicker/com.lwkandroid.imagepickerdemo.MainActivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.lwkandroid.imagepicker.data.ImageBean.toString()' on a null object reference
+        at android.app.ActivityThread.deliverResults(ActivityThread.java:5097)
+        at android.app.ActivityThread.handleSendResult(ActivityThread.java:5138)
+        at android.app.servertransaction.ActivityResultItem.execute(ActivityResultItem.java:51)
+        at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+        at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2147)
+        at android.os.Handler.dispatchMessage(Handler.java:107)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7811)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1076)
+     Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.lwkandroid.imagepicker.data.ImageBean.toString()' on a null object reference
+        at com.lwkandroid.imagepickerdemo.MainActivity.onActivityResult(MainActivity.java:91)
+        at android.app.Activity.dispatchActivityResult(Activity.java:8292)
+        at android.app.ActivityThread.deliverResults(ActivityThread.java:5090)
+        at android.app.ActivityThread.handleSendResult(ActivityThread.java:5138) 
+        at android.app.servertransaction.ActivityResultItem.execute(ActivityResultItem.java:51) 
+        at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135) 
+        at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95) 
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2147) 
+        at android.os.Handler.dispatchMessage(Handler.java:107) 
+        at android.os.Looper.loop(Looper.java:237) 
+        at android.app.ActivityThread.main(ActivityThread.java:7811) 
+        at java.lang.reflect.Method.invoke(Native Method) 
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493) 
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1076) 
+```
+
+### 解决方案：
+#### 1.AndroidManifest中添加`android:requestLegacyExternalStorage="true"`
+ImagePicker在1.4.5的版本中已经在AndroidManifest中添加了`android:requestLegacyExternalStorage="true"`，但这是一种临时解决方案。
+#### 2.使用App专属的缓存路径
+ImagePicker在1.4.6中将原来默认的缓存路径改为`context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath()`，并且希望大家在使用的时候，如果要自定义缓存路径，请尽量使用作用域内的地址。
+
+<br/>
 <br/>
 
 **希望了解该项目的朋友可参考下面的博客**

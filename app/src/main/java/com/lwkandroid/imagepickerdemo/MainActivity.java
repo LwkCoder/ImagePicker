@@ -44,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //NOTE Android10以上不可使用非App私有作用域的外置存储路径当作缓存目录
+        //比如Environment.getExternalStorageDirectory().getAbsolutePath()这种就不行
+
         //        cachePath = getFilesDir().getAbsolutePath() + "/mypics/photos/";
-        //        cachePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/mypics/photos/";
         //        cachePath = getCacheDir().getAbsolutePath() + "/mypics/photos/";
         //        cachePath = getExternalCacheDir().getAbsolutePath() + "/mypics/photos/";
-        cachePath = getExternalFilesDir(null) + "/mypics/photos/";
+        //        cachePath = getExternalFilesDir(null) + "/mypics/photos/";
 
         mRgType = (RadioGroup) findViewById(R.id.rg_main_mode);
         mEdMaxNum = (EditText) findViewById(R.id.ed_main_max_num);
