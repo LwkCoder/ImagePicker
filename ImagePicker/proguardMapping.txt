@@ -1,21 +1,22 @@
 # compiler: R8
-# compiler_version: 1.6.67
-# pg_map_id: 0d137e9
+# compiler_version: 1.6.82
+# pg_map_id: a1b3c1d
 # common_typos_disable
 com.lwkandroid.imagepicker.BuildConfig -> com.lwkandroid.imagepicker.BuildConfig:
     1:1:void <init>():6:6 -> <init>
 com.lwkandroid.imagepicker.ImagePicker -> com.lwkandroid.imagepicker.ImagePicker:
-    1:2:void <init>():30:31 -> <init>
-    1:1:com.lwkandroid.imagepicker.ImagePicker cachePath(java.lang.String):54:54 -> cachePath
-    1:1:com.lwkandroid.imagepicker.ImagePicker displayer(com.lwkandroid.imagepicker.utils.IImagePickerDisplayer):74:74 -> displayer
-    1:2:com.lwkandroid.imagepicker.ImagePicker doCrop(com.lwkandroid.imagepicker.data.ImagePickerCropParams):60:61 -> doCrop
-    3:4:com.lwkandroid.imagepicker.ImagePicker doCrop(int,int,int,int):67:68 -> doCrop
-    1:1:com.lwkandroid.imagepicker.ImagePicker maxNum(int):42:42 -> maxNum
-    1:1:com.lwkandroid.imagepicker.ImagePicker needCamera(boolean):48:48 -> needCamera
-    1:1:com.lwkandroid.imagepicker.ImagePicker pickType(com.lwkandroid.imagepicker.data.ImagePickType):36:36 -> pickType
-    1:3:void start(android.app.Activity,int):86:88 -> start
-    4:6:void start(android.app.Fragment,int):99:101 -> start
-    7:9:void start(androidx.fragment.app.Fragment,int):112:114 -> start
+    1:2:void <init>():32:33 -> <init>
+    1:1:com.lwkandroid.imagepicker.ImagePicker cachePath(java.lang.String):56:56 -> cachePath
+    1:3:void checkCachePath(android.content.Context):124:126 -> checkCachePath
+    1:1:com.lwkandroid.imagepicker.ImagePicker displayer(com.lwkandroid.imagepicker.utils.IImagePickerDisplayer):76:76 -> displayer
+    1:2:com.lwkandroid.imagepicker.ImagePicker doCrop(com.lwkandroid.imagepicker.data.ImagePickerCropParams):62:63 -> doCrop
+    3:4:com.lwkandroid.imagepicker.ImagePicker doCrop(int,int,int,int):69:70 -> doCrop
+    1:1:com.lwkandroid.imagepicker.ImagePicker maxNum(int):44:44 -> maxNum
+    1:1:com.lwkandroid.imagepicker.ImagePicker needCamera(boolean):50:50 -> needCamera
+    1:1:com.lwkandroid.imagepicker.ImagePicker pickType(com.lwkandroid.imagepicker.data.ImagePickType):38:38 -> pickType
+    1:4:void start(android.app.Activity,int):88:91 -> start
+    5:8:void start(android.app.Fragment,int):102:105 -> start
+    9:12:void start(androidx.fragment.app.Fragment,int):116:119 -> start
 com.lwkandroid.imagepicker.base.activity.ImagePickerBaseActivity -> com.lwkandroid.imagepicker.base.activity.ImagePickerBaseActivity:
     1:1:void <init>():16:16 -> <init>
     1:1:void addClick(android.view.View):60:60 -> addClick
@@ -109,8 +110,7 @@ com.lwkandroid.imagepicker.data.ImageBean$1 -> com.lwkandroid.imagepicker.data.I
     1:1:java.lang.Object[] newArray(int):147:147 -> newArray
     2:2:com.lwkandroid.imagepicker.data.ImageBean[] newArray(int):157:157 -> newArray
 com.lwkandroid.imagepicker.data.ImageContants -> com.lwkandroid.imagepicker.data.ImageContants:
-    1:1:void <clinit>():43:43 -> <clinit>
-    1:1:void <init>():8:8 -> <init>
+    1:1:void <init>():6:6 -> <init>
 com.lwkandroid.imagepicker.data.ImageDataModel -> com.lwkandroid.imagepicker.data.ImageDataModel:
     1:1:void <init>(com.lwkandroid.imagepicker.data.ImageDataModel$1):26:26 -> <init>
     2:25:void <init>():29:52 -> <init>
@@ -191,9 +191,9 @@ com.lwkandroid.imagepicker.data.ImagePickerCropParams$1 -> com.lwkandroid.imagep
 com.lwkandroid.imagepicker.data.ImagePickerOptions -> com.lwkandroid.imagepicker.data.ImagePickerOptions:
     1:1:void <clinit>():126:126 -> <clinit>
     1:1:void <init>():112:112 -> <init>
-    2:7:void <init>():13:18 -> <init>
-    8:8:void <init>(android.os.Parcel):116:116 -> <init>
-    9:119:void <init>(android.os.Parcel):13:123 -> <init>
+    2:4:void <init>():13:15 -> <init>
+    5:5:void <init>(android.os.Parcel):116:116 -> <init>
+    6:116:void <init>(android.os.Parcel):13:123 -> <init>
     1:1:java.lang.String getCachePath():63:63 -> getCachePath
     1:1:com.lwkandroid.imagepicker.data.ImagePickerCropParams getCropParams():73:73 -> getCropParams
     1:1:int getMaxNum():32:32 -> getMaxNum
@@ -228,7 +228,7 @@ com.lwkandroid.imagepicker.ui.crop.ImageCropActivity -> com.lwkandroid.imagepick
     29:31:void initData():85:87 -> initData
     1:3:void initUI(android.view.View):68:70 -> initUI
     1:7:void onClick(android.view.View,int):109:115 -> onClick
-    1:26:void returnCropedImage():122:147 -> returnCropedImage
+    1:26:void returnCroppedImage():122:147 -> returnCroppedImage
     1:1:void showDialog():152:152 -> showDialog
     1:4:void start(android.app.Activity,java.lang.String,com.lwkandroid.imagepicker.data.ImagePickerOptions):36:39 -> start
 com.lwkandroid.imagepicker.ui.crop.ImageCropActivity$1 -> com.lwkandroid.imagepicker.ui.crop.ImageCropActivity$1:
@@ -239,7 +239,7 @@ com.lwkandroid.imagepicker.ui.crop.ImageCropActivity$2 -> com.lwkandroid.imagepi
     1:5:void run():157:161 -> run
 com.lwkandroid.imagepicker.ui.crop.ImageCropActivity$3 -> com.lwkandroid.imagepicker.ui.crop.ImageCropActivity$3:
     1:1:void <init>(com.lwkandroid.imagepicker.ui.crop.ImageCropActivity):169:169 -> <init>
-    1:3:void run():173:175 -> run
+    1:5:void run():173:177 -> run
 com.lwkandroid.imagepicker.ui.grid.adapter.ImageCameraItemView -> com.lwkandroid.imagepicker.ui.grid.adapter.ImageCameraItemView:
     1:3:void <init>(com.lwkandroid.imagepicker.ui.grid.view.IImageDataView):22:24 -> <init>
     1:1:com.lwkandroid.imagepicker.ui.grid.view.IImageDataView access$000(com.lwkandroid.imagepicker.ui.grid.adapter.ImageCameraItemView):16:16 -> access$000
@@ -300,49 +300,49 @@ com.lwkandroid.imagepicker.ui.grid.presenter.ImageDataPresenter$2 -> com.lwkandr
     1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.presenter.ImageDataPresenter,com.lwkandroid.imagepicker.data.ImageFolderBean):62:62 -> <init>
     1:2:void run():66:67 -> run
 com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity -> com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity:
-    1:1:void <init>():48:48 -> <init>
-    1:1:android.widget.ProgressBar access$000(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):48:48 -> access$000
-    1:1:android.widget.GridView access$100(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):48:48 -> access$100
-    1:1:com.lwkandroid.imagepicker.ui.grid.adapter.ImageDataAdapter access$200(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):48:48 -> access$200
-    1:1:android.widget.TextView access$300(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):48:48 -> access$300
-    1:1:com.lwkandroid.imagepicker.data.ImageFolderBean access$400(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):48:48 -> access$400
-    1:3:void beforeSetContentView(android.os.Bundle):72:74 -> beforeSetContentView
-    1:20:void calColumn():468:487 -> calColumn
-    1:11:void doScanData():183:193 -> doScanData
+    1:1:void <init>():49:49 -> <init>
+    1:1:android.widget.ProgressBar access$000(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):49:49 -> access$000
+    1:1:android.widget.GridView access$100(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):49:49 -> access$100
+    1:1:com.lwkandroid.imagepicker.ui.grid.adapter.ImageDataAdapter access$200(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):49:49 -> access$200
+    1:1:android.widget.TextView access$300(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):49:49 -> access$300
+    1:1:com.lwkandroid.imagepicker.data.ImageFolderBean access$400(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):49:49 -> access$400
+    1:3:void beforeSetContentView(android.os.Bundle):73:75 -> beforeSetContentView
+    1:21:void calColumn():481:501 -> calColumn
+    1:12:void doScanData():183:194 -> doScanData
     1:1:void doTakePhoto():177:177 -> doTakePhoto
-    1:2:int getContentViewResId():80:81 -> getContentViewResId
-    1:1:com.lwkandroid.imagepicker.data.ImagePickerOptions getOptions():148:148 -> getOptions
-    1:3:void hideLoading():215:217 -> hideLoading
-    1:9:void initData():133:141 -> initData
-    1:39:void initUI(android.view.View):87:125 -> initUI
-    1:51:void onActivityResult(int,int,android.content.Intent):337:387 -> onActivityResult
-    1:13:void onClick(android.view.View,int):318:330 -> onClick
-    1:4:void onConfigurationChanged(android.content.res.Configuration):459:462 -> onConfigurationChanged
-    1:3:void onDataChanged(java.util.List):231:233 -> onDataChanged
-    1:2:void onDestroy():493:494 -> onDestroy
-    1:14:void onFloderChanged(com.lwkandroid.imagepicker.data.ImageFolderBean):249:262 -> onFloderChanged
-    1:1:void onFloderItemClicked(com.lwkandroid.imagepicker.data.ImageFolderBean):395:395 -> onFloderItemClicked
-    1:23:void onImageClicked(com.lwkandroid.imagepicker.data.ImageBean,int):268:290 -> onImageClicked
-    1:26:void onRequestPermissionsResult(int,java.lang.String[],int[]):428:453 -> onRequestPermissionsResult
-    1:1:void onScrollStateChanged(android.widget.AbsListView,int):501:501 -> onScrollStateChanged
-    1:9:void onSelectNumChanged(int):297:305 -> onSelectNumChanged
-    1:7:void returnAllSelectedImages():412:418 -> returnAllSelectedImages
-    1:6:void returnSingleImage(com.lwkandroid.imagepicker.data.ImageBean):401:406 -> returnSingleImage
-    1:3:void showLoading():199:201 -> showLoading
-    1:17:void startTakePhoto():155:171 -> startTakePhoto
-    1:1:void warningMaxNum():312:312 -> warningMaxNum
+    1:2:int getContentViewResId():81:82 -> getContentViewResId
+    1:1:com.lwkandroid.imagepicker.data.ImagePickerOptions getOptions():151:151 -> getOptions
+    1:3:void hideLoading():217:219 -> hideLoading
+    1:11:void initData():134:144 -> initData
+    1:39:void initUI(android.view.View):88:126 -> initUI
+    1:53:void onActivityResult(int,int,android.content.Intent):341:393 -> onActivityResult
+    1:13:void onClick(android.view.View,int):322:334 -> onClick
+    1:5:void onConfigurationChanged(android.content.res.Configuration):470:474 -> onConfigurationChanged
+    1:3:void onDataChanged(java.util.List):233:235 -> onDataChanged
+    1:2:void onDestroy():508:509 -> onDestroy
+    1:16:void onFloderChanged(com.lwkandroid.imagepicker.data.ImageFolderBean):251:266 -> onFloderChanged
+    1:1:void onFloderItemClicked(com.lwkandroid.imagepicker.data.ImageFolderBean):401:401 -> onFloderItemClicked
+    1:23:void onImageClicked(com.lwkandroid.imagepicker.data.ImageBean,int):272:294 -> onImageClicked
+    1:31:void onRequestPermissionsResult(int,java.lang.String[],int[]):434:464 -> onRequestPermissionsResult
+    1:1:void onScrollStateChanged(android.widget.AbsListView,int):516:516 -> onScrollStateChanged
+    1:9:void onSelectNumChanged(int):301:309 -> onSelectNumChanged
+    1:7:void returnAllSelectedImages():418:424 -> returnAllSelectedImages
+    1:6:void returnSingleImage(com.lwkandroid.imagepicker.data.ImageBean):407:412 -> returnSingleImage
+    1:3:void showLoading():201:203 -> showLoading
+    1:14:void startTakePhoto():157:170 -> startTakePhoto
+    1:1:void warningMaxNum():316:316 -> warningMaxNum
 com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$1 -> com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$1:
-    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):202:202 -> <init>
-    1:1:void run():206:206 -> run
+    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):204:204 -> <init>
+    1:1:void run():208:208 -> run
 com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$2 -> com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$2:
-    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):218:218 -> <init>
-    1:1:void run():222:222 -> run
+    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):220:220 -> <init>
+    1:1:void run():224:224 -> run
 com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$3 -> com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$3:
-    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity,java.util.List):234:234 -> <init>
-    1:3:void run():238:240 -> run
+    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity,java.util.List):236:236 -> <init>
+    1:3:void run():240:242 -> run
 com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$4 -> com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity$4:
-    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):254:254 -> <init>
-    1:2:void run():258:259 -> run
+    1:1:void <init>(com.lwkandroid.imagepicker.ui.grid.view.ImageDataActivity):256:256 -> <init>
+    1:3:void run():260:262 -> run
 com.lwkandroid.imagepicker.ui.grid.view.ImageFloderPop -> com.lwkandroid.imagepicker.ui.grid.view.ImageFloderPop:
     1:9:void <init>():31:39 -> <init>
     1:1:android.widget.ListView access$000(com.lwkandroid.imagepicker.ui.grid.view.ImageFloderPop):31:31 -> access$000
@@ -415,21 +415,6 @@ com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer -> com.lwkandroid.ima
     1:1:void <init>():13:13 -> <init>
     1:8:void display(android.content.Context,java.lang.String,android.widget.ImageView,int,int):18:25 -> display
     9:18:void display(android.content.Context,java.lang.String,android.widget.ImageView,int,int,int,int):31:40 -> display
-com.lwkandroid.imagepicker.utils.IPCacheProvider -> com.lwkandroid.imagepicker.utils.IPCacheProvider:
-    1:1:void <init>():10:10 -> <init>
-    1:4:java.lang.String getAuthorities(android.content.Context):14:17 -> getAuthorities
-com.lwkandroid.imagepicker.utils.IPExCacheProvider -> com.lwkandroid.imagepicker.utils.IPExCacheProvider:
-    1:1:void <init>():10:10 -> <init>
-    1:4:java.lang.String getAuthorities(android.content.Context):14:17 -> getAuthorities
-com.lwkandroid.imagepicker.utils.IPExFilesProvider -> com.lwkandroid.imagepicker.utils.IPExFilesProvider:
-    1:1:void <init>():10:10 -> <init>
-    1:4:java.lang.String getAuthorities(android.content.Context):14:17 -> getAuthorities
-com.lwkandroid.imagepicker.utils.IPExProvider -> com.lwkandroid.imagepicker.utils.IPExProvider:
-    1:1:void <init>():10:10 -> <init>
-    1:4:java.lang.String getAuthorities(android.content.Context):14:17 -> getAuthorities
-com.lwkandroid.imagepicker.utils.IPFilesProvider -> com.lwkandroid.imagepicker.utils.IPFilesProvider:
-    1:1:void <init>():10:10 -> <init>
-    1:4:java.lang.String getAuthorities(android.content.Context):14:17 -> getAuthorities
 com.lwkandroid.imagepicker.utils.ImageComparator -> com.lwkandroid.imagepicker.utils.ImageComparator:
     1:1:void <init>():11:11 -> <init>
     1:1:int compare(java.lang.Object,java.lang.Object):11:11 -> compare
@@ -437,15 +422,18 @@ com.lwkandroid.imagepicker.utils.ImageComparator -> com.lwkandroid.imagepicker.u
 com.lwkandroid.imagepicker.utils.ImagePickerComUtils -> com.lwkandroid.imagepicker.utils.ImagePickerComUtils:
     1:1:void <init>():16:16 -> <init>
     1:23:void changeStatusBarColor(android.app.Activity,int):24:46 -> changeStatusBarColor
-    1:4:int getScreenHeight(android.content.Context):121:124 -> getScreenHeight
-    1:4:int getScreenWidth(android.content.Context):108:111 -> getScreenWidth
-    1:1:java.lang.String getSdPath():91:91 -> getSdPath
+    1:4:int getScreenHeight(android.content.Context):113:116 -> getScreenHeight
+    1:4:int getScreenWidth(android.content.Context):100:103 -> getScreenWidth
     1:4:int getStatusBarHeight(android.content.Context):59:62 -> getStatusBarHeight
     5:10:int getStatusBarHeight(android.content.Context):61:66 -> getStatusBarHeight
     1:1:boolean isEmpty(java.lang.String):73:73 -> isEmpty
     1:1:boolean isEquals(java.lang.String,java.lang.String):83:83 -> isEquals
     1:1:boolean isNotEmpty(java.lang.String):78:78 -> isNotEmpty
-    1:1:boolean isSdExist():99:99 -> isSdExist
+    1:1:boolean isSdExist():91:91 -> isSdExist
+com.lwkandroid.imagepicker.utils.ImagePickerFileProvider -> com.lwkandroid.imagepicker.utils.ImagePickerFileProvider:
+    1:1:void <init>():11:11 -> <init>
+    1:4:java.lang.String getAuthorities(android.content.Context):21:24 -> getAuthorities
+    1:1:boolean onCreate():16:16 -> onCreate
 com.lwkandroid.imagepicker.utils.PermissionChecker -> com.lwkandroid.imagepicker.utils.PermissionChecker:
     1:1:void <init>():24:24 -> <init>
     1:39:boolean checkPermissions(android.app.Activity,java.lang.String[],int,int):42:80 -> checkPermissions
@@ -460,10 +448,10 @@ com.lwkandroid.imagepicker.utils.PermissionChecker$3 -> com.lwkandroid.imagepick
     1:1:void <init>(boolean,android.app.Activity):129:129 -> <init>
     1:3:void onClick(android.content.DialogInterface,int):133:135 -> onClick
 com.lwkandroid.imagepicker.utils.TakePhotoCompatUtils -> com.lwkandroid.imagepicker.utils.TakePhotoCompatUtils:
-    1:1:void <init>():25:25 -> <init>
-    1:4:java.io.File getPhotoTempFile(java.lang.String):114:117 -> getPhotoTempFile
-    1:6:boolean hasCamera():37:42 -> hasCamera
-    1:42:java.lang.String takePhoto(android.app.Activity,int,java.lang.String):60:101 -> takePhoto
+    1:1:void <init>():24:24 -> <init>
+    1:4:java.io.File getPhotoTempFile(java.lang.String):102:105 -> getPhotoTempFile
+    1:6:boolean hasCamera():36:41 -> hasCamera
+    1:31:java.lang.String takePhoto(android.app.Activity,int,java.lang.String):59:89 -> takePhoto
 com.lwkandroid.imagepicker.widget.ImagePickerActionBar -> com.lwkandroid.imagepicker.widget.ImagePickerActionBar:
     1:2:void <init>(android.content.Context):22:23 -> <init>
     3:4:void <init>(android.content.Context,android.util.AttributeSet):28:29 -> <init>

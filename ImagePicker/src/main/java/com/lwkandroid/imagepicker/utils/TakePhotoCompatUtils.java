@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -71,27 +70,7 @@ public class TakePhotoCompatUtils
             //7.0以上需要适配StickMode
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
-                Uri imageUri = null;
-                if (cachePath.startsWith(activity.getCacheDir().getAbsolutePath()))
-                {
-                    imageUri = FileProvider.getUriForFile(activity, IPCacheProvider.getAuthorities(activity), tempFile);
-                } else if (cachePath.startsWith(activity.getFilesDir().getAbsolutePath()))
-                {
-                    imageUri = FileProvider.getUriForFile(activity, IPFilesProvider.getAuthorities(activity), tempFile);
-                } else if (cachePath.startsWith(activity.getExternalCacheDir().getAbsolutePath()))
-                {
-                    imageUri = FileProvider.getUriForFile(activity, IPExCacheProvider.getAuthorities(activity), tempFile);
-                } else if (cachePath.startsWith(activity.getExternalFilesDir(null).getAbsolutePath()))
-                {
-                    imageUri = FileProvider.getUriForFile(activity, IPExFilesProvider.getAuthorities(activity), tempFile);
-                } else if (cachePath.startsWith(Environment.getExternalStorageDirectory().getAbsolutePath()))
-                {
-                    imageUri = FileProvider.getUriForFile(activity, IPExProvider.getAuthorities(activity), tempFile);
-                } else
-                {
-                    Log.w("ImagePicker", "No FileProvider matched cache's path");
-                }
-
+                Uri imageUri = FileProvider.getUriForFile(activity, ImagePickerFileProvider.getAuthorities(activity), tempFile);
                 //添加这一句表示对目标应用临时授权该Uri所代表的文件
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 //将拍取的照片保存到指定URI
