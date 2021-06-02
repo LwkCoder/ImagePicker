@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_imaeg_crop"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.lwkandroid.imagepicker.ui.crop.ImageCropActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/imagepicker_actionbar"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_crop_cancel"
+            style="@style/CropBtnStyle"
+            android:layout_weight="1"
+            android:text="@string/imagepicker_crop_cancel"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/imagepicker_statusbar"/>
+
+        <Button
+            android:id="@+id/btn_crop_confirm"
+            style="@style/CropBtnStyle"
+            android:layout_weight="1"
+            android:text="@string/imagepicker_crop_ok"/>
+
+    </LinearLayout>
+
+    <com.lwkandroid.imagepicker.widget.crop.CropView
+        android:id="@+id/cv_crop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

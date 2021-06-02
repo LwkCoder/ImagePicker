@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="imagepicker_padding">8dp</dimen>
+    <dimen name="imagepicker_actionbar_height">50dp</dimen>
+    <dimen name="imagepicker_text_size">16sp</dimen>
+    <dimen name="imagepicker_title_size">18sp</dimen>
+    <dimen name="imagepicker_bottomview_height">50dp</dimen>
+    <dimen name="imagepicker_floder_pop_height">400dp</dimen>
+    <dimen name="imagepicker_floder_list_margin">200dp</dimen>
+    <dimen name="imagepicker_floder_listitem_height">100dp</dimen>
+    <dimen name="imagepicker_floder_listitem_padding">10dp</dimen>
+    <dimen name="imagepicker_floder_listitem_img_width">70dp</dimen>
+    <dimen name="imagepicker_floder_listitem_img_height">80dp</dimen>
+    <dimen name="imagepicker_floder_label_size">48dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+</resources>

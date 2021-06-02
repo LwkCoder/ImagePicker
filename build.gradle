@@ -1,19 +1,18 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: "config.gradle"
+apply from: "config-mavencentral.gradle"
 buildscript {
     repositories {
         mavenCentral()
         jcenter()
         google()
 
-        maven { url 'https://maven.google.com/' }
-        maven { url 'https://www.jitpack.io' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.android.tools.build:gradle:4.2.0'
     }
 }
 
@@ -23,9 +22,11 @@ allprojects {
         jcenter()
         google()
 
-        maven { url 'https://maven.google.com/' }
-        maven { url 'https://www.jitpack.io' }
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        maven { url 'https://jitpack.io' }
     }
 }
 

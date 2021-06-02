@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BtnOkStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:enabled">false</item>
+        <item name="android:paddingLeft">@dimen/imagepicker_padding</item>
+        <item name="android:paddingRight">@dimen/imagepicker_padding</item>
+        <item name="android:text">@string/btn_imagepicker_ok</item>
+        <item name="android:textColor">@drawable/imagepicker_btn_ok_tv_selector</item>
+        <item name="android:background">@drawable/imagepicker_btn_ok_bg_selector</item>
+    </style>
+
+    <!--图片文件夹pop动画-->
+    <style name="FloderPopAnimStyle">
+        <item name="android:windowEnterAnimation">@anim/imagepicker_pop_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/imagepicker_pop_slide_out</item>
+    </style>
+
+    <style name="CropBtnStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/imagepicker_actionbar_menu_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

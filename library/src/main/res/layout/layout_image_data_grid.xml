@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/pgb_image_data"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <GridView
+        android:id="@+id/gv_image_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cab_imagepicker_gridactivity"
+        android:layout_gravity="center"
+        android:clipToPadding="false"
+        android:horizontalSpacing="2dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/imagepicker_bottomview_height"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp"
+        android:visibility="invisible"/>
+
+    <FrameLayout
+        android:id="@+id/fl_image_data_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/imagepicker_bottomview_height"
+        android:layout_gravity="bottom"
+        android:background="@color/imagepicker_transblack_75">
+
+        <LinearLayout
+            android:id="@+id/ll_image_data_bottom_floder"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@drawable/imagepicker_bottomview_text_selector"
+            android:maxWidth="200dp"
+            android:minWidth="@dimen/imagepicker_bottomview_height"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/imagepicker_padding"
+            android:paddingRight="@dimen/imagepicker_padding">
+
+            <TextView
+                android:id="@+id/tv_image_data_bottom_flodername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="@color/imagepicker_text_gray"
+                android:textSize="@dimen/imagepicker_title_size"/>
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/imagepicker_padding"
+                android:src="@drawable/ic_imagepicker_bottomlabel"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_image_data_ok"
+            style="@style/BtnOkStyle"
+            android:textAllCaps="false"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/imagepicker_padding"/>
+
+    </FrameLayout>
+
+</FrameLayout>

@@ -16,7 +16,9 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.lwkandroid.library.callback.PickCallBack;
 
+import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,9 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //NOTE Android10以上不可使用非App私有作用域的外置存储路径当作缓存目录
         //比如Environment.getExternalStorageDirectory().getAbsolutePath()这种就不行
 
-//                cachePath = getFilesDir().getAbsolutePath() + "/mypics/photos/";
-//                cachePath = getCacheDir().getAbsolutePath() + "/mypics/photos/";
-//                cachePath = getExternalCacheDir().getAbsolutePath() + "/mypics/photos/";
+        //                cachePath = getFilesDir().getAbsolutePath() + "/mypics/photos/";
+        //                cachePath = getCacheDir().getAbsolutePath() + "/mypics/photos/";
+        //                cachePath = getExternalCacheDir().getAbsolutePath() + "/mypics/photos/";
         //        cachePath = getExternalFilesDir(null) + "/mypics/photos/";
 
         mRgType = (RadioGroup) findViewById(R.id.rg_main_mode);
@@ -76,6 +78,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         findViewById(R.id.btn_main_start).setOnClickListener(this);
+        findViewById(R.id.btnTest01).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //                com.lwkandroid.library.ImagePicker.takePhotoBySystem()
+                //                        .build()
+                //                        .doPhotograph(MainActivity.this, new PickCallBack<File>()
+                //                        {
+                //                            @Override
+                //                            public void onPickSuccess(File result)
+                //                            {
+                //                                Toast.makeText(MainActivity.this, "拍照成功", Toast.LENGTH_SHORT).show();
+                //                                Log.e("aa", "file->" + result.getAbsolutePath());
+                //                            }
+                //
+                //                            @Override
+                //                            public void onPickFailed(int errorCode, String message)
+                //                            {
+                //                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                //                            }
+                //                        });
+                com.lwkandroid.library.ImagePicker.pickImageBySystem()
+                        .setMaxNumber(Integer.parseInt(mEdMaxNum.getText().toString().trim()))
+                        .build()
+                        .doPickImage(MainActivity.this, new PickCallBack<List<File>>()
+                        {
+                            @Override
+                            public void onPickSuccess(List<File> result)
+                            {
+                                Log.e("Aa", "onPickSuccess->" + result.toString());
+                            }
+
+                            @Override
+                            public void onPickFailed(int errorCode, String message)
+                            {
+                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                            }
+                        });
+            }
+        });
+
     }
 
     @Override

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/activity_image_pager"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="true"
+    tools:context="com.lwkandroid.imagepicker.ui.pager.view.ImagePagerActivity">
+
+    <com.lwkandroid.imagepicker.widget.ImagePickerViewPager
+        android:id="@+id/vp_image_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.lwkandroid.imagepicker.widget.ImagePickerActionBar
+        android:id="@+id/acb_image_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/fl_image_pager_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/imagepicker_bottomview_height"
+        android:layout_gravity="bottom"
+        android:background="@color/imagepicker_transblack_75">
+
+        <CheckBox
+            android:id="@+id/ck_image_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/imagepicker_padding"
+            android:button="@drawable/imagepicker_ck_pager_selector"
+            android:gravity="center"
+            android:paddingLeft="@dimen/imagepicker_padding"
+            android:paddingRight="@dimen/imagepicker_padding"
+            android:text="@string/imagepicker_pager_selected"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_image_pager_ok"
+            style="@style/BtnOkStyle"
+            android:layout_gravity="right|center_vertical"
+            android:textAllCaps="false"
+            android:layout_marginRight="@dimen/imagepicker_padding"/>
+
+    </FrameLayout>
+
+</FrameLayout>

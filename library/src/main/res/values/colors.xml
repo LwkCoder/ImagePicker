@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="imagepicker_statusbar">#303135</color>
+    <color name="imagepicker_actionbar">#393A3F</color>
+    <color name="imagepicker_text_white">@android:color/white</color>
+    <color name="imagepicker_transparent">@android:color/transparent</color>
+    <color name="imagepicker_transblack_50">#50000000</color>
+    <color name="imagepicker_transblack_75">#75000000</color>
+    <color name="imagepicker_transblack_90">#90000000</color>
+    <color name="imagepicker_text_gray">#CFCFCF</color>
+    <color name="imagepicker_text_transwhite">#60ffffff</color>
+    <color name="imagepicker_camera_bg_normal">#353535</color>
+    <color name="imagepicker_camera_bg_pressed">#191919</color>
+    <color name="imagepicker_preview_enable">@color/imagepicker_text_white</color>
+    <color name="imagepicker_preview_unenable">#9d9d9d</color>
+
+</resources>
