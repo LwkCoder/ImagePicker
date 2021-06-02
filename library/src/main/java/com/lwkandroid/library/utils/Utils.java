@@ -106,7 +106,7 @@ public final class Utils
                             + path.replace(external, "/"));
                     if (file.exists())
                     {
-                        Log.d("UriUtils", uri.toString() + " -> " + external);
+                        Log.d("ImagePicker", uri.toString() + " -> " + external);
                         return file;
                     }
                 }
@@ -131,7 +131,7 @@ public final class Utils
             }
             if (file != null && file.exists())
             {
-                Log.d("UriUtils", uri.toString() + " -> " + path);
+                Log.d("ImagePicker", uri.toString() + " -> " + path);
                 return file;
             }
         }
@@ -141,7 +141,7 @@ public final class Utils
             {
                 return new File(path);
             }
-            Log.d("UriUtils", uri.toString() + " parse failed. -> 0");
+            Log.d("ImagePicker", uri.toString() + " parse failed. -> 0");
             return null;
         }// end 0
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
@@ -203,10 +203,10 @@ public final class Utils
                         }
                     } catch (Exception ex)
                     {
-                        Log.d("UriUtils", uri.toString() + " parse failed. " + ex.toString() + " -> 1_0");
+                        Log.d("ImagePicker", uri.toString() + " parse failed. " + ex.toString() + " -> 1_0");
                     }
                 }
-                Log.d("UriUtils", uri.toString() + " parse failed. -> 1_0");
+                Log.d("ImagePicker", uri.toString() + " parse failed. -> 1_0");
                 return null;
             }// end 1_0
             else if ("com.android.providers.downloads.documents".equals(authority))
@@ -214,7 +214,7 @@ public final class Utils
                 String id = DocumentsContract.getDocumentId(uri);
                 if (TextUtils.isEmpty(id))
                 {
-                    Log.d("UriUtils", uri.toString() + " parse failed(id is null). -> 1_1");
+                    Log.d("ImagePicker", uri.toString() + " parse failed(id is null). -> 1_1");
                     return null;
                 }
                 if (id.startsWith("raw:"))
@@ -255,7 +255,7 @@ public final class Utils
                     }
                 }
 
-                Log.d("UriUtils", uri.toString() + " parse failed. -> 1_1");
+                Log.d("ImagePicker", uri.toString() + " parse failed. -> 1_1");
                 return null;
             }// end 1_1
             else if ("com.android.providers.media.documents".equals(authority))
@@ -275,7 +275,7 @@ public final class Utils
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 } else
                 {
-                    Log.d("UriUtils", uri.toString() + " parse failed. -> 1_2");
+                    Log.d("ImagePicker", uri.toString() + " parse failed. -> 1_2");
                     return null;
                 }
                 final String selection = "_id=?";
@@ -288,7 +288,7 @@ public final class Utils
             }// end 1_3
             else
             {
-                Log.d("UriUtils", uri.toString() + " parse failed. -> 1_4");
+                Log.d("ImagePicker", uri.toString() + " parse failed. -> 1_4");
                 return null;
             }// end 1_4
         }// end 1
@@ -298,7 +298,7 @@ public final class Utils
         }// end 2
         else
         {
-            Log.d("UriUtils", uri.toString() + " parse failed. -> 3");
+            Log.d("ImagePicker", uri.toString() + " parse failed. -> 3");
             return null;
         }// end 3
     }
@@ -341,7 +341,7 @@ public final class Utils
                 uri, new String[]{"_data"}, selection, selectionArgs, null);
         if (cursor == null)
         {
-            Log.d("UriUtils", uri.toString() + " parse failed(cursor is null). -> " + code);
+            Log.d("ImagePicker", uri.toString() + " parse failed(cursor is null). -> " + code);
             return null;
         }
         try
@@ -354,17 +354,17 @@ public final class Utils
                     return new File(cursor.getString(columnIndex));
                 } else
                 {
-                    Log.d("UriUtils", uri.toString() + " parse failed(columnIndex: " + columnIndex + " is wrong). -> " + code);
+                    Log.d("ImagePicker", uri.toString() + " parse failed(columnIndex: " + columnIndex + " is wrong). -> " + code);
                     return null;
                 }
             } else
             {
-                Log.d("UriUtils", uri.toString() + " parse failed(moveToFirst return false). -> " + code);
+                Log.d("ImagePicker", uri.toString() + " parse failed(moveToFirst return false). -> " + code);
                 return null;
             }
         } catch (Exception e)
         {
-            Log.d("UriUtils", uri.toString() + " parse failed. -> " + code);
+            Log.d("ImagePicker", uri.toString() + " parse failed. -> " + code);
             return null;
         } finally
         {

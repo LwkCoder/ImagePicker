@@ -99,8 +99,14 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                 if (singleImageUri != null)
                 {
                     File imageFile = Utils.uri2File(getContext(), singleImageUri);
-                    fileList.add(imageFile);
-                    invokeSuccessCallBack(fileList);
+                    if (imageFile != null)
+                    {
+                        fileList.add(imageFile);
+                        invokeSuccessCallBack(fileList);
+                    } else
+                    {
+                        invokeFailCallBack(ErrorCode.UNKNOWN_ERROR, getString(R.string.unknown_error));
+                    }
                 } else if (multiImageData != null)
                 {
                     //所选数量不得超过最大数量限制
@@ -108,7 +114,10 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                     for (int i = 0; i < count; i++)
                     {
                         File imageFile = Utils.uri2File(getContext(), multiImageData.getItemAt(i).getUri());
-                        fileList.add(imageFile);
+                        if (imageFile != null)
+                        {
+                            fileList.add(imageFile);
+                        }
                     }
                     invokeSuccessCallBack(fileList);
                 } else
