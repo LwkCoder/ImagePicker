@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.hjq.permissions.OnPermissionCallback;
@@ -62,8 +63,8 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                         if (all)
                         {
                             Intent intent = new Intent();
-                            intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, Math.max(1, mOption.getMaxNumber()) > 1);
                             startActivityForResult(Intent.createChooser(intent, getContext().getPackageName()), REQUEST_CODE_PICK_IMAGE);
                         }
