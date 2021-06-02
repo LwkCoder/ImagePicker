@@ -2,12 +2,8 @@ package com.lwkandroid.library.system.pick;
 
 import android.app.Activity;
 import android.content.ClipData;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.widget.Toast;
 
 import com.hjq.permissions.OnPermissionCallback;
@@ -18,6 +14,7 @@ import com.lwkandroid.library.bean.SystemPickImageOptions;
 import com.lwkandroid.library.callback.PickCallBack;
 import com.lwkandroid.library.common.AbsMediatorFragment;
 import com.lwkandroid.library.constants.ErrorCode;
+import com.lwkandroid.library.utils.Utils;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -101,8 +98,8 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                 ClipData multiImageData = data.getClipData();
                 if (singleImageUri != null)
                 {
-                    String imagePath = getImagePathFromUri(singleImageUri);
-                    fileList.add(new File(imagePath));
+                    File imageFile = Utils.uri2File(getContext(), singleImageUri);
+                    fileList.add(imageFile);
                     invokeSuccessCallBack(fileList);
                 } else if (multiImageData != null)
                 {
@@ -110,66 +107,19 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                     int count = Math.min(mOption.getMaxNumber(), multiImageData.getItemCount());
                     for (int i = 0; i < count; i++)
                     {
-                        String imagePath = getImagePathFromUri(multiImageData.getItemAt(i).getUri());
-                        fileList.add(new File(imagePath));
+                        File imageFile = Utils.uri2File(getContext(), multiImageData.getItemAt(i).getUri());
+                        fileList.add(imageFile);
                     }
                     invokeSuccessCallBack(fileList);
                 } else
                 {
-                    detachActivity(getActivity());
+                    invokeFailCallBack(ErrorCode.UNKNOWN_ERROR, getString(R.string.unknown_error));
                 }
             } else
             {
                 detachActivity(getActivity());
             }
         }
-    }
-
-    private String getImagePathFromUri(Uri uri)
-    {
-        String imagePath = null;
-        if (DocumentsContract.isDocumentUri(getContext(), uri))
-        {
-            // 如果是document类型的Uri，则通过document id处理
-            String docId = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority()))
-            {
-                String id = docId.split(":")[1];
-                // 解析出数字格式的id
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority()))
-            {
-                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content: //downloads/public_downloads"), Long.valueOf(docId));
-                imagePath = getImagePath(contentUri, null);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme()))
-        {
-            // 如果是content类型的Uri，则使用普通方式处理
-            imagePath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme()))
-        {
-            // 如果是file类型的Uri，直接获取图片路径即可
-            imagePath = uri.getPath();
-        }
-
-        return imagePath;
-    }
-
-    private String getImagePath(Uri uri, String selection)
-    {
-        String path = null;
-        // 通过Uri和selection来获取真实的图片路径
-        Cursor cursor = getContext().getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null)
-        {
-            if (cursor.moveToFirst())
-            {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
     }
 
     private void invokeSuccessCallBack(List<File> fileList)

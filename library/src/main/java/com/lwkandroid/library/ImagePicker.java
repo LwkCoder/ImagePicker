@@ -15,11 +15,17 @@ public final class ImagePicker
         throw new UnsupportedOperationException("Can't instantiate this class !");
     }
 
-    public static SystemPhotographOptions.Builder takePhotoBySystem()
+    /**
+     * 发起系统拍照
+     */
+    public static SystemPhotographOptions.Builder photographBySystem()
     {
         return new SystemPhotographOptions.Builder();
     }
 
+    /**
+     * 发起系统选择图片
+     */
     public static SystemPickImageOptions.Builder pickImageBySystem()
     {
         return new SystemPickImageOptions.Builder();

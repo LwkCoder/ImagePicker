@@ -13,6 +13,10 @@ public final class ErrorCode
     }
 
     /**
+     * 未知错误
+     */
+    public static final int UNKNOWN_ERROR = 10000;
+    /**
      * 权限被拒绝
      */
     public static final int PERMISSION_DENIED = 20001;
