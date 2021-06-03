@@ -34,5 +34,6 @@
 
     <string name="permission_denied_of_take_photo">App needs the Camera permission,otherwise the camera cannot be accessed</string>
     <string name="permission_denied_of_pick_image">App needs the SdCard permission,otherwise the album cannot be accessed</string>
+    <string name="permission_denied_of_crop_image">App needs the SdCard permission,otherwise the image cannot be cropped</string>
     <string name="unknown_error">Unknown error occurred</string>
 </resources>

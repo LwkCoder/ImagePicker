@@ -24,6 +24,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 /**
  * @description: 通用工具
  * @author: LWK
@@ -60,6 +63,20 @@ public final class Utils
         } else
         {
             return context.getCacheDir().getAbsolutePath();
+        }
+    }
+
+    /**
+     * File to uri.
+     */
+    public static Uri file2Uri(Context context, @NonNull File file)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        {
+            return FileProvider.getUriForFile(context, ImagePickerFileProvider.getAuthorities(context), file);
+        } else
+        {
+            return Uri.fromFile(file);
         }
     }
 

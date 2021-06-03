@@ -83,23 +83,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v)
             {
-                //                com.lwkandroid.library.ImagePicker.takePhotoBySystem()
-                //                        .build()
-                //                        .doPhotograph(MainActivity.this, new PickCallBack<File>()
-                //                        {
-                //                            @Override
-                //                            public void onPickSuccess(File result)
-                //                            {
-                //                                Toast.makeText(MainActivity.this, "拍照成功", Toast.LENGTH_SHORT).show();
-                //                                Log.e("aa", "file->" + result.getAbsolutePath());
-                //                            }
+                //                                com.lwkandroid.library.ImagePicker.photographBySystem()
+                //                                        .build()
+                //                                        .doPhotograph(MainActivity.this, new PickCallBack<File>()
+                //                                        {
+                //                                            @Override
+                //                                            public void onPickSuccess(File result)
+                //                                            {
+                //                                                Toast.makeText(MainActivity.this, "拍照成功", Toast.LENGTH_SHORT).show();
+                //                                                Log.e("aa", "file->" + result.getAbsolutePath());
+                //                                            }
                 //
-                //                            @Override
-                //                            public void onPickFailed(int errorCode, String message)
-                //                            {
-                //                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                //                            }
-                //                        });
+                //                                            @Override
+                //                                            public void onPickFailed(int errorCode, String message)
+                //                                            {
+                //                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                //                                            }
+                //                                        });
+
                 com.lwkandroid.library.ImagePicker.pickImageBySystem()
                         .setMaxNumber(Integer.parseInt(mEdMaxNum.getText().toString().trim()))
                         .build()
@@ -109,6 +110,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onPickSuccess(List<File> result)
                             {
                                 Log.e("Aa", "onPickSuccess->" + result.toString());
+                                com.lwkandroid.library.ImagePicker.cropImageBySystem(result.get(0))
+                                        .setAspectX(1)
+                                        .setAspectY(1)
+                                        .setOutputX(500)
+                                        .setOutputY(500)
+                                        .build()
+                                        .doCrop(MainActivity.this, new PickCallBack<File>()
+                                        {
+                                            @Override
+                                            public void onPickSuccess(File result)
+                                            {
+                                                Log.e("AA", "onCropSuccess->" + result.getAbsolutePath());
+                                            }
+
+                                            @Override
+                                            public void onPickFailed(int errorCode, String message)
+                                            {
+                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                                            }
+                                        });
                             }
 
                             @Override

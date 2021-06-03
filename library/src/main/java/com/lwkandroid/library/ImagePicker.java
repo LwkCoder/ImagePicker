@@ -1,7 +1,10 @@
 package com.lwkandroid.library;
 
+import com.lwkandroid.library.bean.SystemCropOptions;
 import com.lwkandroid.library.bean.SystemPhotographOptions;
 import com.lwkandroid.library.bean.SystemPickImageOptions;
+
+import java.io.File;
 
 /**
  * @description: 入口
@@ -29,5 +32,15 @@ public final class ImagePicker
     public static SystemPickImageOptions.Builder pickImageBySystem()
     {
         return new SystemPickImageOptions.Builder();
+    }
+
+    /**
+     * 发起系统裁剪
+     *
+     * @param imageFile 本地图片File对象
+     */
+    public static SystemCropOptions.Builder cropImageBySystem(File imageFile)
+    {
+        return new SystemCropOptions.Builder().setImageFile(imageFile);
     }
 }

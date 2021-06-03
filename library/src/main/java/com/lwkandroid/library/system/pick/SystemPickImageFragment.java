@@ -29,16 +29,13 @@ import androidx.fragment.app.FragmentActivity;
  * @author: LWK
  * @date: 2021/6/2 14:00
  */
-public class SystemPickImageFragment extends AbsMediatorFragment
+public class SystemPickImageFragment extends AbsMediatorFragment<SystemPickImageOptions, List<File>>
 {
     private static final int REQUEST_CODE_PICK_IMAGE = 201;
-    private SystemPickImageOptions mOption;
-    private PickCallBack<List<File>> mCallBack;
 
-    public SystemPickImageFragment(SystemPickImageOptions options, PickCallBack<List<File>> callBack)
+    public SystemPickImageFragment(SystemPickImageOptions options, PickCallBack<List<File>> callback)
     {
-        this.mOption = options;
-        this.mCallBack = callBack;
+        super(options, callback);
     }
 
     public static void create(FragmentActivity activity, SystemPickImageOptions options, PickCallBack<List<File>> callBack)
@@ -65,7 +62,7 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, Math.max(1, mOption.getMaxNumber()) > 1);
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, Math.max(1, getOption().getMaxNumber()) > 1);
                             startActivityForResult(Intent.createChooser(intent, getContext().getPackageName()), REQUEST_CODE_PICK_IMAGE);
                         }
                     }
@@ -111,7 +108,7 @@ public class SystemPickImageFragment extends AbsMediatorFragment
                 } else if (multiImageData != null)
                 {
                     //所选数量不得超过最大数量限制
-                    int count = Math.min(mOption.getMaxNumber(), multiImageData.getItemCount());
+                    int count = Math.min(getOption().getMaxNumber(), multiImageData.getItemCount());
                     for (int i = 0; i < count; i++)
                     {
                         File imageFile = Utils.uri2File(getContext(), multiImageData.getItemAt(i).getUri());
@@ -131,23 +128,4 @@ public class SystemPickImageFragment extends AbsMediatorFragment
             }
         }
     }
-
-    private void invokeSuccessCallBack(List<File> fileList)
-    {
-        if (mCallBack != null)
-        {
-            mCallBack.onPickSuccess(fileList);
-        }
-        detachActivity(getActivity());
-    }
-
-    private void invokeFailCallBack(int code, String message)
-    {
-        if (mCallBack != null)
-        {
-            mCallBack.onPickFailed(code, message);
-        }
-        detachActivity(getActivity());
-    }
-
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
+import com.lwkandroid.library.callback.PickCallBack;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -13,10 +15,18 @@ import androidx.fragment.app.FragmentActivity;
  * @author:
  * @date: 2021/6/2 13:37
  */
-public abstract class AbsMediatorFragment extends Fragment
+public abstract class AbsMediatorFragment<D, C> extends Fragment
 {
+    private D mOption;
+    private PickCallBack<C> mCallBack;
     private int mScreenOrientation;
     private boolean mHasStartRequest;
+
+    public AbsMediatorFragment(D options, PickCallBack<C> callback)
+    {
+        this.mOption = options;
+        this.mCallBack = callback;
+    }
 
     @Override
     public void onAttach(@NonNull Context context)
@@ -79,6 +89,13 @@ public abstract class AbsMediatorFragment extends Fragment
         doRequest();
     }
 
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mCallBack = null;
+    }
+
     public void attachActivity(FragmentActivity activity)
     {
         if (activity != null)
@@ -97,6 +114,28 @@ public abstract class AbsMediatorFragment extends Fragment
         }
     }
 
+    public void invokeSuccessCallBack(C result)
+    {
+        if (mCallBack != null)
+        {
+            mCallBack.onPickSuccess(result);
+        }
+        detachActivity(getActivity());
+    }
+
+    public void invokeFailCallBack(int code, String message)
+    {
+        if (mCallBack != null)
+        {
+            mCallBack.onPickFailed(code, message);
+        }
+        detachActivity(getActivity());
+    }
+
+    public D getOption()
+    {
+        return mOption;
+    }
 
     protected abstract void doRequest();
 }

@@ -3,6 +3,7 @@ package com.lwkandroid.library.system.photograph;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -16,14 +17,12 @@ import com.lwkandroid.library.bean.SystemPhotographOptions;
 import com.lwkandroid.library.callback.PickCallBack;
 import com.lwkandroid.library.common.AbsMediatorFragment;
 import com.lwkandroid.library.constants.ErrorCode;
-import com.lwkandroid.library.utils.ImagePickerFileProvider;
 import com.lwkandroid.library.utils.Utils;
 
 import java.io.File;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 
 /**
@@ -31,17 +30,14 @@ import androidx.fragment.app.FragmentActivity;
  * @author: LWK
  * @date: 2021/6/1 15:10
  */
-public final class SystemPhotographFragment extends AbsMediatorFragment
+public final class SystemPhotographFragment extends AbsMediatorFragment<SystemPhotographOptions, File>
 {
     private static final int REQUEST_CODE_PHOTOGRAPH = 200;
-    private final SystemPhotographOptions mOptions;
-    private PickCallBack<File> mCallBack;
     private File mResultFile;
 
-    public SystemPhotographFragment(SystemPhotographOptions options, PickCallBack<File> callBack)
+    public SystemPhotographFragment(SystemPhotographOptions options, PickCallBack<File> callback)
     {
-        this.mOptions = options;
-        this.mCallBack = callBack;
+        super(options, callback);
     }
 
     public static void create(FragmentActivity activity, SystemPhotographOptions options, PickCallBack<File> callBack)
@@ -99,13 +95,6 @@ public final class SystemPhotographFragment extends AbsMediatorFragment
         }
     }
 
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        mCallBack = null;
-    }
-
     private void doPhotograph()
     {
         if (getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
@@ -114,20 +103,15 @@ public final class SystemPhotographFragment extends AbsMediatorFragment
             intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
             try
             {
-                File cacheDirFile = new File(Utils.getAvailableCacheDirPath(getContext(), mOptions.getCacheDirPath()));
+                File cacheDirFile = new File(Utils.getAvailableCacheDirPath(getContext(), getOption().getCacheDirPath()));
                 mResultFile = new File(cacheDirFile.getAbsolutePath(), "IMG_" + System.currentTimeMillis() + ".jpg");
-                //7.0以上需要适配StickMode
+                Uri resultUri = Utils.file2Uri(getContext(), mResultFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, resultUri);
+                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                 {
-                    Uri imageUri = FileProvider.getUriForFile(getContext(), ImagePickerFileProvider.getAuthorities(getContext()), mResultFile);
                     //添加这一句表示对目标应用临时授权该Uri所代表的文件
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    //将拍取的照片保存到指定URI
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                } else
-                {
-                    //将拍取的照片保存到指定URI
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mResultFile));
                 }
                 startActivityForResult(intent, REQUEST_CODE_PHOTOGRAPH);
             } catch (Exception e)
@@ -142,21 +126,4 @@ public final class SystemPhotographFragment extends AbsMediatorFragment
         }
     }
 
-    private void invokeSuccessCallBack(File file)
-    {
-        if (mCallBack != null)
-        {
-            mCallBack.onPickSuccess(file);
-        }
-        detachActivity(getActivity());
-    }
-
-    private void invokeFailCallBack(int code, String message)
-    {
-        if (mCallBack != null)
-        {
-            mCallBack.onPickFailed(code, message);
-        }
-        detachActivity(getActivity());
-    }
 }
