@@ -1,5 +1,9 @@
 package com.lwkandroid.library.options;
 
+import com.lwkandroid.library.constants.PickMimeType;
+import com.lwkandroid.library.custom.CustomPickImageRequestImpl;
+import com.lwkandroid.library.custom.ICustomPickImageRequest;
+
 /**
  * @description: 自定义选择图片的配置
  * @author: LWK
@@ -10,7 +14,7 @@ public class CustomPickImageOptions
     private int maxPickNumber = 1;
     private long fileMinSize = 0;
     private long fileMaxSize = Long.MAX_VALUE;
-    private String[] selectionArgs;
+    private String[] selectionArgs = PickMimeType.PICK_TYPE_ALL_IMAGE;
 
     public int getMaxPickNumber()
     {
@@ -65,6 +69,29 @@ public class CustomPickImageOptions
         {
             mOptions.setMaxPickNumber(maxPickNumber);
             return this;
+        }
+
+        public Builder setFileMinSize(int fileMinSize)
+        {
+            mOptions.setFileMinSize(fileMinSize);
+            return this;
+        }
+
+        public Builder setFileMaxSize(int fileMaxSize)
+        {
+            mOptions.setFileMaxSize(fileMaxSize);
+            return this;
+        }
+
+        public Builder setPickMimeType(@PickMimeType.Type int type)
+        {
+            mOptions.setSelectionArgs(PickMimeType.getSelectionArgByType(type));
+            return this;
+        }
+
+        public ICustomPickImageRequest build()
+        {
+            return new CustomPickImageRequestImpl(mOptions);
         }
     }
 }

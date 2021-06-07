@@ -18,7 +18,4 @@ public final class ImageMimeType
     public static final String MIME_TYPE_JPEG = "image/jpeg";
     public static final String MIME_TYPE_GIF = "image/gif";
 
-    public static final String[] PICK_TYPE_ALL_IMAGE = new String[]{MIME_TYPE_PNG, MIME_TYPE_JPG, MIME_TYPE_JPEG, MIME_TYPE_GIF};
-
-    public static final String[] PICK_TYPE_NOT_GIF = new String[]{MIME_TYPE_PNG, MIME_TYPE_JPG, MIME_TYPE_JPEG};
 }
