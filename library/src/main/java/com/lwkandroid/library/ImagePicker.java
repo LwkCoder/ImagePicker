@@ -1,8 +1,8 @@
 package com.lwkandroid.library;
 
-import com.lwkandroid.library.bean.SystemCropOptions;
-import com.lwkandroid.library.bean.SystemPhotographOptions;
-import com.lwkandroid.library.bean.SystemPickImageOptions;
+import com.lwkandroid.library.options.SystemCropOptions;
+import com.lwkandroid.library.options.SystemPhotographOptions;
+import com.lwkandroid.library.options.SystemPickImageOptions;
 
 import java.io.File;
 

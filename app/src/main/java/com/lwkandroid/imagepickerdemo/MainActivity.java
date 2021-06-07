@@ -16,9 +16,10 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.callback.PickCallBack;
+import com.lwkandroid.library.custom.MediaLoaderEngine;
 
-import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -101,43 +102,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //                                            }
                 //                                        });
 
-                com.lwkandroid.library.ImagePicker.pickImageBySystem()
-                        .setMaxNumber(Integer.parseInt(mEdMaxNum.getText().toString().trim()))
-                        .build()
-                        .doPickImage(MainActivity.this, new PickCallBack<List<File>>()
-                        {
-                            @Override
-                            public void onPickSuccess(List<File> result)
-                            {
-                                Log.e("Aa", "onPickSuccess->" + result.toString());
-                                com.lwkandroid.library.ImagePicker.cropImageBySystem(result.get(0))
-                                        .setAspectX(1)
-                                        .setAspectY(1)
-                                        .setOutputX(500)
-                                        .setOutputY(500)
-                                        .build()
-                                        .doCrop(MainActivity.this, new PickCallBack<File>()
-                                        {
-                                            @Override
-                                            public void onPickSuccess(File result)
-                                            {
-                                                Log.e("AA", "onCropSuccess->" + result.getAbsolutePath());
-                                            }
+                //                com.lwkandroid.library.ImagePicker.pickImageBySystem()
+                //                        .setMaxNumber(Integer.parseInt(mEdMaxNum.getText().toString().trim()))
+                //                        .build()
+                //                        .doPickImage(MainActivity.this, new PickCallBack<List<File>>()
+                //                        {
+                //                            @Override
+                //                            public void onPickSuccess(List<File> result)
+                //                            {
+                //                                Log.e("Aa", "onPickSuccess->" + result.toString());
+                //                                com.lwkandroid.library.ImagePicker.cropImageBySystem(result.get(0))
+                //                                        .setAspectX(1)
+                //                                        .setAspectY(1)
+                //                                        .setOutputX(500)
+                //                                        .setOutputY(500)
+                //                                        .build()
+                //                                        .doCrop(MainActivity.this, new PickCallBack<File>()
+                //                                        {
+                //                                            @Override
+                //                                            public void onPickSuccess(File result)
+                //                                            {
+                //                                                Log.e("AA", "onCropSuccess->" + result.getAbsolutePath());
+                //                                            }
+                //
+                //                                            @Override
+                //                                            public void onPickFailed(int errorCode, String message)
+                //                                            {
+                //                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                //                                            }
+                //                                        });
+                //                            }
+                //
+                //                            @Override
+                //                            public void onPickFailed(int errorCode, String message)
+                //                            {
+                //                                Log.e("aa", "code=" + errorCode + " msg=" + message);
+                //                            }
+                //                        });
 
-                                            @Override
-                                            public void onPickFailed(int errorCode, String message)
-                                            {
-                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                                            }
-                                        });
-                            }
+                MediaLoaderEngine loaderEngine = new MediaLoaderEngine();
+                loaderEngine.loadAllBucket(MainActivity.this, new PickCallBack<List<BucketBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<BucketBean> result)
+                    {
+                        Log.e("aa", "->" + result.toString());
+                    }
 
-                            @Override
-                            public void onPickFailed(int errorCode, String message)
-                            {
-                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                            }
-                        });
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+
+                    }
+                });
             }
         });
 

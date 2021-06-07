@@ -11,9 +11,9 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
-import com.lwkandroid.library.bean.SystemPickImageOptions;
+import com.lwkandroid.library.options.SystemPickImageOptions;
 import com.lwkandroid.library.callback.PickCallBack;
-import com.lwkandroid.library.common.AbsMediatorFragment;
+import com.lwkandroid.library.system.AbsMediatorFragment;
 import com.lwkandroid.library.constants.ErrorCode;
 import com.lwkandroid.library.utils.Utils;
 
@@ -62,7 +62,7 @@ public class SystemPickImageFragment extends AbsMediatorFragment<SystemPickImage
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, Math.max(1, getOption().getMaxNumber()) > 1);
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, Math.max(1, getOption().getMaxPickNumber()) > 1);
                             startActivityForResult(Intent.createChooser(intent, getContext().getPackageName()), REQUEST_CODE_PICK_IMAGE);
                         }
                     }
@@ -108,7 +108,7 @@ public class SystemPickImageFragment extends AbsMediatorFragment<SystemPickImage
                 } else if (multiImageData != null)
                 {
                     //所选数量不得超过最大数量限制
-                    int count = Math.min(getOption().getMaxNumber(), multiImageData.getItemCount());
+                    int count = Math.min(getOption().getMaxPickNumber(), multiImageData.getItemCount());
                     for (int i = 0; i < count; i++)
                     {
                         File imageFile = Utils.uri2File(getContext(), multiImageData.getItemAt(i).getUri());

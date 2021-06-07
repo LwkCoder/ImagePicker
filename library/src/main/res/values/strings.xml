@@ -36,4 +36,6 @@
     <string name="permission_denied_of_pick_image">应用程序需要获取存储访问权限，否则无法选择图片</string>
     <string name="permission_denied_of_crop_image">应用程序需要获取存储访问权限，否则无法裁剪图片</string>
     <string name="unknown_error">发生未知错误</string>
+
+    <string name="bucket_all_picture">全部图片</string>
 </resources>

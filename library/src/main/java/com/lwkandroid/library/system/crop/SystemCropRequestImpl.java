@@ -1,6 +1,6 @@
 package com.lwkandroid.library.system.crop;
 
-import com.lwkandroid.library.bean.SystemCropOptions;
+import com.lwkandroid.library.options.SystemCropOptions;
 import com.lwkandroid.library.callback.PickCallBack;
 
 import java.io.File;

@@ -13,9 +13,9 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
-import com.lwkandroid.library.bean.SystemCropOptions;
+import com.lwkandroid.library.options.SystemCropOptions;
 import com.lwkandroid.library.callback.PickCallBack;
-import com.lwkandroid.library.common.AbsMediatorFragment;
+import com.lwkandroid.library.system.AbsMediatorFragment;
 import com.lwkandroid.library.constants.ErrorCode;
 import com.lwkandroid.library.utils.Utils;
 

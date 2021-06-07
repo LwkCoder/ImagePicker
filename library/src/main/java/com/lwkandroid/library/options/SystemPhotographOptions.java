@@ -1,4 +1,4 @@
-package com.lwkandroid.library.bean;
+package com.lwkandroid.library.options;
 
 import com.lwkandroid.library.system.photograph.ISystemPhotographRequest;
 import com.lwkandroid.library.system.photograph.SystemPhotographRequestImpl;

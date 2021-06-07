@@ -1,5 +1,6 @@
 package com.lwkandroid.library.utils;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -12,6 +13,10 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -24,6 +29,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
@@ -34,6 +40,11 @@ import androidx.core.content.FileProvider;
  */
 public final class Utils
 {
+    /**
+     * 默认透明度为1.0f（不透明）
+     */
+    private static final float DEFAULT_ALPHA = 1.0f;
+
     private Utils()
     {
         throw new UnsupportedOperationException("Can't instantiate this class !");
@@ -509,5 +520,77 @@ public final class Utils
                 }
             }
         }
+    }
+
+
+    /**
+     * 改变状态栏颜色的方法
+     *
+     * @param activity        依附的Activity
+     * @param color           状态栏颜色值
+     * @param firSystemWindow 是否自动调整布局间距
+     */
+    public static void setStatusBarColor(Activity activity, @ColorInt int color, boolean firSystemWindow)
+    {
+        Window window = activity.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(color);
+        //设置窗口根布局自动调整间距
+        fitSystemWindow(activity, firSystemWindow);
+    }
+
+    /**
+     * 设置根布局fitSystemWindow属性
+     *
+     * @param activity
+     * @param fitSystemWindow
+     */
+    private static void fitSystemWindow(Activity activity, boolean fitSystemWindow)
+    {
+        ViewGroup parent = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
+        for (int i = 0, count = parent.getChildCount(); i < count; i++)
+        {
+            View childView = parent.getChildAt(i);
+            if (childView instanceof ViewGroup)
+            {
+                childView.setFitsSystemWindows(fitSystemWindow);
+                ((ViewGroup) childView).setClipToPadding(fitSystemWindow);
+            }
+        }
+    }
+
+    /**
+     * 设置状态栏为深色模式
+     */
+    public static void setStatusBarDarkMode(@NonNull final Activity activity, final boolean isDarkMode)
+    {
+        setStatusBarDarkMode(activity.getWindow(), isDarkMode);
+    }
+
+    /**
+     * 设置状态栏为深色模式
+     */
+    public static void setStatusBarDarkMode(@NonNull final Window window, final boolean isDarkMode)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            View decorView = window.getDecorView();
+            int vis = decorView.getSystemUiVisibility();
+            if (isDarkMode)
+            {
+                vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else
+            {
+                vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            decorView.setSystemUiVisibility(vis);
+        }
+    }
+
+
+    public static boolean checkAndroidQ()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     }
 }

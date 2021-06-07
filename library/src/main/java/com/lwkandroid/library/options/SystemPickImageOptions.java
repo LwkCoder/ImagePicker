@@ -1,4 +1,4 @@
-package com.lwkandroid.library.bean;
+package com.lwkandroid.library.options;
 
 import com.lwkandroid.library.system.pick.ISystemPickImageRequest;
 import com.lwkandroid.library.system.pick.SystemPickImageRequestImpl;
@@ -10,16 +10,16 @@ import com.lwkandroid.library.system.pick.SystemPickImageRequestImpl;
  */
 public class SystemPickImageOptions
 {
-    private int maxNumber = 1;
+    private int maxPickNumber = 1;
 
-    public int getMaxNumber()
+    public int getMaxPickNumber()
     {
-        return maxNumber;
+        return maxPickNumber;
     }
 
-    public void setMaxNumber(int maxNumber)
+    public void setMaxPickNumber(int maxPickNumber)
     {
-        this.maxNumber = maxNumber;
+        this.maxPickNumber = maxPickNumber;
     }
 
     public static class Builder
@@ -31,9 +31,9 @@ public class SystemPickImageOptions
             mOptions = new SystemPickImageOptions();
         }
 
-        public Builder setMaxNumber(int maxNumber)
+        public Builder setMaxPickNumber(int maxNumber)
         {
-            mOptions.setMaxNumber(maxNumber);
+            mOptions.setMaxPickNumber(maxNumber);
             return this;
         }
 

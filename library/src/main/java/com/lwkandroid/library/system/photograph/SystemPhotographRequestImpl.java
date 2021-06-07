@@ -1,6 +1,6 @@
 package com.lwkandroid.library.system.photograph;
 
-import com.lwkandroid.library.bean.SystemPhotographOptions;
+import com.lwkandroid.library.options.SystemPhotographOptions;
 import com.lwkandroid.library.callback.PickCallBack;
 
 import java.io.File;

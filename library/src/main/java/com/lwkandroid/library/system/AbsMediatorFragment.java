@@ -1,4 +1,4 @@
-package com.lwkandroid.library.common;
+package com.lwkandroid.library.system;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
