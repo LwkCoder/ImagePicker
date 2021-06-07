@@ -14,7 +14,7 @@ public class CustomPickImageOptions
     private int maxPickNumber = 1;
     private long fileMinSize = 0;
     private long fileMaxSize = Long.MAX_VALUE;
-    private String[] selectionArgs = PickMimeType.PICK_TYPE_ALL_IMAGE;
+    private String[] mimeTypeArray = PickMimeType.ARRAY_ALL_IMAGE;
 
     public int getMaxPickNumber()
     {
@@ -46,14 +46,14 @@ public class CustomPickImageOptions
         this.fileMaxSize = fileMaxSize;
     }
 
-    public String[] getSelectionArgs()
+    public String[] getMimeTypeArray()
     {
-        return selectionArgs;
+        return mimeTypeArray;
     }
 
-    public void setSelectionArgs(String[] selectionArgs)
+    public void setMimeTypeArray(String[] mimeTypeArray)
     {
-        this.selectionArgs = selectionArgs;
+        this.mimeTypeArray = mimeTypeArray;
     }
 
     public static class Builder
@@ -85,7 +85,7 @@ public class CustomPickImageOptions
 
         public Builder setPickMimeType(@PickMimeType.Type int type)
         {
-            mOptions.setSelectionArgs(PickMimeType.getSelectionArgByType(type));
+            mOptions.setMimeTypeArray(PickMimeType.getMimeTypeArrayByType(type));
             return this;
         }
 

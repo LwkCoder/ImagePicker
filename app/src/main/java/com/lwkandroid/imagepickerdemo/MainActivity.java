@@ -19,6 +19,7 @@ import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.callback.PickCallBack;
 import com.lwkandroid.library.custom.MediaLoaderEngine;
+import com.lwkandroid.library.options.CustomPickImageOptions;
 
 import java.util.List;
 
@@ -141,20 +142,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //                        });
 
                 MediaLoaderEngine loaderEngine = new MediaLoaderEngine();
-                loaderEngine.loadAllBucket(MainActivity.this, new PickCallBack<List<BucketBean>>()
-                {
-                    @Override
-                    public void onPickSuccess(List<BucketBean> result)
-                    {
-                        Log.e("aa", "->" + result.toString());
-                    }
+                loaderEngine.loadAllBucket(MainActivity.this,
+                        new CustomPickImageOptions(), new PickCallBack<List<BucketBean>>()
+                        {
+                            @Override
+                            public void onPickSuccess(List<BucketBean> result)
+                            {
+                                Log.e("aaa", "->" + result.toString());
+                            }
 
-                    @Override
-                    public void onPickFailed(int errorCode, String message)
-                    {
+                            @Override
+                            public void onPickFailed(int errorCode, String message)
+                            {
 
-                    }
-                });
+                            }
+                        });
             }
         });
 

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.callback.PickCallBack;
+import com.lwkandroid.library.constants.ImageConstants;
+import com.lwkandroid.library.options.CustomPickImageOptions;
 import com.lwkandroid.library.utils.ThreadUtils;
 import com.lwkandroid.library.utils.Utils;
 
@@ -52,13 +55,61 @@ public class MediaLoaderEngine
             "COUNT(*) AS " + COLUMN_COUNT};
 
 
-    public void loadAllBucket(Context context, PickCallBack<List<BucketBean>> callBack)
+    public void loadAllBucket(Context context, CustomPickImageOptions options, PickCallBack<List<BucketBean>> callBack)
     {
+
+        StringBuilder selectionBuilder = new StringBuilder();
+
+        //拼接MimeType的限制
+        selectionBuilder.append(ImageConstants.LEFT_BRACKET);
+        String[] mimeTypeArray = options.getMimeTypeArray();
+        for (int i = 0; i < mimeTypeArray.length; i++)
+        {
+            selectionBuilder.append(MediaStore.Images.Media.MIME_TYPE)
+                    .append(ImageConstants.EQUALS)
+                    .append(ImageConstants.SINGLE_QUOTES)
+                    .append(mimeTypeArray[i])
+                    .append(ImageConstants.SINGLE_QUOTES);
+            if (i < mimeTypeArray.length - 1)
+            {
+                selectionBuilder.append(ImageConstants.SPACE)
+                        .append(ImageConstants.OR)
+                        .append(ImageConstants.SPACE);
+            }
+        }
+        selectionBuilder.append(ImageConstants.RIGHT_BRACKET);
+
+        //拼接FileSize的限制
+        selectionBuilder.append(ImageConstants.SPACE)
+                .append(ImageConstants.AND)
+                .append(ImageConstants.SPACE)
+                .append(ImageConstants.LEFT_BRACKET)
+                .append(Math.max(0, options.getFileMinSize()))
+                .append(ImageConstants.SPACE)
+                .append(ImageConstants.LESS_THAN)
+                .append(ImageConstants.EQUALS)
+                .append(ImageConstants.SPACE)
+                .append(MediaStore.MediaColumns.SIZE)
+                .append(ImageConstants.SPACE)
+                .append(ImageConstants.AND)
+                .append(ImageConstants.SPACE)
+                .append(MediaStore.MediaColumns.SIZE)
+                .append(ImageConstants.SPACE)
+                .append(ImageConstants.LESS_THAN)
+                .append(ImageConstants.EQUALS)
+                .append(ImageConstants.SPACE)
+                .append(Math.max(0, options.getFileMaxSize()))
+                .append(ImageConstants.RIGHT_BRACKET)
+        ;
+
+        Log.e("AAA", "--->" + selectionBuilder.toString());
+
         String selection = MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or "
                 + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=? or "
                 + MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?";
         //只筛选png、jpg、jpeg、PNG、JPG、JPEG
-        String[] selectionArgs = {"image/png", "image/jpg", "image/jpeg", "image/PNG", "image/JPG", "image/JPEG"};
+        //        String[] selectionArgs = {"image/png", "image/jpg", "image/jpeg", "image/PNG", "image/JPG", "image/JPEG"};
+        String[] selectionArgs = {String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)};
 
         ThreadUtils.executeBySingle(new ThreadUtils.SimpleTask<List<BucketBean>>()
         {
@@ -67,7 +118,7 @@ public class MediaLoaderEngine
             {
                 Cursor cursor = context.getContentResolver().query(QUERY_URI,
                         Utils.checkAndroidQ() ? PROJECTION_29 : PROJECTION,
-                        selection, selectionArgs, ORDER_BY);
+                        selectionBuilder.toString(), null, ORDER_BY);
                 try
                 {
                     if (cursor != null)
@@ -129,8 +180,7 @@ public class MediaLoaderEngine
                                     long bucketId = cursor.getLong(cursor.getColumnIndex(COLUMN_BUCKET_ID));
                                     String bucketDisplayName = cursor.getString(cursor.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
                                     String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-//                                    int size = cursor.getInt(cursor.getColumnIndex(COLUMN_COUNT));
-                                    int size = cursor.getCount();
+                                    int size = cursor.getInt(cursor.getColumnIndex(COLUMN_COUNT));
                                     bucketBean.setBucketId(bucketId);
                                     String url = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
                                     bucketBean.setFirstImagePath(url);

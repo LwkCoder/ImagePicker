@@ -15,6 +15,7 @@ public class MediaBean
     private int width;
     private int height;
     private long lastModifyTime;
+    private long size;
     private String bucketId;
 
     public String getId()
@@ -85,6 +86,16 @@ public class MediaBean
     public void setBucketId(String bucketId)
     {
         this.bucketId = bucketId;
+    }
+
+    public long getSize()
+    {
+        return size;
+    }
+
+    public void setSize(long size)
+    {
+        this.size = size;
     }
 
     public boolean isGif()
