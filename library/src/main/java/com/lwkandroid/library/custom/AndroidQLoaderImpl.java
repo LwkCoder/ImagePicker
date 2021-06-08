@@ -30,6 +30,7 @@ import androidx.annotation.RequiresApi;
 final class AndroidQLoaderImpl implements IMediaLoaderEngine
 {
     private static final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
     private static final String[] PROJECTION = {
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
@@ -40,6 +41,7 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.MIME_TYPE,
+            MediaStore.Images.Media.SIZE,
     };
 
 

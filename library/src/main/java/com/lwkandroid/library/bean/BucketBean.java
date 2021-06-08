@@ -1,6 +1,5 @@
 package com.lwkandroid.library.bean;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,7 +14,6 @@ public class BucketBean
     private String firstImagePath;
     private String firstMimeType;
     private long fileNumber;
-    private List<MediaBean> mediaList;
 
     public long getBucketId()
     {
@@ -67,16 +65,6 @@ public class BucketBean
         this.fileNumber = fileNumber;
     }
 
-    public List<MediaBean> getMediaList()
-    {
-        return mediaList;
-    }
-
-    public void setMediaList(List<MediaBean> mediaList)
-    {
-        this.mediaList = mediaList;
-    }
-
     @Override
     public boolean equals(Object o)
     {
@@ -107,7 +95,6 @@ public class BucketBean
                 ", firstImagePath='" + firstImagePath + '\'' +
                 ", firstMimeType='" + firstMimeType + '\'' +
                 ", fileNumber=" + fileNumber +
-                ", mediaList=" + mediaList +
                 '}';
     }
 }

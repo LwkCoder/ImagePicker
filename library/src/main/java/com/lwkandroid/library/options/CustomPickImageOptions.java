@@ -14,7 +14,7 @@ public class CustomPickImageOptions
     private int maxPickNumber = 1;
     private long fileMinSize = 0;
     private long fileMaxSize = Long.MAX_VALUE;
-    private String[] mimeTypeArray = PickMimeType.ARRAY_ALL_IMAGE;
+    private String[] mimeTypeArray = PickMimeType.ARRAY_NO_LIMIT;
 
     public int getMaxPickNumber()
     {

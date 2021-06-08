@@ -12,17 +12,19 @@ import androidx.annotation.IntDef;
  */
 public class PickMimeType
 {
-    public static final int ALL_IMAGE = 0;
-    public static final int EXCEPT_GIF = 1;
+    public static final int NO_LIMIT = 0;
+    public static final int REGULAR = 1;
+    public static final int EXCEPT_GIF = 2;
 
-    public static final String[] ARRAY_ALL_IMAGE = new String[]{ImageMimeType.MIME_TYPE_PNG,
-            ImageMimeType.MIME_TYPE_JPG, ImageMimeType.MIME_TYPE_JPEG, ImageMimeType.MIME_TYPE_GIF};
+    public static final String[] ARRAY_NO_LIMIT = new String[]{ImageMimeType.MIME_TYPE_NO_LIMIT};
 
-    public static final String[] ARRAY_EXCEPT_GIF = new String[]{ImageMimeType.MIME_TYPE_PNG,
-            ImageMimeType.MIME_TYPE_JPG, ImageMimeType.MIME_TYPE_JPEG};
+    public static final String[] ARRAY_REGULAR = new String[]{ImageMimeType.MIME_TYPE_PNG, ImageMimeType.MIME_TYPE_JPG, ImageMimeType.MIME_TYPE_JPEG};
+
+    public static final String[] ARRAY_EXCEPT_GIF = new String[]{ImageMimeType.MIME_TYPE_PNG, ImageMimeType.MIME_TYPE_JPG
+            , ImageMimeType.MIME_TYPE_JPEG, ImageMimeType.MIME_TYPE_BMP, ImageMimeType.MIME_TYPE_WEBP};
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ALL_IMAGE, EXCEPT_GIF})
+    @IntDef({NO_LIMIT, REGULAR, EXCEPT_GIF})
     public @interface Type
     {
 
@@ -30,13 +32,16 @@ public class PickMimeType
 
     public static String[] getMimeTypeArrayByType(@Type int type)
     {
-        if (ALL_IMAGE == type)
+        if (NO_LIMIT == type)
         {
-            return ARRAY_ALL_IMAGE;
+            return ARRAY_NO_LIMIT;
+        } else if (REGULAR == type)
+        {
+            return ARRAY_REGULAR;
         } else if (EXCEPT_GIF == type)
         {
             return ARRAY_EXCEPT_GIF;
         }
-        return ARRAY_ALL_IMAGE;
+        return ARRAY_NO_LIMIT;
     }
 }

@@ -29,6 +29,7 @@ final class LegacyLoaderImpl implements IMediaLoaderEngine
             + ImageConstants.SPACE + ImageConstants.LEFT_BRACKET + MediaStore.Images.Media.BUCKET_ID;
 
     private static final String COLUMN_COUNT = "count";
+
     private static final String[] PROJECTION = {
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
@@ -39,6 +40,7 @@ final class LegacyLoaderImpl implements IMediaLoaderEngine
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.MIME_TYPE,
+            MediaStore.Images.Media.SIZE,
             "COUNT(*) AS " + COLUMN_COUNT
     };
 
