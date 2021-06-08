@@ -1,4 +1,4 @@
-package com.lwkandroid.library.custom;
+package com.lwkandroid.library.custom.model;
 
 import android.content.Context;
 
