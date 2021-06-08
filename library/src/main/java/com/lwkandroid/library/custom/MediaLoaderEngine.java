@@ -15,13 +15,13 @@ import com.lwkandroid.library.utils.Utils;
 import java.util.List;
 
 /**
- * @description: 媒体数据加载接口
+ * @description: 数据加载
  * @author: LWK
  * @date: 2021/6/7 9:23
  */
 public class MediaLoaderEngine
 {
-    private final String ORDER_BY = MediaStore.Images.Media.DATE_MODIFIED + " desc";
+    private final String ORDER_BY = MediaStore.Images.Media.DATE_MODIFIED + ImageConstants.SPACE + ImageConstants.DESC;
 
     public void loadAllBucket(Context context, CustomPickImageOptions options, PickCallBack<List<BucketBean>> callBack)
     {
@@ -39,6 +39,7 @@ public class MediaLoaderEngine
             public List<BucketBean> doInBackground() throws Throwable
             {
                 IMediaLoaderEngine loaderEngine = Utils.checkAndroidQ() ? new AndroidQLoaderImpl() : new LegacyLoaderImpl();
+
                 return loaderEngine.loadMediaData(context, selectionBuilder.toString(), null, ORDER_BY);
             }
 

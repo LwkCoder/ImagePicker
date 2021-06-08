@@ -20,7 +20,8 @@ public final class ImageConstants
     public static final String OR = "or";
     public static final String AND = "and";
     public static final String LESS_THAN = "<";
-    public static final String MORE_THAN = ">";
+    public static final String DESC = "DESC";
+    public static final String GROUP_BY = "group by";
 
     public static final long BUCKET_ID_ALL_IMAGE = -1;
 }

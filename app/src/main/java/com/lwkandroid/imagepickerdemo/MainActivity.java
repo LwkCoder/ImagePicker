@@ -23,7 +23,6 @@ import com.lwkandroid.library.callback.PickCallBack;
 import com.lwkandroid.library.custom.MediaLoaderEngine;
 import com.lwkandroid.library.options.CustomPickImageOptions;
 
-import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 for (BucketBean bucketBean : result)
                                 {
                                     Log.e("aaa", "->" + bucketBean.toString());
-                                    Log.e("Aa", "->" + new File(bucketBean.getFirstImagePath()).exists());
                                 }
                             }
 

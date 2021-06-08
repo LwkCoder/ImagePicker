@@ -11,10 +11,10 @@ import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.constants.ImageConstants;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @description: AndroidQ以前的扫描实现
@@ -23,8 +23,13 @@ import java.util.Map;
  */
 final class LegacyLoaderImpl implements IMediaLoaderEngine
 {
-    private final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-    private final String[] PROJECTION = {
+    private static final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+    private static final String GROUP_BY = ImageConstants.RIGHT_BRACKET + ImageConstants.SPACE + ImageConstants.GROUP_BY
+            + ImageConstants.SPACE + ImageConstants.LEFT_BRACKET + MediaStore.Images.Media.BUCKET_ID;
+
+    private static final String COLUMN_COUNT = "count";
+    private static final String[] PROJECTION = {
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.WIDTH,
@@ -34,38 +39,40 @@ final class LegacyLoaderImpl implements IMediaLoaderEngine
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.MIME_TYPE,
+            "COUNT(*) AS " + COLUMN_COUNT
     };
 
     @Override
     public List<BucketBean> loadMediaData(Context context, String selection, String[] selectionArg, String sortOrder)
     {
+        selection += GROUP_BY;
         Cursor cursor = context.getContentResolver().query(QUERY_URI, PROJECTION, selection, selectionArg, sortOrder);
 
         List<BucketBean> resultList = new LinkedList<>();
+        Set<Long> idSet = new HashSet<>();
 
-        Map<Long, BucketBean> buckMap = new HashMap<>();
         long totalFileNumber = 0;
         if (cursor != null && cursor.moveToFirst())
         {
             do
             {
                 long bucketId = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
-
-                if (buckMap.containsKey(bucketId))
+                if (idSet.contains(bucketId))
                 {
-                    BucketBean bucketBean = buckMap.get(bucketId);
-                    bucketBean.setFileNumber(bucketBean.getFileNumber() + 1);
-                } else
-                {
-                    BucketBean bucketBean = new BucketBean();
-                    bucketBean.setBucketId(bucketId);
-                    bucketBean.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)));
-                    bucketBean.setFileNumber(1);
-                    bucketBean.setFirstImagePath(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));
-                    bucketBean.setFirstMimeType(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)));
-                    buckMap.put(bucketId, bucketBean);
+                    continue;
                 }
-                totalFileNumber++;
+
+                int fileNumber = cursor.getInt(cursor.getColumnIndex(COLUMN_COUNT));
+                BucketBean bucketBean = new BucketBean();
+                bucketBean.setBucketId(bucketId);
+                bucketBean.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)));
+                bucketBean.setFileNumber(fileNumber);
+                bucketBean.setFirstImagePath(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));
+                bucketBean.setFirstMimeType(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)));
+
+                idSet.add(bucketId);
+                resultList.add(bucketBean);
+                totalFileNumber += fileNumber;
             } while (cursor.moveToNext());
         }
 
@@ -80,8 +87,7 @@ final class LegacyLoaderImpl implements IMediaLoaderEngine
             allImageBucket.setFirstMimeType(getFirstImageMimeType(cursor));
         }
 
-        resultList.add(allImageBucket);
-        resultList.addAll(buckMap.values());
+        resultList.add(0, allImageBucket);
 
         if (BuildConfig.DEBUG)
         {

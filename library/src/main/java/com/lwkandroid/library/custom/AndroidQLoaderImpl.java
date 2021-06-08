@@ -29,7 +29,7 @@ import androidx.annotation.RequiresApi;
 @RequiresApi(api = Build.VERSION_CODES.Q)
 final class AndroidQLoaderImpl implements IMediaLoaderEngine
 {
-    private final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    private static final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     private static final String[] PROJECTION = {
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DATA,
