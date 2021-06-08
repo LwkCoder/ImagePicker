@@ -22,5 +22,5 @@ public final class ImageConstants
     public static final String LESS_THAN = "<";
     public static final String MORE_THAN = ">";
 
-
+    public static final long BUCKET_ID_ALL_IMAGE = -1;
 }

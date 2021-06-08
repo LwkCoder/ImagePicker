@@ -3,7 +3,6 @@ package com.lwkandroid.library.custom;
 import android.content.Context;
 
 import com.lwkandroid.library.bean.BucketBean;
-import com.lwkandroid.library.callback.PickCallBack;
 
 import java.util.List;
 
@@ -14,6 +13,5 @@ import java.util.List;
  */
 interface IMediaLoaderEngine
 {
-    void loadMediaData(Context context, String selection, String[] selectionArg,
-                       String sortOrder, PickCallBack<List<BucketBean>> callBack);
+    List<BucketBean> loadMediaData(Context context, String selection, String[] selectionArg, String sortOrder);
 }

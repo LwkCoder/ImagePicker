@@ -1,6 +1,7 @@
 package com.lwkandroid.library.bean;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description: 文件夹实体类
@@ -74,6 +75,27 @@ public class BucketBean
     public void setMediaList(List<MediaBean> mediaList)
     {
         this.mediaList = mediaList;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        BucketBean that = (BucketBean) o;
+        return bucketId == that.bucketId;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(bucketId);
     }
 
     @Override

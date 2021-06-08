@@ -184,6 +184,11 @@
             android:layout_marginTop="10dp"
             android:text="拍照"/>
 
+        <ImageView
+            android:id="@+id/imgTest"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
+
         <TextView
             android:id="@+id/tv_main_result"
             android:layout_width="wrap_content"

@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -21,6 +23,7 @@ import com.lwkandroid.library.callback.PickCallBack;
 import com.lwkandroid.library.custom.MediaLoaderEngine;
 import com.lwkandroid.library.options.CustomPickImageOptions;
 
+import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mEdOpX;
     private EditText mEdOpY;
     private TextView mTvResult;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -80,67 +84,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         findViewById(R.id.btn_main_start).setOnClickListener(this);
+
+
+        mImageView = findViewById(R.id.imgTest);
         findViewById(R.id.btnTest01).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //                                com.lwkandroid.library.ImagePicker.photographBySystem()
-                //                                        .build()
-                //                                        .doPhotograph(MainActivity.this, new PickCallBack<File>()
-                //                                        {
-                //                                            @Override
-                //                                            public void onPickSuccess(File result)
-                //                                            {
-                //                                                Toast.makeText(MainActivity.this, "拍照成功", Toast.LENGTH_SHORT).show();
-                //                                                Log.e("aa", "file->" + result.getAbsolutePath());
-                //                                            }
-                //
-                //                                            @Override
-                //                                            public void onPickFailed(int errorCode, String message)
-                //                                            {
-                //                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                //                                            }
-                //                                        });
-
-                //                com.lwkandroid.library.ImagePicker.pickImageBySystem()
-                //                        .setMaxNumber(Integer.parseInt(mEdMaxNum.getText().toString().trim()))
-                //                        .build()
-                //                        .doPickImage(MainActivity.this, new PickCallBack<List<File>>()
-                //                        {
-                //                            @Override
-                //                            public void onPickSuccess(List<File> result)
-                //                            {
-                //                                Log.e("Aa", "onPickSuccess->" + result.toString());
-                //                                com.lwkandroid.library.ImagePicker.cropImageBySystem(result.get(0))
-                //                                        .setAspectX(1)
-                //                                        .setAspectY(1)
-                //                                        .setOutputX(500)
-                //                                        .setOutputY(500)
-                //                                        .build()
-                //                                        .doCrop(MainActivity.this, new PickCallBack<File>()
-                //                                        {
-                //                                            @Override
-                //                                            public void onPickSuccess(File result)
-                //                                            {
-                //                                                Log.e("AA", "onCropSuccess->" + result.getAbsolutePath());
-                //                                            }
-                //
-                //                                            @Override
-                //                                            public void onPickFailed(int errorCode, String message)
-                //                                            {
-                //                                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                //                                            }
-                //                                        });
-                //                            }
-                //
-                //                            @Override
-                //                            public void onPickFailed(int errorCode, String message)
-                //                            {
-                //                                Log.e("aa", "code=" + errorCode + " msg=" + message);
-                //                            }
-                //                        });
-
                 MediaLoaderEngine loaderEngine = new MediaLoaderEngine();
                 loaderEngine.loadAllBucket(MainActivity.this,
                         new CustomPickImageOptions(), new PickCallBack<List<BucketBean>>()
@@ -148,7 +99,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onPickSuccess(List<BucketBean> result)
                             {
-                                Log.e("aaa", "->" + result.toString());
+                                BucketBean bucketBean1 = result.get(0);
+                                Glide.with(MainActivity.this)
+                                        .load(bucketBean1.getFirstImagePath())
+                                        .into(mImageView);
+                                for (BucketBean bucketBean : result)
+                                {
+                                    Log.e("aaa", "->" + bucketBean.toString());
+                                    Log.e("Aa", "->" + new File(bucketBean.getFirstImagePath()).exists());
+                                }
                             }
 
                             @Override

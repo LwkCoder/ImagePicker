@@ -2,6 +2,8 @@ package com.lwkandroid.library.bean;
 
 import com.lwkandroid.library.constants.ImageMimeType;
 
+import java.util.Objects;
+
 /**
  * @description: 媒体文件实体类
  * @author: LWK
@@ -96,6 +98,27 @@ public class MediaBean
     public void setSize(long size)
     {
         this.size = size;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        MediaBean mediaBean = (MediaBean) o;
+        return Objects.equals(id, mediaBean.id);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(id);
     }
 
     public boolean isGif()

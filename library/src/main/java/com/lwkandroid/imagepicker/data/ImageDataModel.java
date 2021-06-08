@@ -254,14 +254,14 @@ public class ImageDataModel
                         if (TextUtils.isEmpty(name))
                             continue;
                     }
-                    //                    Log.e("ImagePicker", "imageId=" + imageId + "\n"
-                    //                            + "imagePath=" + imagePath + "\n"
-                    //                            + "lastModify=" + lastModify + "\n"
-                    //                            + "width=" + width + "\n"
-                    //                            + "height=" + height + "\n"
-                    //                            + "name=" + name + "\n"
-                    //                            + "folderId=" + folderId + "\n"
-                    //                            + "folderName=" + folderName);
+                                        Log.e("ImagePicker", "imageId=" + imageId + "\n"
+                                                + "imagePath=" + imagePath + "\n"
+                                                + "lastModify=" + lastModify + "\n"
+                                                + "width=" + width + "\n"
+                                                + "height=" + height + "\n"
+                                                + "name=" + name + "\n"
+                                                + "folderId=" + folderId + "\n"
+                                                + "folderName=" + folderName);
 
                     //创建图片对象
                     ImageBean imageBean = new ImageBean();
