@@ -2,6 +2,7 @@ package com.lwkandroid.library.custom.model;
 
 import android.content.Context;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.bean.MediaBean;
@@ -29,6 +30,8 @@ public class MediaLoaderEngine
         appendMimeTypeSelection(selectionBuilder, options.getMimeTypeArray());
         //拼接FileSize的限制
         appendFileSizeSelection(selectionBuilder, options.getFileMinSize(), options.getFileMaxSize());
+
+        Log.e("aa", "selection->" + selectionBuilder.toString());
 
         ThreadUtils.executeBySingle(new ThreadUtils.SimpleTask<List<BucketBean>>()
         {

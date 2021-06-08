@@ -12,7 +12,6 @@ public final class ImageMimeType
         throw new UnsupportedOperationException("Can't instantiate this class !");
     }
 
-    public static final String MIME_TYPE_NO_LIMIT = "image/*";
     public static final String MIME_TYPE_PNG = "image/png";
     public static final String MIME_TYPE_JPG = "image/jpg";
     public static final String MIME_TYPE_JPEG = "image/jpeg";

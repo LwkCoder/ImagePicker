@@ -16,7 +16,8 @@ public class PickMimeType
     public static final int REGULAR = 1;
     public static final int EXCEPT_GIF = 2;
 
-    public static final String[] ARRAY_NO_LIMIT = new String[]{ImageMimeType.MIME_TYPE_NO_LIMIT};
+    public static final String[] ARRAY_NO_LIMIT = new String[]{ImageMimeType.MIME_TYPE_PNG, ImageMimeType.MIME_TYPE_JPG
+            , ImageMimeType.MIME_TYPE_JPEG, ImageMimeType.MIME_TYPE_BMP, ImageMimeType.MIME_TYPE_WEBP, ImageMimeType.MIME_TYPE_GIF};
 
     public static final String[] ARRAY_REGULAR = new String[]{ImageMimeType.MIME_TYPE_PNG, ImageMimeType.MIME_TYPE_JPG, ImageMimeType.MIME_TYPE_JPEG};
 
