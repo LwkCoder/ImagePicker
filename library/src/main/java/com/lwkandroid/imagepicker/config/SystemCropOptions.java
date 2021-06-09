@@ -1,4 +1,4 @@
-package com.lwkandroid.imagepicker.options;
+package com.lwkandroid.imagepicker.config;
 
 import com.lwkandroid.imagepicker.system.crop.ISystemCropRequest;
 import com.lwkandroid.imagepicker.system.crop.SystemCropRequestImpl;

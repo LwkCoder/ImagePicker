@@ -1,6 +1,6 @@
 package com.lwkandroid.imagepicker.system.pick;
 
-import com.lwkandroid.imagepicker.options.SystemPickImageOptions;
+import com.lwkandroid.imagepicker.config.SystemPickImageOptions;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 
 import java.io.File;

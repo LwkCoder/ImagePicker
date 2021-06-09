@@ -1,15 +1,20 @@
-package com.lwkandroid.imagepicker.options;
+package com.lwkandroid.imagepicker.config;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.lwkandroid.imagepicker.constants.PickMimeType;
-import com.lwkandroid.imagepicker.custom.CustomPickImageRequestImpl;
-import com.lwkandroid.imagepicker.custom.ICustomPickImageRequest;
+import com.lwkandroid.imagepicker.custom.pick.CustomPickImageRequestImpl;
+import com.lwkandroid.imagepicker.custom.pick.ICustomPickImageRequest;
+
+import java.util.Arrays;
 
 /**
  * @description: 自定义选择图片的配置
  * @author: LWK
  * @date: 2021/6/7 14:10
  */
-public class CustomPickImageOptions
+public class CustomPickImageOptions implements Parcelable
 {
     private int maxPickNumber = 1;
     private long fileMinSize = 0;
@@ -55,6 +60,59 @@ public class CustomPickImageOptions
     {
         this.mimeTypeArray = mimeTypeArray;
     }
+
+    @Override
+    public String toString()
+    {
+        return "CustomPickImageOptions{" +
+                "maxPickNumber=" + maxPickNumber +
+                ", fileMinSize=" + fileMinSize +
+                ", fileMaxSize=" + fileMaxSize +
+                ", mimeTypeArray=" + Arrays.toString(mimeTypeArray) +
+                '}';
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.maxPickNumber);
+        dest.writeLong(this.fileMinSize);
+        dest.writeLong(this.fileMaxSize);
+        dest.writeStringArray(this.mimeTypeArray);
+    }
+
+    public CustomPickImageOptions()
+    {
+    }
+
+    protected CustomPickImageOptions(Parcel in)
+    {
+        this.maxPickNumber = in.readInt();
+        this.fileMinSize = in.readLong();
+        this.fileMaxSize = in.readLong();
+        this.mimeTypeArray = in.createStringArray();
+    }
+
+    public static final Parcelable.Creator<CustomPickImageOptions> CREATOR = new Parcelable.Creator<CustomPickImageOptions>()
+    {
+        @Override
+        public CustomPickImageOptions createFromParcel(Parcel source)
+        {
+            return new CustomPickImageOptions(source);
+        }
+
+        @Override
+        public CustomPickImageOptions[] newArray(int size)
+        {
+            return new CustomPickImageOptions[size];
+        }
+    };
 
     public static class Builder
     {

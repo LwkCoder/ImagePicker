@@ -10,7 +10,7 @@ import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
-import com.lwkandroid.imagepicker.options.CustomPickImageOptions;
+import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 
 import java.io.File;
 import java.util.List;

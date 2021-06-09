@@ -1,4 +1,4 @@
-package com.lwkandroid.imagepicker.custom;
+package com.lwkandroid.imagepicker.custom.pick;
 
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;

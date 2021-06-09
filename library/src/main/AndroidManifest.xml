@@ -8,8 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
-    <application
-        android:requestLegacyExternalStorage="true">
+    <application android:requestLegacyExternalStorage="true">
         <provider
             android:name=".utils.ImagePickerFileProvider"
             android:authorities="${applicationId}.imagepicker.cache.fileprovider"
@@ -19,19 +18,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/imagepicker_fp_path" />
         </provider>
-
-        <activity
-            android:name=".ui.grid.view.ImageDataActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.pager.view.ImagePagerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.crop.ImageCropActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

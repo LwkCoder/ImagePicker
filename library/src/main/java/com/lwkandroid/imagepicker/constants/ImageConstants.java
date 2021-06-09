@@ -12,7 +12,7 @@ public final class ImageConstants
         throw new UnsupportedOperationException("Can't instantiate this class !");
     }
 
-    public static final String EQUALS = "=";
+    public static final String EQUAL = "=";
     public static final String SINGLE_QUOTES = "'";
     public static final String LEFT_BRACKET = "(";
     public static final String RIGHT_BRACKET = ")";

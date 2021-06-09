@@ -1,6 +1,6 @@
 package com.lwkandroid.imagepicker.system.crop;
 
-import com.lwkandroid.imagepicker.options.SystemCropOptions;
+import com.lwkandroid.imagepicker.config.SystemCropOptions;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 
 import java.io.File;

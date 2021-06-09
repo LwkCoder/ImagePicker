@@ -7,7 +7,7 @@ import com.lwkandroid.imagepicker.bean.BucketBean;
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
-import com.lwkandroid.imagepicker.options.CustomPickImageOptions;
+import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.utils.ThreadUtils;
 import com.lwkandroid.imagepicker.utils.Utils;
 
@@ -94,7 +94,7 @@ public class MediaLoaderEngine
         for (int i = 0; i < mimeTypeArray.length; i++)
         {
             stringBuilder.append(MediaStore.Images.Media.MIME_TYPE)
-                    .append(ImageConstants.EQUALS)
+                    .append(ImageConstants.EQUAL)
                     .append(ImageConstants.SINGLE_QUOTES)
                     .append(mimeTypeArray[i])
                     .append(ImageConstants.SINGLE_QUOTES);
@@ -118,7 +118,7 @@ public class MediaLoaderEngine
                 .append(Math.max(0, minFileSize))
                 .append(ImageConstants.SPACE)
                 .append(ImageConstants.LESS_THAN)
-                .append(ImageConstants.EQUALS)
+                .append(ImageConstants.EQUAL)
                 .append(ImageConstants.SPACE)
                 .append(MediaStore.MediaColumns.SIZE)
                 .append(ImageConstants.SPACE)
@@ -127,7 +127,7 @@ public class MediaLoaderEngine
                 .append(MediaStore.MediaColumns.SIZE)
                 .append(ImageConstants.SPACE)
                 .append(ImageConstants.LESS_THAN)
-                .append(ImageConstants.EQUALS)
+                .append(ImageConstants.EQUAL)
                 .append(ImageConstants.SPACE)
                 .append(Math.max(0, maxFileSize))
                 .append(ImageConstants.RIGHT_BRACKET)
@@ -146,7 +146,7 @@ public class MediaLoaderEngine
                 .append(ImageConstants.SPACE)
                 .append(ImageConstants.LEFT_BRACKET)
                 .append(COLUMN_BUCKET_ID)
-                .append(ImageConstants.EQUALS)
+                .append(ImageConstants.EQUAL)
                 .append(bucketId)
                 .append(ImageConstants.RIGHT_BRACKET)
                 .append(ImageConstants.SPACE);
