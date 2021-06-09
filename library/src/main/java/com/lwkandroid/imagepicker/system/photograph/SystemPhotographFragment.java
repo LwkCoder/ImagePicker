@@ -15,7 +15,7 @@ import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.options.SystemPhotographOptions;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
-import com.lwkandroid.imagepicker.system.AbsMediatorFragment;
+import com.lwkandroid.imagepicker.common.AbsMediatorFragment;
 import com.lwkandroid.imagepicker.constants.ErrorCode;
 import com.lwkandroid.imagepicker.utils.Utils;
 

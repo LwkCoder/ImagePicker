@@ -1,4 +1,4 @@
-package com.lwkandroid.imagepicker.system;
+package com.lwkandroid.imagepicker.common;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
