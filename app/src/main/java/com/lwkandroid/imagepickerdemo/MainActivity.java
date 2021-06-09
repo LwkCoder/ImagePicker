@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.lwkandroid.library.ImagePicker;
 import com.lwkandroid.library.bean.MediaBean;
 import com.lwkandroid.library.callback.PickCallBack;
+import com.lwkandroid.library.constants.ImageConstants;
+import com.lwkandroid.library.custom.model.MediaLoaderEngine;
+import com.lwkandroid.library.options.CustomPickImageOptions;
 
 import java.io.File;
 import java.util.List;
@@ -100,10 +103,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v)
             {
-                ImagePicker.pickImageByCustom()
-                        .setMaxPickNumber(9)
-                        .build()
-                        .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
+//                ImagePicker.pickImageByCustom()
+//                        .setMaxPickNumber(9)
+//                        .build()
+//                        .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
+//                        {
+//                            @Override
+//                            public void onPickSuccess(List<MediaBean> result)
+//                            {
+//                                String string = "";
+//                                for (MediaBean mediaBean : result)
+//                                {
+//                                    string = string + mediaBean.toString() + "\n";
+//                                }
+//                                mTextView.setText(string);
+//                            }
+//
+//                            @Override
+//                            public void onPickFailed(int errorCode, String message)
+//                            {
+//                                mTextView.setText("code=" + errorCode + " msg=" + message);
+//                            }
+//                        });
+
+                index++;
+                MediaLoaderEngine engine=new MediaLoaderEngine();
+                engine.loadPageImage(MainActivity.this, new CustomPickImageOptions(), ImageConstants.BUCKET_ID_ALL_IMAGE,
+                        index, 3, new PickCallBack<List<MediaBean>>()
                         {
                             @Override
                             public void onPickSuccess(List<MediaBean> result)

@@ -1,9 +1,11 @@
 package com.lwkandroid.library.custom.model;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +15,7 @@ import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.library.bean.BucketBean;
 import com.lwkandroid.library.bean.MediaBean;
 import com.lwkandroid.library.constants.ImageConstants;
+import com.lwkandroid.library.utils.Utils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -124,7 +127,59 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
     @Override
     public List<MediaBean> loadPageMediaData(Context context, String selection, String[] selectionArg, String sortOrder, int pageIndex, int pageSize)
     {
-        return null;
+        Bundle queryArgs = new Bundle();
+        queryArgs.putString(ContentResolver.QUERY_ARG_SQL_SELECTION, selection);
+        queryArgs.putStringArray(ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS, selectionArg);
+        if (Utils.checkAndroidR())
+        {
+            queryArgs.putString(ContentResolver.QUERY_ARG_SQL_SORT_ORDER, sortOrder);
+            queryArgs.putString(ContentResolver.QUERY_ARG_SQL_LIMIT, pageSize + ImageConstants.SPACE
+                    + ImageConstants.OFFSET + ImageConstants.SPACE + (pageIndex - 1) * pageSize);
+        } else
+        {
+            sortOrder = sortOrder + ImageConstants.SPACE + ImageConstants.LIMIT + ImageConstants.SPACE + pageSize
+                    + ImageConstants.SPACE + ImageConstants.OFFSET + ImageConstants.SPACE + (pageIndex - 1) * pageSize;
+            queryArgs.putString(ContentResolver.QUERY_ARG_SQL_SORT_ORDER, sortOrder);
+        }
+
+        List<MediaBean> resultList = new LinkedList<>();
+
+        Cursor cursor = context.getContentResolver().query(QUERY_URI, PROJECTION_MEDIA, queryArgs, null);
+
+        if (cursor != null && cursor.moveToFirst())
+        {
+            do
+            {
+                MediaBean mediaBean = new MediaBean();
+                String id = cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[0]));
+                mediaBean.setId(id);
+                mediaBean.setName(cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[1])));
+                String path = cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[2]));
+                if (TextUtils.isEmpty(path) || !new File(path).exists())
+                {
+                    path = getRealPathAndroid_Q(Long.parseLong(id));
+                }
+                mediaBean.setPath(path);
+                mediaBean.setWidth(cursor.getInt(cursor.getColumnIndex(PROJECTION_MEDIA[3])));
+                mediaBean.setHeight(cursor.getInt(cursor.getColumnIndex(PROJECTION_MEDIA[4])));
+                mediaBean.setMimeType(cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[5])));
+                mediaBean.setModifyDate(cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[6])));
+                mediaBean.setSize(cursor.getLong(cursor.getColumnIndex(PROJECTION_MEDIA[7])));
+                mediaBean.setBucketId(cursor.getString(cursor.getColumnIndex(PROJECTION_MEDIA[8])));
+
+                resultList.add(mediaBean);
+            } while (cursor.moveToNext());
+        }
+
+        if (BuildConfig.DEBUG)
+        {
+            for (MediaBean mediaBean : resultList)
+            {
+                Log.i("AndroidQLoaderImpl", "mediaBean->" + mediaBean.toString());
+            }
+        }
+
+        return resultList;
     }
 
     private String getRealPathAndroid_Q(long id)

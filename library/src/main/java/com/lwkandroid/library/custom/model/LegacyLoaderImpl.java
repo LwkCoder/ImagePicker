@@ -26,7 +26,6 @@ import java.util.Set;
  */
 final class LegacyLoaderImpl implements IMediaLoaderEngine
 {
-
     private static final String COLUMN_COUNT = "count";
     private static final String COLUMN_BUCKET_ID = "bucket_id";
     private static final String COLUMN_BUCKET_DISPLAY_NAME = "bucket_display_name";
