@@ -14,6 +14,8 @@ import com.lwkandroid.library.utils.Utils;
 
 import java.util.List;
 
+import androidx.annotation.IntRange;
+
 /**
  * @description: 数据加载
  * @author: LWK
@@ -22,6 +24,7 @@ import java.util.List;
 public class MediaLoaderEngine
 {
     private final String ORDER_BY = MediaStore.Images.Media.DATE_MODIFIED + ImageConstants.SPACE + ImageConstants.DESC;
+    private static final String COLUMN_BUCKET_ID = "bucket_id";
 
     public void loadAllBucket(Context context, CustomPickImageOptions options, PickCallBack<List<BucketBean>> callBack)
     {
@@ -40,7 +43,7 @@ public class MediaLoaderEngine
             {
                 IMediaLoaderEngine loaderEngine = Utils.checkAndroidQ() ? new AndroidQLoaderImpl() : new LegacyLoaderImpl();
 
-                return loaderEngine.loadMediaData(context, selectionBuilder.toString(), null, ORDER_BY);
+                return loaderEngine.loadAllBuckets(context, selectionBuilder.toString(), null, ORDER_BY);
             }
 
             @Override
@@ -55,7 +58,9 @@ public class MediaLoaderEngine
     }
 
     public void loadPageImage(Context context, CustomPickImageOptions options, long bucketId,
-                              int pageIndex, int pageSize, PickCallBack<List<MediaBean>> callBack)
+                              @IntRange(from = 1, to = Integer.MAX_VALUE) int pageIndex,
+                              @IntRange(from = 1, to = Integer.MAX_VALUE) int pageSize,
+                              PickCallBack<List<MediaBean>> callBack)
     {
         StringBuilder selectionBuilder = new StringBuilder();
         //拼接MimeType的限制
@@ -65,13 +70,15 @@ public class MediaLoaderEngine
         //凭借BucketId的限制
         appendBucketIdSelection(selectionBuilder, bucketId);
 
+        Log.e("BBB", "selection->" + selectionBuilder.toString());
+
         ThreadUtils.executeBySingle(new ThreadUtils.SimpleTask<List<MediaBean>>()
         {
             @Override
             public List<MediaBean> doInBackground() throws Throwable
             {
                 IMediaLoaderEngine loaderEngine = Utils.checkAndroidQ() ? new AndroidQLoaderImpl() : new LegacyLoaderImpl();
-                return null;
+                return loaderEngine.loadPageMediaData(context, selectionBuilder.toString(), null, ORDER_BY, pageIndex, pageSize);
             }
 
             @Override
@@ -143,7 +150,7 @@ public class MediaLoaderEngine
                 .append(ImageConstants.AND)
                 .append(ImageConstants.SPACE)
                 .append(ImageConstants.LEFT_BRACKET)
-                .append(MediaStore.Images.Media.BUCKET_ID)
+                .append(COLUMN_BUCKET_ID)
                 .append(ImageConstants.EQUALS)
                 .append(bucketId)
                 .append(ImageConstants.RIGHT_BRACKET)

@@ -1,5 +1,6 @@
 package com.lwkandroid.library;
 
+import com.lwkandroid.library.options.CustomPickImageOptions;
 import com.lwkandroid.library.options.SystemCropOptions;
 import com.lwkandroid.library.options.SystemPhotographOptions;
 import com.lwkandroid.library.options.SystemPickImageOptions;
@@ -42,5 +43,13 @@ public final class ImagePicker
     public static SystemCropOptions.Builder cropImageBySystem(File imageFile)
     {
         return new SystemCropOptions.Builder().setImageFile(imageFile);
+    }
+
+    /**
+     * 发起自定义界面选择图片
+     */
+    public static CustomPickImageOptions.Builder pickImageByCustom()
+    {
+        return new CustomPickImageOptions.Builder();
     }
 }

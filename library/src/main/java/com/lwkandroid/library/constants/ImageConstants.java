@@ -17,11 +17,13 @@ public final class ImageConstants
     public static final String LEFT_BRACKET = "(";
     public static final String RIGHT_BRACKET = ")";
     public static final String SPACE = " ";
-    public static final String OR = "or";
-    public static final String AND = "and";
+    public static final String OR = "OR";
+    public static final String AND = "AND";
     public static final String LESS_THAN = "<";
     public static final String DESC = "DESC";
-    public static final String GROUP_BY = "group by";
+    public static final String GROUP_BY = "GROUP BY";
+    public static final String LIMIT = "LIMIT";
+    public static final String OFFSET = "OFFSET";
 
     public static final long BUCKET_ID_ALL_IMAGE = -1;
 }

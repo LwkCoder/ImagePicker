@@ -12,7 +12,6 @@ public class BucketBean
     private long bucketId = -1;
     private String name;
     private String firstImagePath;
-    private String firstMimeType;
     private long fileNumber;
 
     public long getBucketId()
@@ -43,16 +42,6 @@ public class BucketBean
     public void setFirstImagePath(String firstImagePath)
     {
         this.firstImagePath = firstImagePath;
-    }
-
-    public String getFirstMimeType()
-    {
-        return firstMimeType;
-    }
-
-    public void setFirstMimeType(String firstMimeType)
-    {
-        this.firstMimeType = firstMimeType;
     }
 
     public long getFileNumber()
@@ -93,7 +82,6 @@ public class BucketBean
                 "bucketId=" + bucketId +
                 ", name='" + name + '\'' +
                 ", firstImagePath='" + firstImagePath + '\'' +
-                ", firstMimeType='" + firstMimeType + '\'' +
                 ", fileNumber=" + fileNumber +
                 '}';
     }

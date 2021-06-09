@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/activity_main"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lwkandroid.imagepickerdemo.MainActivity">
@@ -14,189 +13,47 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <TextView
+        <Button
+            android:id="@+id/btnTest1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#50000000"
-            android:padding="8dp"
-            android:text="选取模式"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
-
-        <RadioGroup
-            android:id="@+id/rg_main_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_main_mode_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="只拍照"
-                android:textSize="16sp"/>
-
-            <RadioButton
-                android:id="@+id/rb_main_mode_single"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="单选模式"
-                android:textSize="16sp"/>
-
-            <RadioButton
-                android:id="@+id/rb_main_mode_mutil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="多选模式"
-                android:textSize="16sp"/>
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#50000000"
-            android:padding="8dp"
-            android:text="配置参数"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="最大选取图片的数量（仅针对多选模式生效,默认为1）"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"/>
-
-        <EditText
-            android:id="@+id/ed_main_max_num"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:inputType="number"
-            android:text="1"
-            android:textColor="@android:color/black"/>
-
-        <CheckBox
-            android:id="@+id/ck_main_need_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:checked="true"
-            android:text="需要相机入口(仅针对单选、多选模式生效)"
-            android:textSize="16sp"/>
-
-        <CheckBox
-            android:id="@+id/ck_main_need_crop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="是否需要裁剪(仅针对拍照、单选模式生效)"
-            android:textSize="16sp"/>
-
-        <LinearLayout
-            android:id="@+id/ll_main_crop_params"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="填写裁剪比例"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/ed_main_asX"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="填写AspectX"
-                    android:inputType="number"/>
-
-                <EditText
-                    android:id="@+id/ed_main_asY"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="填写AspectY"
-                    android:inputType="number"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="填写输出宽高"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="15sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/ed_main_opX"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="填写OutputX"
-                    android:inputType="number"/>
-
-                <EditText
-                    android:id="@+id/ed_main_opY"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="填写OutputY"
-                    android:inputType="number"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+            android:text="系统拍照" />
 
         <Button
-            android:id="@+id/btn_main_start"
+            android:id="@+id/btnTest2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="开始选择图片"/>
-        <Button
-            android:id="@+id/btnTest01"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="拍照"/>
+            android:text="系统选择图片" />
 
-        <ImageView
-            android:id="@+id/imgTest"
-            android:layout_width="150dp"
-            android:layout_height="150dp"/>
+        <Button
+            android:id="@+id/btnTest3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="系统裁剪图片（需先执行系统拍照或系统选择图片）" />
+
+        <Button
+            android:id="@+id/btnTest4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自定义模式选择图片" />
+
+        <Button
+            android:id="@+id/btnTest5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TEST5" />
+
+        <Button
+            android:id="@+id/btnTest6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TEST6" />
 
         <TextView
-            android:id="@+id/tv_main_result"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"/>
-
+            android:layout_margin="16dp" />
     </LinearLayout>
 
 </ScrollView>

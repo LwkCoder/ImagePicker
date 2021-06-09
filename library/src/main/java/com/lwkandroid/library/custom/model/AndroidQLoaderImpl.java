@@ -11,6 +11,7 @@ import android.util.Log;
 import com.lwkandroid.imagepicker.BuildConfig;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.library.bean.BucketBean;
+import com.lwkandroid.library.bean.MediaBean;
 import com.lwkandroid.library.constants.ImageConstants;
 
 import java.io.File;
@@ -31,24 +32,30 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
 {
     private static final Uri QUERY_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-    private static final String[] PROJECTION = {
+    private static final String[] PROJECTION_BUCKET = {
             MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.BUCKET_ID,
+            MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Images.Media.DATA,
+    };
+
+    private static final String[] PROJECTION_MEDIA = {
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.WIDTH,
             MediaStore.Images.Media.HEIGHT,
             MediaStore.Images.Media.MIME_TYPE,
             MediaStore.Images.Media.DATE_MODIFIED,
-            MediaStore.Images.Media.BUCKET_ID,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-            MediaStore.Images.Media.MIME_TYPE,
             MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media.BUCKET_ID,
     };
 
 
     @Override
-    public List<BucketBean> loadMediaData(Context context, String selection, String[] selectionArg, String sortOrder)
+    public List<BucketBean> loadAllBuckets(Context context, String selection, String[] selectionArg, String sortOrder)
     {
-        Cursor cursor = context.getContentResolver().query(QUERY_URI, PROJECTION, selection, selectionArg, sortOrder);
+        Cursor cursor = context.getContentResolver().query(QUERY_URI, PROJECTION_BUCKET, selection, selectionArg, sortOrder);
 
         List<BucketBean> resultList = new LinkedList<>();
 
@@ -59,7 +66,7 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
         {
             do
             {
-                long bucketId = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
+                long bucketId = cursor.getLong(cursor.getColumnIndex(PROJECTION_BUCKET[1]));
 
                 if (buckMap.containsKey(bucketId))
                 {
@@ -69,16 +76,15 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
                 {
                     BucketBean bucketBean = new BucketBean();
                     bucketBean.setBucketId(bucketId);
-                    bucketBean.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)));
+                    bucketBean.setName(cursor.getString(cursor.getColumnIndex(PROJECTION_BUCKET[2])));
                     bucketBean.setFileNumber(1);
                     //这里要做兼容
-                    String firstImagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    String firstImagePath = cursor.getString(cursor.getColumnIndex(PROJECTION_BUCKET[3]));
                     if (TextUtils.isEmpty(firstImagePath) || !(new File(firstImagePath)).exists())
                     {
                         firstImagePath = getRealPathAndroid_Q(bucketId);
                     }
                     bucketBean.setFirstImagePath(firstImagePath);
-                    bucketBean.setFirstMimeType(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)));
                     buckMap.put(bucketId, bucketBean);
                 }
                 totalFileNumber++;
@@ -93,13 +99,12 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
         if (cursor != null && cursor.moveToFirst())
         {
             //这里要做兼容
-            String firstImagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            String firstImagePath = cursor.getString(cursor.getColumnIndex(PROJECTION_BUCKET[3]));
             if (TextUtils.isEmpty(firstImagePath) || !(new File(firstImagePath)).exists())
             {
-                firstImagePath = getFirstImagePath(cursor);
+                firstImagePath = getRealPathAndroid_Q(cursor.getLong(cursor.getColumnIndex(PROJECTION_BUCKET[0])));
             }
             allImageBucket.setFirstImagePath(firstImagePath);
-            allImageBucket.setFirstMimeType(getFirstImageMimeType(cursor));
         }
 
         resultList.add(allImageBucket);
@@ -116,15 +121,10 @@ final class AndroidQLoaderImpl implements IMediaLoaderEngine
         return resultList;
     }
 
-    private String getFirstImagePath(Cursor cursor)
+    @Override
+    public List<MediaBean> loadPageMediaData(Context context, String selection, String[] selectionArg, String sortOrder, int pageIndex, int pageSize)
     {
-        long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-        return getRealPathAndroid_Q(id);
-    }
-
-    private String getFirstImageMimeType(Cursor cursor)
-    {
-        return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
+        return null;
     }
 
     private String getRealPathAndroid_Q(long id)
