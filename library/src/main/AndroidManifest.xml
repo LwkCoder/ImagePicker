@@ -11,7 +11,7 @@
     <application
         android:requestLegacyExternalStorage="true">
         <provider
-            android:name="com.lwkandroid.library.utils.ImagePickerFileProvider"
+            android:name=".utils.ImagePickerFileProvider"
             android:authorities="${applicationId}.imagepicker.cache.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

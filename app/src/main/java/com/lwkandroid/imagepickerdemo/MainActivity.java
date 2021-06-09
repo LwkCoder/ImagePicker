@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lwkandroid.library.ImagePicker;
-import com.lwkandroid.library.bean.MediaBean;
-import com.lwkandroid.library.callback.PickCallBack;
-import com.lwkandroid.library.constants.ImageConstants;
-import com.lwkandroid.library.custom.model.MediaLoaderEngine;
-import com.lwkandroid.library.options.CustomPickImageOptions;
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.bean.MediaBean;
+import com.lwkandroid.imagepicker.callback.PickCallBack;
+import com.lwkandroid.imagepicker.constants.ImageConstants;
+import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
+import com.lwkandroid.imagepicker.options.CustomPickImageOptions;
 
 import java.io.File;
 import java.util.List;
