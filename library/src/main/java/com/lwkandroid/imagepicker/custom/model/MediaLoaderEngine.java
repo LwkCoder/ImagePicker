@@ -6,14 +6,18 @@ import android.provider.MediaStore;
 import com.lwkandroid.imagepicker.bean.BucketBean;
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
-import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
+import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.utils.ThreadUtils;
 import com.lwkandroid.imagepicker.utils.Utils;
 
 import java.util.List;
 
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 /**
  * @description: 数据加载
@@ -25,7 +29,8 @@ public class MediaLoaderEngine
     private final String ORDER_BY = MediaStore.Images.Media.DATE_MODIFIED + ImageConstants.SPACE + ImageConstants.DESC;
     private static final String COLUMN_BUCKET_ID = "bucket_id";
 
-    public void loadAllBucket(Context context, CustomPickImageOptions options, PickCallBack<List<BucketBean>> callBack)
+    public void loadAllBucket(@NonNull Context context, @NonNull LifecycleOwner lifecycleOwner,
+                              @NonNull CustomPickImageOptions options, PickCallBack<List<BucketBean>> callBack)
     {
         StringBuilder selectionBuilder = new StringBuilder();
         //拼接MimeType的限制
@@ -33,7 +38,7 @@ public class MediaLoaderEngine
         //拼接FileSize的限制
         appendFileSizeSelection(selectionBuilder, options.getFileMinSize(), options.getFileMaxSize());
 
-        ThreadUtils.executeBySingle(new ThreadUtils.SimpleTask<List<BucketBean>>()
+        ThreadUtils.SimpleTask<List<BucketBean>> task = new ThreadUtils.SimpleTask<List<BucketBean>>()
         {
             @Override
             public List<BucketBean> doInBackground() throws Throwable
@@ -51,10 +56,26 @@ public class MediaLoaderEngine
                     callBack.onPickSuccess(result);
                 }
             }
+        };
+
+        lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver()
+        {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event)
+            {
+                if (Lifecycle.Event.ON_DESTROY == event)
+                {
+                    ThreadUtils.cancel(task);
+                    source.getLifecycle().removeObserver(this);
+                }
+            }
         });
+
+        ThreadUtils.executeBySingle(task);
     }
 
-    public void loadPageImage(Context context, CustomPickImageOptions options, long bucketId,
+    public void loadPageImage(@NonNull Context context, @NonNull LifecycleOwner lifecycleOwner,
+                              @NonNull CustomPickImageOptions options, long bucketId,
                               @IntRange(from = 1, to = Integer.MAX_VALUE) int pageIndex,
                               @IntRange(from = 1, to = Integer.MAX_VALUE) int pageSize,
                               PickCallBack<List<MediaBean>> callBack)
@@ -67,7 +88,7 @@ public class MediaLoaderEngine
         //凭借BucketId的限制
         appendBucketIdSelection(selectionBuilder, bucketId);
 
-        ThreadUtils.executeBySingle(new ThreadUtils.SimpleTask<List<MediaBean>>()
+        ThreadUtils.SimpleTask<List<MediaBean>> task = new ThreadUtils.SimpleTask<List<MediaBean>>()
         {
             @Override
             public List<MediaBean> doInBackground() throws Throwable
@@ -84,7 +105,22 @@ public class MediaLoaderEngine
                     callBack.onPickSuccess(result);
                 }
             }
+        };
+
+        lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver()
+        {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event)
+            {
+                if (Lifecycle.Event.ON_DESTROY == event)
+                {
+                    ThreadUtils.cancel(task);
+                    source.getLifecycle().removeObserver(this);
+                }
+            }
         });
+
+        ThreadUtils.executeBySingle(task);
     }
 
     private void appendMimeTypeSelection(StringBuilder stringBuilder, String[] mimeTypeArray)

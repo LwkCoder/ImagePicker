@@ -8,9 +8,6 @@ import android.widget.TextView;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
-import com.lwkandroid.imagepicker.constants.ImageConstants;
-import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
-import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 
 import java.io.File;
 import java.util.List;
@@ -75,7 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btnTest3).setOnClickListener(v -> {
             if (mLastFile == null)
+            {
                 return;
+            }
             ImagePicker.cropImageBySystem(mLastFile)
                     .setAspectX(1)
                     .setAspectY(1)
@@ -103,33 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v)
             {
-//                ImagePicker.pickImageByCustom()
-//                        .setMaxPickNumber(9)
-//                        .build()
-//                        .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
-//                        {
-//                            @Override
-//                            public void onPickSuccess(List<MediaBean> result)
-//                            {
-//                                String string = "";
-//                                for (MediaBean mediaBean : result)
-//                                {
-//                                    string = string + mediaBean.toString() + "\n";
-//                                }
-//                                mTextView.setText(string);
-//                            }
-//
-//                            @Override
-//                            public void onPickFailed(int errorCode, String message)
-//                            {
-//                                mTextView.setText("code=" + errorCode + " msg=" + message);
-//                            }
-//                        });
-
-                index++;
-                MediaLoaderEngine engine=new MediaLoaderEngine();
-                engine.loadPageImage(MainActivity.this, new CustomPickImageOptions(), ImageConstants.BUCKET_ID_ALL_IMAGE,
-                        index, 3, new PickCallBack<List<MediaBean>>()
+                ImagePicker.pickImageByCustom(new GlideDisPlayer())
+                        .setMaxPickNumber(9)
+                        .build()
+                        .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
                         {
                             @Override
                             public void onPickSuccess(List<MediaBean> result)
@@ -148,6 +124,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 mTextView.setText("code=" + errorCode + " msg=" + message);
                             }
                         });
+
+                //                index++;
+                //                MediaLoaderEngine engine=new MediaLoaderEngine();
+                //                engine.loadPageImage(MainActivity.this, new CustomPickImageOptions(), ImageConstants.BUCKET_ID_ALL_IMAGE,
+                //                        index, 3, new PickCallBack<List<MediaBean>>()
+                //                        {
+                //                            @Override
+                //                            public void onPickSuccess(List<MediaBean> result)
+                //                            {
+                //                                String string = "";
+                //                                for (MediaBean mediaBean : result)
+                //                                {
+                //                                    string = string + mediaBean.toString() + "\n";
+                //                                }
+                //                                mTextView.setText(string);
+                //                            }
+                //
+                //                            @Override
+                //                            public void onPickFailed(int errorCode, String message)
+                //                            {
+                //                                mTextView.setText("code=" + errorCode + " msg=" + message);
+                //                            }
+                //                        });
             }
         });
     }

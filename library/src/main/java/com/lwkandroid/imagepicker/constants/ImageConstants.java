@@ -26,4 +26,7 @@ public final class ImageConstants
     public static final String OFFSET = "OFFSET";
 
     public static final long BUCKET_ID_ALL_IMAGE = -1;
+
+    public static final String KEY_INTENT_OPTIONS = "options";
+    public static final String KEY_INTENT_RESULT = "result";
 }

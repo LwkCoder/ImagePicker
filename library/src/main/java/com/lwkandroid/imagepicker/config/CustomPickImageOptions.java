@@ -20,6 +20,7 @@ public class CustomPickImageOptions implements Parcelable
     private long fileMinSize = 0;
     private long fileMaxSize = Long.MAX_VALUE;
     private String[] mimeTypeArray = PickMimeType.ARRAY_NO_LIMIT;
+    private CustomPickImageStyle style;
 
     public int getMaxPickNumber()
     {
@@ -61,6 +62,16 @@ public class CustomPickImageOptions implements Parcelable
         this.mimeTypeArray = mimeTypeArray;
     }
 
+    public CustomPickImageStyle getStyle()
+    {
+        return style;
+    }
+
+    public void setStyle(CustomPickImageStyle style)
+    {
+        this.style = style;
+    }
+
     @Override
     public String toString()
     {
@@ -69,6 +80,7 @@ public class CustomPickImageOptions implements Parcelable
                 ", fileMinSize=" + fileMinSize +
                 ", fileMaxSize=" + fileMaxSize +
                 ", mimeTypeArray=" + Arrays.toString(mimeTypeArray) +
+                ", style=" + style +
                 '}';
     }
 
@@ -85,6 +97,7 @@ public class CustomPickImageOptions implements Parcelable
         dest.writeLong(this.fileMinSize);
         dest.writeLong(this.fileMaxSize);
         dest.writeStringArray(this.mimeTypeArray);
+        dest.writeParcelable(this.style, flags);
     }
 
     public CustomPickImageOptions()
@@ -97,9 +110,10 @@ public class CustomPickImageOptions implements Parcelable
         this.fileMinSize = in.readLong();
         this.fileMaxSize = in.readLong();
         this.mimeTypeArray = in.createStringArray();
+        this.style = in.readParcelable(CustomPickImageStyle.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<CustomPickImageOptions> CREATOR = new Parcelable.Creator<CustomPickImageOptions>()
+    public static final Creator<CustomPickImageOptions> CREATOR = new Creator<CustomPickImageOptions>()
     {
         @Override
         public CustomPickImageOptions createFromParcel(Parcel source)
@@ -144,6 +158,12 @@ public class CustomPickImageOptions implements Parcelable
         public Builder setPickMimeType(@PickMimeType.Type int type)
         {
             mOptions.setMimeTypeArray(PickMimeType.getMimeTypeArrayByType(type));
+            return this;
+        }
+
+        public Builder setStyle(CustomPickImageStyle style)
+        {
+            mOptions.setStyle(style);
             return this;
         }
 

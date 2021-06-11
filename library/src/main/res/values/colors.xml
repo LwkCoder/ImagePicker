@@ -14,4 +14,11 @@
     <color name="imagepicker_preview_enable">@color/imagepicker_text_white</color>
     <color name="imagepicker_preview_unenable">#9d9d9d</color>
 
+    <color name="image_pick_style_dark_status_bar">#303135</color>
+    <color name="image_pick_style_dark_action_bar_background">#393A3F</color>
+    <color name="image_pick_style_dark_action_bar_text">@android:color/white</color>
+    <color name="image_pick_style_dark_navigation_bar_background">#393A3F</color>
+    <color name="image_pick_style_dark_navigation_bar_text">@android:color/white</color>
+    <color name="image_pick_style_dark_root_background">#353535</color>
+    <color name="image_pick_style_dark_loading">#9d9d9d</color>
 </resources>

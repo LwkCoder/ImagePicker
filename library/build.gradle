@@ -23,10 +23,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:$AppcompatVersion"
+    implementation "androidx.appcompat:appcompat:$AppCompatXVersion"
     implementation "androidx.recyclerview:recyclerview:$RecyclerViewVersion"
     implementation "com.lwkandroid.library:rcvadapter:$RcvAdapterVersion"
     implementation "com.lwkandroid.library:StateFrameLayout:$StateFrameLayoutVersion"
+    implementation "com.lwkandroid.library:ComActionBar:$ComActionBarVersion"
     implementation "com.github.getActivity:XXPermissions:$XXPermissionVersion"
 }
 

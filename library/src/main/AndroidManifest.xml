@@ -9,6 +9,10 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <application android:requestLegacyExternalStorage="true">
+        <activity
+            android:name=".custom.pick.GridImageActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <provider
             android:name=".utils.ImagePickerFileProvider"
             android:authorities="${applicationId}.imagepicker.cache.fileprovider"

@@ -1,5 +1,6 @@
 package com.lwkandroid.imagepicker.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -586,6 +587,48 @@ public final class Utils
             }
             decorView.setSystemUiVisibility(vis);
         }
+    }
+
+    /**
+     * 5.0以上切换NavigationBar颜色
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setNavigationBarColor(Activity activity, @ColorInt int color)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setNavigationBarColor(color);
+        }
+    }
+
+    /**
+     * 判断颜色是否偏暗
+     *
+     * @param color 颜色
+     * @return
+     */
+    public static boolean isDarkColor(int color)
+    {
+        int grey = toGrey(color);
+        return grey < 50;
+    }
+
+    /**
+     * 颜色转换成灰度值
+     *
+     * @param rgb 颜色
+     * @return　灰度值
+     */
+    private static int toGrey(int rgb)
+    {
+        int blue = rgb & 0x000000FF;
+        int green = (rgb & 0x0000FF00) >> 8;
+        int red = (rgb & 0x00FF0000) >> 16;
+        return (red * 38 + green * 75 + blue * 15) >> 7;
     }
 
 
