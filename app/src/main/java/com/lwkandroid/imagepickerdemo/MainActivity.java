@@ -124,31 +124,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 mTextView.setText("code=" + errorCode + " msg=" + message);
                             }
                         });
-
-                //                index++;
-                //                MediaLoaderEngine engine=new MediaLoaderEngine();
-                //                engine.loadPageImage(MainActivity.this, new CustomPickImageOptions(), ImageConstants.BUCKET_ID_ALL_IMAGE,
-                //                        index, 3, new PickCallBack<List<MediaBean>>()
-                //                        {
-                //                            @Override
-                //                            public void onPickSuccess(List<MediaBean> result)
-                //                            {
-                //                                String string = "";
-                //                                for (MediaBean mediaBean : result)
-                //                                {
-                //                                    string = string + mediaBean.toString() + "\n";
-                //                                }
-                //                                mTextView.setText(string);
-                //                            }
-                //
-                //                            @Override
-                //                            public void onPickFailed(int errorCode, String message)
-                //                            {
-                //                                mTextView.setText("code=" + errorCode + " msg=" + message);
-                //                            }
-                //                        });
             }
         });
+
+        CheckView checkView = findViewById(R.id.checkView);
+        checkView.setCountable(true);
+        checkView.setChecked(false);
+        checkView.setCheckedNum(5);
     }
 
     @Override

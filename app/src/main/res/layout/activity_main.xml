@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/imagepicker_text_gray"
     tools:context="com.lwkandroid.imagepickerdemo.MainActivity">
 
     <LinearLayout
@@ -53,7 +55,12 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp" />|
+
+        <com.lwkandroid.imagepickerdemo.CheckView
+            android:id="@+id/checkView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
 
     </LinearLayout>
 
