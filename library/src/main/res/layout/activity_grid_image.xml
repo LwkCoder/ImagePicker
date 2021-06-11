@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@color/image_pick_style_dark_root_background"
+    tools:context=".custom.pick.GridImageActivity">
+
+    <com.lwkandroid.widget.ComActionBar
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_click_to_finish="true"
+        app:left_icon_drawable="@drawable/image_picker_action_bar_arrow"
+        app:show_divider_line="false"
+        app:title_text="@string/title_select_image"
+        app:title_text_size="16sp"
+        tools:background="@color/image_pick_style_dark_action_bar_background" />
+
+    <com.lwkandroid.widget.StateFrameLayout
+        android:id="@+id/stateFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:loadingLayoutResId="@layout/layout_image_picker_loading">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="never" />
+
+            <LinearLayout
+                android:id="@+id/ll_bottom_operation"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_picker_bottom_operation_height"
+                android:orientation="horizontal"
+                tools:background="@color/image_pick_style_dark_action_bar_background">
+
+                <TextView
+                    android:id="@+id/tv_current_bucket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/image_picker_ripple_click_effect"
+                    android:drawablePadding="@dimen/image_picker_padding_horizontal_small"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/image_picker_padding_horizontal_normal"
+                    android:paddingEnd="@dimen/image_picker_padding_horizontal_normal"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    tools:text="全部图片"
+                    tools:textColor="@color/image_pick_style_dark_action_bar_text" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/image_picker_ripple_click_effect"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/image_picker_padding_horizontal_normal"
+                    android:paddingEnd="@dimen/image_picker_padding_horizontal_normal"
+                    android:textSize="14sp"
+                    tools:text="@string/done_placeholder"
+                    tools:textColor="@color/image_pick_style_dark_action_bar_text" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.lwkandroid.widget.StateFrameLayout>
+
+</LinearLayout>

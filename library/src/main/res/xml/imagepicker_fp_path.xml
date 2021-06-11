@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--
+     <files-path/>代表的根目录： Context.getFilesDir()
+     <external-path/>代表的根目录: Environment.getExternalStorageDirectory()
+     <cache-path/>代表的根目录: getCacheDir()
+     <external-cache-path/>代表的根目录:Context.getExternalCacheDir()
+     更多类型参考：http://www.jianshu.com/p/55eae30d133c
+     -->
+    <root-path
+        name="root"
+        path=""/>
+
+    <files-path
+        name="files_path"
+        path="."/>
+
+    <cache-path
+        name="cache_path"
+        path="."/>
+
+    <external-path
+        name="external_path"
+        path="."/>
+
+    <external-files-path
+        name="external_files_path"
+        path="."/>
+
+    <external-cache-path
+        name="external_cache_path"
+        path="."/>
+</paths>

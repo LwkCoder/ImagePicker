@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+apply from: "${rootProject.projectDir}/publish-mavencentral.gradle"
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as int
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$AppCompatXVersion"
+    implementation "androidx.recyclerview:recyclerview:$RecyclerViewVersion"
+    implementation "com.lwkandroid.library:rcvadapter:$RcvAdapterVersion"
+    implementation "com.lwkandroid.library:StateFrameLayout:$StateFrameLayoutVersion"
+    implementation "com.lwkandroid.library:ComActionBar:$ComActionBarVersion"
+    implementation "com.github.getActivity:XXPermissions:$XXPermissionVersion"
+}
+
+allprojects {
+    tasks.withType(Javadoc) {//兼容中文字符
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
