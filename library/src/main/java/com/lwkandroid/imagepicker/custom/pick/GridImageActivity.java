@@ -137,6 +137,28 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mLoadingView.setColor(style.getLoadingColor());
     }
 
+    @Override
+    public void onLoadMoreRequest()
+    {
+        int nextPage = mCurrentPageIndex + 1;
+        mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
+                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<MediaBean> result)
+                    {
+                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
+                        mCurrentPageIndex = nextPage;
+                    }
+
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+
+                    }
+                });
+    }
+
     /**
      * 初始化其他配置
      */
@@ -243,28 +265,6 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                         mCurrentPageIndex = 1;
                         mAdapter.refreshDatas(result);
                         mAdapter.enableLoadMore(result != null && result.size() >= PAGE_SIZE);
-                    }
-
-                    @Override
-                    public void onPickFailed(int errorCode, String message)
-                    {
-
-                    }
-                });
-    }
-
-    @Override
-    public void onLoadMoreRequest()
-    {
-        int nextPage = mCurrentPageIndex + 1;
-        mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
-                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
-                {
-                    @Override
-                    public void onPickSuccess(List<MediaBean> result)
-                    {
-                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
-                        mCurrentPageIndex = nextPage;
                     }
 
                     @Override
