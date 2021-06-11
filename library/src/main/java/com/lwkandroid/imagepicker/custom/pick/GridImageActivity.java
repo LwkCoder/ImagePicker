@@ -21,6 +21,7 @@ import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
 import com.lwkandroid.imagepicker.utils.Utils;
+import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
 import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
 import com.lwkandroid.widget.ComActionBar;
 import com.lwkandroid.widget.StateFrameLayout;
@@ -30,7 +31,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -38,7 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * @author LWK
  */
-public class GridImageActivity extends AppCompatActivity
+public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreListener
 {
     private static final int PAGE_SIZE = 50;
 
@@ -54,6 +55,7 @@ public class GridImageActivity extends AppCompatActivity
     private TextView mTvDone;
 
     private MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
+    private GridAdapter mAdapter;
 
     private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
     private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
@@ -84,6 +86,10 @@ public class GridImageActivity extends AppCompatActivity
         mLoadingView = findViewById(R.id.loadingView);
         mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
         mTvDone = findViewById(R.id.tv_done);
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        mAdapter = new GridAdapter(this, null);
+        mAdapter.setOnLoadMoreListener(this);
 
         initStyle();
         initData();
@@ -145,13 +151,28 @@ public class GridImageActivity extends AppCompatActivity
                 mCurrentBucketLiveData.postValue(bucketBeans.get(0));
             }
         });
-        mCurrentBucketLiveData.observe(this, this::updateListAfterBucketChanged);
-        mSelectedMediaLiveData.observe(this, new Observer<List<BucketBean>>()
-        {
-            @Override
-            public void onChanged(List<BucketBean> bucketBeans)
-            {
 
+        mCurrentBucketLiveData.observe(this, this::updateListAfterBucketChanged);
+
+        mSelectedMediaLiveData.observe(this, bucketBeans -> {
+            if (bucketBeans == null || bucketBeans.size() == 0)
+            {
+                mActionBar.setRightText01(null);
+                mActionBar.setRightOnItemClickListener01(null);
+                mTvDone.setVisibility(View.GONE);
+            } else
+            {
+                mActionBar.setRightText01(getString(R.string.preview_placeholder, bucketBeans.size()));
+                mActionBar.setRightOnItemClickListener01(new ComActionBar.OnItemClickListener()
+                {
+                    @Override
+                    public void onActionBarItemClicked(int viewId, TextView textView, View dividerLine)
+                    {
+                        //TODO 预览
+                    }
+                });
+                mTvDone.setVisibility(View.VISIBLE);
+                mTvDone.setText(getString(R.string.done_placeholder, bucketBeans.size(), mOptions.getMaxPickNumber()));
             }
         });
     }
@@ -212,6 +233,7 @@ public class GridImageActivity extends AppCompatActivity
     private void updateListAfterBucketChanged(BucketBean bucketBean)
     {
         mTvCurrentBucket.setText(bucketBean.getName());
+        mAdapter.enableLoadMore(false);
         mMediaLoaderEngine.loadPageImage(this, this, mOptions, bucketBean.getBucketId(),
                 1, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
                 {
@@ -219,6 +241,30 @@ public class GridImageActivity extends AppCompatActivity
                     public void onPickSuccess(List<MediaBean> result)
                     {
                         mCurrentPageIndex = 1;
+                        mAdapter.refreshDatas(result);
+                        mAdapter.enableLoadMore(result != null && result.size() >= PAGE_SIZE);
+                    }
+
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onLoadMoreRequest()
+    {
+        int nextPage = mCurrentPageIndex + 1;
+        mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
+                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<MediaBean> result)
+                    {
+                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
+                        mCurrentPageIndex = nextPage;
                     }
 
                     @Override

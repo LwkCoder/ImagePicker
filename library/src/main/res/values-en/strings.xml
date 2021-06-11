@@ -37,8 +37,8 @@
     <string name="permission_denied_of_crop_image">App needs the SdCard permission,otherwise the image cannot be cropped</string>
     <string name="unknown_error">Unknown error occurred</string>
     <string name="can_not_scan_media_data">Can not get media data</string>
-    <string name="preview_placeholder">Preview(%1$s)</string>
-    <string name="done_placeholder">Done(%1$s/%2$s)</string>
+    <string name="preview_placeholder">Preview(%1$d)</string>
+    <string name="done_placeholder">Done(%1$d/%2$d)</string>
     <string name="title_select_image">Select Picture</string>
     <string name="title_crop_image">Crop Picture</string>
 
