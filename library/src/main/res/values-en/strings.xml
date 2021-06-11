@@ -39,6 +39,8 @@
     <string name="can_not_scan_media_data">Can not get media data</string>
     <string name="preview_placeholder">Preview(%1$s)</string>
     <string name="done_placeholder">Done(%1$s/%2$s)</string>
+    <string name="title_select_image">Select Picture</string>
+    <string name="title_crop_image">Crop Picture</string>
 
     <string name="bucket_all_picture">All Pictures</string>
 </resources>

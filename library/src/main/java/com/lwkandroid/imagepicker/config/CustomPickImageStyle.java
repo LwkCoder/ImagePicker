@@ -35,6 +35,15 @@ public class CustomPickImageStyle implements Parcelable
     @ColorInt
     private int loadingColor;
 
+    @ColorInt
+    private int bucketNameTextColor;
+
+    @ColorInt
+    private int bucketListBackgroundColor;
+
+    @ColorInt
+    private int doneTextColor;
+
     public int getStatusBarColor()
     {
         return statusBarColor;
@@ -93,6 +102,36 @@ public class CustomPickImageStyle implements Parcelable
     public void setLoadingColor(int loadingColor)
     {
         this.loadingColor = loadingColor;
+    }
+
+    public int getBucketNameTextColor()
+    {
+        return bucketNameTextColor;
+    }
+
+    public void setBucketNameTextColor(int bucketNameTextColor)
+    {
+        this.bucketNameTextColor = bucketNameTextColor;
+    }
+
+    public int getBucketListBackgroundColor()
+    {
+        return bucketListBackgroundColor;
+    }
+
+    public void setBucketListBackgroundColor(int bucketListBackgroundColor)
+    {
+        this.bucketListBackgroundColor = bucketListBackgroundColor;
+    }
+
+    public int getDoneTextColor()
+    {
+        return doneTextColor;
+    }
+
+    public void setDoneTextColor(int doneTextColor)
+    {
+        this.doneTextColor = doneTextColor;
     }
 
     @Override
@@ -222,6 +261,42 @@ public class CustomPickImageStyle implements Parcelable
             return this;
         }
 
+        public Builder setBucketNameTextColor(@ColorInt int color)
+        {
+            mStyle.setBucketNameTextColor(color);
+            return this;
+        }
+
+        public Builder setBucketNameTextColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setBucketNameTextColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
+        public Builder setBucketListBackgroundColor(@ColorInt int color)
+        {
+            mStyle.setBucketListBackgroundColor(color);
+            return this;
+        }
+
+        public Builder setBucketListBackgroundColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setBucketListBackgroundColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
+        public Builder setDoneTextColor(@ColorInt int color)
+        {
+            mStyle.setDoneTextColor(color);
+            return this;
+        }
+
+        public Builder setDoneTextColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setDoneTextColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
         public CustomPickImageStyle build()
         {
             return mStyle;
@@ -237,6 +312,9 @@ public class CustomPickImageStyle implements Parcelable
                 .setRootBackgroundColorResId(context, R.color.image_pick_style_dark_root_background)
                 .setActionBarTextColorResId(context, R.color.image_pick_style_dark_action_bar_text)
                 .setLoadingColorResId(context, R.color.image_pick_style_dark_loading)
+                .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
+                .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
+                .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
                 .build();
     }
 }

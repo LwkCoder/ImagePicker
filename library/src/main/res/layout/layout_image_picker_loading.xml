@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:loading_view_size="48dp" />
+        android:color="@color/image_pick_style_dark_loading"
+        app:loading_view_size="24dp" />
 
 </FrameLayout>

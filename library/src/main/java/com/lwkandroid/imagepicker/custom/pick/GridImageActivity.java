@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hjq.permissions.OnPermissionCallback;
@@ -12,6 +14,7 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.BucketBean;
+import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
@@ -26,6 +29,8 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -39,19 +44,22 @@ public class GridImageActivity extends AppCompatActivity
 
     private CustomPickImageOptions mOptions;
 
-    private List<BucketBean> mAllBucketList;
-
     private LinearLayout mRootLinearLayout;
     private ComActionBar mActionBar;
     private RecyclerView mRecyclerView;
     private LinearLayout mBottomLinearLayout;
     private StateFrameLayout mStateFrameLayout;
     private RcvLoadingView mLoadingView;
+    private TextView mTvCurrentBucket;
+    private TextView mTvDone;
 
     private MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
 
-    private BucketBean mCurrentBucketBean;
+    private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
+    private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
+    //已选文件集合，多选模式下生效
+    private MutableLiveData<List<BucketBean>> mSelectedMediaLiveData = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,11 +82,17 @@ public class GridImageActivity extends AppCompatActivity
         mBottomLinearLayout = findViewById(R.id.ll_bottom_operation);
         mStateFrameLayout = findViewById(R.id.stateFrameLayout);
         mLoadingView = findViewById(R.id.loadingView);
+        mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
+        mTvDone = findViewById(R.id.tv_done);
 
         initStyle();
+        initData();
         startLoadAllBuckets();
     }
 
+    /**
+     * 初始化风格配置
+     */
     private void initStyle()
     {
         CustomPickImageStyle style = mOptions.getStyle();
@@ -104,8 +118,42 @@ public class GridImageActivity extends AppCompatActivity
         mActionBar.setRightTextColor02(style.getActionBarTextColor());
 
         mBottomLinearLayout.setBackgroundColor(style.getNavigationBarColor());
+        Drawable bucketDrawable = AppCompatResources.getDrawable(this, R.drawable.image_picker_album);
+        bucketDrawable.setBounds(0, 0, bucketDrawable.getIntrinsicWidth(), bucketDrawable.getIntrinsicHeight());
+        bucketDrawable.setTint(style.getBucketNameTextColor());
+        mTvCurrentBucket.setCompoundDrawables(bucketDrawable, null, null, null);
+        Drawable[] drawables = mTvCurrentBucket.getCompoundDrawables();
+        drawables[0] = bucketDrawable;
+        mTvCurrentBucket.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+        mTvCurrentBucket.setTextColor(style.getBucketNameTextColor());
+        mTvDone.setTextColor(style.getDoneTextColor());
 
         mLoadingView.setColor(style.getLoadingColor());
+    }
+
+    /**
+     * 初始化其他配置
+     */
+    private void initData()
+    {
+        //单选模式下不需要显示“完成”按钮
+        mTvDone.setVisibility(mOptions.getMaxPickNumber() > 1 ? View.VISIBLE : View.GONE);
+
+        mAllBucketLiveData.observe(this, bucketBeans -> {
+            if (bucketBeans != null && bucketBeans.size() > 0)
+            {
+                mCurrentBucketLiveData.postValue(bucketBeans.get(0));
+            }
+        });
+        mCurrentBucketLiveData.observe(this, this::updateListAfterBucketChanged);
+        mSelectedMediaLiveData.observe(this, new Observer<List<BucketBean>>()
+        {
+            @Override
+            public void onChanged(List<BucketBean> bucketBeans)
+            {
+
+            }
+        });
     }
 
     /**
@@ -129,8 +177,7 @@ public class GridImageActivity extends AppCompatActivity
                                     public void onPickSuccess(List<BucketBean> result)
                                     {
                                         mStateFrameLayout.switchToContentState();
-                                        mAllBucketList = result;
-                                        //TODO 切换到第一个文件夹
+                                        mAllBucketLiveData.postValue(result);
                                     }
 
                                     @Override
@@ -147,8 +194,37 @@ public class GridImageActivity extends AppCompatActivity
                     public void onDenied(List<String> permissions, boolean never)
                     {
                         Toast.makeText(GridImageActivity.this, R.string.permission_denied_of_pick_image, Toast.LENGTH_SHORT).show();
+                        if (never)
+                        {
+                            XXPermissions.startPermissionActivity(GridImageActivity.this, permissions);
+                        }
                         setResult(Activity.RESULT_CANCELED);
                         finish();
+                    }
+                });
+    }
+
+    /**
+     * 切换文件夹
+     *
+     * @param bucketBean
+     */
+    private void updateListAfterBucketChanged(BucketBean bucketBean)
+    {
+        mTvCurrentBucket.setText(bucketBean.getName());
+        mMediaLoaderEngine.loadPageImage(this, this, mOptions, bucketBean.getBucketId(),
+                1, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<MediaBean> result)
+                    {
+                        mCurrentPageIndex = 1;
+                    }
+
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+
                     }
                 });
     }
