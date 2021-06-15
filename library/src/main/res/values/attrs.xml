@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <declare-styleable name="CheckView">
+        <attr name="android:checked" />
+        <attr name="android:background" />
+        <attr name="android:textSize" />
+        <attr name="border_color" format="color" />
+        <attr name="border_width" format="dimension" />
+        <attr name="numberCenter" format="integer" />
+        <attr name="drawableCenter" format="reference" />
+        <attr name="checkMode">
+            <enum name="drawableMode" value="0" />
+            <enum name="numberMode" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>
