@@ -21,4 +21,5 @@
     <dimen name="image_picker_padding_vertical_normal">16dp</dimen>
     <dimen name="image_picker_padding_horizontal_small">8dp</dimen>
     <dimen name="image_picker_padding_vertical_small">8dp</dimen>
+    <dimen name="image_picker_load_more_text">0sp</dimen>
 </resources>

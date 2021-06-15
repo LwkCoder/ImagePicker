@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v)
             {
-                ImagePicker.pickImageByCustom(new GlideDisPlayer())
+                ImagePicker.pickImageByCustom(new GlideDisplayer())
                         .setMaxPickNumber(9)
                         .build()
                         .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
@@ -127,10 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        CheckView checkView = findViewById(R.id.checkView);
-        checkView.setCountable(true);
-        checkView.setChecked(false);
-        checkView.setCheckedNum(5);
     }
 
     @Override

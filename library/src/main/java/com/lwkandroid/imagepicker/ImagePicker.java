@@ -2,7 +2,7 @@ package com.lwkandroid.imagepicker;
 
 import com.lwkandroid.imagepicker.common.PickCommonConfig;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
-import com.lwkandroid.imagepicker.config.ImagePickerDisPlayer;
+import com.lwkandroid.imagepicker.config.ImagePickerDisplayer;
 import com.lwkandroid.imagepicker.config.SystemCropOptions;
 import com.lwkandroid.imagepicker.config.SystemPhotographOptions;
 import com.lwkandroid.imagepicker.config.SystemPickImageOptions;
@@ -50,7 +50,7 @@ public final class ImagePicker
     /**
      * 发起自定义界面选择图片
      */
-    public static CustomPickImageOptions.Builder pickImageByCustom(ImagePickerDisPlayer disPlayer)
+    public static CustomPickImageOptions.Builder pickImageByCustom(ImagePickerDisplayer disPlayer)
     {
         PickCommonConfig.getInstance().setImagePickerDisPlayer(disPlayer);
         return new CustomPickImageOptions.Builder();

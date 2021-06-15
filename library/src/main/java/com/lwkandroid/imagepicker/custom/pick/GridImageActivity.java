@@ -1,9 +1,11 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
+import com.lwkandroid.rcvadapter.ui.RcvDefLoadMoreView;
 import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
 import com.lwkandroid.widget.ComActionBar;
 import com.lwkandroid.widget.StateFrameLayout;
@@ -41,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreListener
 {
-    private static final int PAGE_SIZE = 50;
+    private static final int PAGE_SIZE = 60;
 
     private CustomPickImageOptions mOptions;
 
@@ -87,13 +90,37 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
         mTvDone = findViewById(R.id.tv_done);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        mAdapter = new GridAdapter(this, null);
-        mAdapter.setOnLoadMoreListener(this);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
+        mAdapter = new GridAdapter(this, null,
+                getResources().getDisplayMetrics().widthPixels / getHorizontalChildCount());
+        mRecyclerView.setAdapter(mAdapter);
 
         initStyle();
         initData();
         startLoadAllBuckets();
+    }
+
+    @Override
+    public void onLoadMoreRequest()
+    {
+        Log.e("AA", "onLoadMoreRequest!!!");
+        int nextPage = mCurrentPageIndex + 1;
+        mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
+                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<MediaBean> result)
+                    {
+                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
+                        mCurrentPageIndex = nextPage;
+                    }
+
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+
+                    }
+                });
     }
 
     /**
@@ -135,28 +162,13 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mTvDone.setTextColor(style.getDoneTextColor());
 
         mLoadingView.setColor(style.getLoadingColor());
-    }
-
-    @Override
-    public void onLoadMoreRequest()
-    {
-        int nextPage = mCurrentPageIndex + 1;
-        mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
-                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
-                {
-                    @Override
-                    public void onPickSuccess(List<MediaBean> result)
-                    {
-                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
-                        mCurrentPageIndex = nextPage;
-                    }
-
-                    @Override
-                    public void onPickFailed(int errorCode, String message)
-                    {
-
-                    }
-                });
+        RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
+                .setTextColor(style.getLoadingColor())
+                .setTextSize(TypedValue.COMPLEX_UNIT_PX, 0)
+                .setFailDrawable(null)
+                .setSuccessDrawable(null)
+                .build();
+        mAdapter.setLoadMoreLayout(loadMoreView);
     }
 
     /**
@@ -164,6 +176,8 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
      */
     private void initData()
     {
+        mAdapter.setOnLoadMoreListener(this);
+
         //单选模式下不需要显示“完成”按钮
         mTvDone.setVisibility(mOptions.getMaxPickNumber() > 1 ? View.VISIBLE : View.GONE);
 
@@ -273,5 +287,14 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
 
                     }
                 });
+    }
+
+    /**
+     * 计算水平方向上图片数量
+     */
+    private int getHorizontalChildCount()
+    {
+        int orientation = getResources().getConfiguration().orientation;
+        return orientation == Configuration.ORIENTATION_LANDSCAPE ? 6 : 4;
     }
 }

@@ -57,10 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp" />|
 
-        <com.lwkandroid.imagepickerdemo.CheckView
-            android:id="@+id/checkView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
 
     </LinearLayout>
 

@@ -1,6 +1,6 @@
 package com.lwkandroid.imagepicker.common;
 
-import com.lwkandroid.imagepicker.config.ImagePickerDisPlayer;
+import com.lwkandroid.imagepicker.config.ImagePickerDisplayer;
 
 /**
  * @description: 通用配置
@@ -9,7 +9,7 @@ import com.lwkandroid.imagepicker.config.ImagePickerDisPlayer;
  */
 public class PickCommonConfig
 {
-    private ImagePickerDisPlayer mImagePickerDisPlayer;
+    private ImagePickerDisplayer mImagePickerDisplayer;
 
     public static PickCommonConfig getInstance()
     {
@@ -25,13 +25,13 @@ public class PickCommonConfig
         private static final PickCommonConfig INSTANCE = new PickCommonConfig();
     }
 
-    public ImagePickerDisPlayer getImagePickerDisplayer()
+    public ImagePickerDisplayer getImagePickerDisplayer()
     {
-        return mImagePickerDisPlayer;
+        return mImagePickerDisplayer;
     }
 
-    public void setImagePickerDisPlayer(ImagePickerDisPlayer disPlayer)
+    public void setImagePickerDisPlayer(ImagePickerDisplayer disPlayer)
     {
-        this.mImagePickerDisPlayer = disPlayer;
+        this.mImagePickerDisplayer = disPlayer;
     }
 }
