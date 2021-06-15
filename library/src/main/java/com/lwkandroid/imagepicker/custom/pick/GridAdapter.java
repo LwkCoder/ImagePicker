@@ -41,6 +41,7 @@ final class GridAdapter extends RcvSingleAdapter<MediaBean>
     public void onBindView(RcvHolder holder, MediaBean itemData, int position)
     {
         ImageView imageView = holder.findView(R.id.imageView);
+//        imageView.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
         if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
         {
