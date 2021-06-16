@@ -21,6 +21,7 @@
     <dimen name="image_picker_padding_vertical_normal">16dp</dimen>
     <dimen name="image_picker_padding_horizontal_small">8dp</dimen>
     <dimen name="image_picker_padding_vertical_small">8dp</dimen>
-    <dimen name="check_view_text_size_default">10sp</dimen>
-    <dimen name="check_view_border_width_default">2dp</dimen>
+
+    <dimen name="check_view_size_default">32dp</dimen>
+    <dimen name="check_view_border_width_default">3dp</dimen>
 </resources>

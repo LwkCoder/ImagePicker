@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private TextView mTextView;
-    int index = 0;
     File mLastFile;
 
     @Override

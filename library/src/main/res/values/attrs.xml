@@ -2,12 +2,12 @@
 <resources>
     <declare-styleable name="CheckView">
         <attr name="android:checked" />
-        <attr name="android:background" />
-        <attr name="android:textSize" />
-        <attr name="border_color" format="color" />
-        <attr name="border_width" format="dimension" />
-        <attr name="numberCenter" format="integer" />
-        <attr name="drawableCenter" format="reference" />
+        <attr name="checkedColor" format="color" />
+        <attr name="borderColor" format="color" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="numberValue" format="integer" />
+        <attr name="drawableValue" format="reference" />
+        <attr name="drawableSize" format="dimension" />
         <attr name="checkMode">
             <enum name="drawableMode" value="0" />
             <enum name="numberMode" value="1" />

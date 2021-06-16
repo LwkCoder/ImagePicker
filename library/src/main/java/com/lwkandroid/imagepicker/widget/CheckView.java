@@ -7,13 +7,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.lwkandroid.imagepicker.R;
+import com.lwkandroid.rcvadapter.utils.RcvUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -22,7 +25,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 
 /**
- * @description:
+ * @description: 自定义单选框
  * @author: LWK
  * @date: 2021/6/15 9:52
  */
@@ -31,22 +34,23 @@ public class CheckView extends View
     public static final int CHECK_MODE_DRAWABLE = 0;
     public static final int CHECK_MODE_NUMBER = 1;
 
-    //默认尺寸，48dp
-    private static final int DEFAULT_SIZE = 48;
-
     private boolean mChecked;
-    private int mTextSize;
-    private int mBackgroundColor;
+    private int mCheckedColor;
     private int mBorderColor;
     private int mBorderWidth;
-    private int mNumberCenter;
-    private Drawable mDrawableCenter;
+    private int mNumber;
+    private Drawable mDrawable;
     @CheckMode
     private int mCheckMode;
 
     private Paint mBorderPaint;
     private Paint mBackgroundPaint;
     private TextPaint mTextPaint;
+
+    private int mXCenter;
+    private int mYCenter;
+    private int mContentRadius;
+    private Rect mDrawableRect;
 
     @IntDef({CHECK_MODE_DRAWABLE, CHECK_MODE_NUMBER})
     @Retention(RetentionPolicy.SOURCE)
@@ -71,17 +75,46 @@ public class CheckView extends View
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int measuredHeight = MeasureSpec.getSize(heightMeasureSpec);
+        int paddingLeft = getPaddingLeft();
+        int paddingRight = getPaddingRight();
+        int paddingTop = getPaddingTop();
+        int paddingBottom = getPaddingBottom();
 
-        if (MeasureSpec.EXACTLY != widthMode || MeasureSpec.EXACTLY != heightMode)
+        Log.e("AA", "widthSize->" + measuredWidth + " heightSize->" + measuredHeight);
+
+        if (MeasureSpec.EXACTLY != widthMode && MeasureSpec.EXACTLY != heightMode)
         {
-            int density = (int) getContext().getResources().getDisplayMetrics().density;
-            widthSize = heightSize = DEFAULT_SIZE * density;
+            //宽高都未指定
+            int defaultSize = getContext().getResources().getDimensionPixelOffset(R.dimen.check_view_size_default);
+            measuredWidth = measuredHeight = defaultSize;
+        } else
+        {
+            //宽高之中有一个未指定，设置未指定的等于指定的值
+            measuredWidth = measuredHeight = Math.min(measuredWidth, measuredHeight);
         }
+        //将padding一并加入
+        measuredWidth = measuredWidth + paddingLeft + paddingRight;
+        measuredHeight = measuredHeight + paddingTop + paddingBottom;
 
-        setMeasuredDimension(widthSize, heightSize);
+        //计算可绘制区域的尺寸（正方形区域）
+        int size = Math.min(measuredWidth - getPaddingLeft() - getPaddingRight(),
+                measuredHeight - getPaddingTop() - getPaddingBottom());
+        //计算后续要用到的各种参数
+        mContentRadius = size / 2;
+        mXCenter = measuredWidth / 2;
+        mYCenter = measuredHeight / 2;
+        if (mDrawableRect == null)
+        {
+            mDrawableRect = new Rect();
+        }
+        int drawableSize = mContentRadius / 2 * 3;
+        mDrawableRect.set(mXCenter - drawableSize / 2, mYCenter - drawableSize / 2,
+                mXCenter + drawableSize / 2, mYCenter + drawableSize / 2);
+
+        setMeasuredDimension(measuredWidth, measuredHeight);
     }
 
     @Override
@@ -89,6 +122,31 @@ public class CheckView extends View
     {
         super.onDraw(canvas);
 
+        //绘制border
+        mBorderPaint.setStrokeWidth(mBorderWidth);
+        mBorderPaint.setColor(mBorderColor);
+        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth, mBorderPaint);
+
+        //绘制背景
+        mBackgroundPaint.setColor(mChecked ? mCheckedColor : Color.TRANSPARENT);
+        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth, mBackgroundPaint);
+
+        //绘制内容
+        if (mChecked)
+        {
+            if (CHECK_MODE_NUMBER == mCheckMode)
+            {
+                mTextPaint.setTextSize(mContentRadius);
+                String text = String.valueOf(mNumber);
+                int baseX = (int) (getWidth() - mTextPaint.measureText(text)) / 2;
+                int baseY = (int) (getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
+                canvas.drawText(text, baseX, baseY, mTextPaint);
+            } else
+            {
+                mDrawable.setBounds(mDrawableRect);
+                mDrawable.draw(canvas);
+            }
+        }
     }
 
     private void init(Context context, AttributeSet attrs)
@@ -96,14 +154,16 @@ public class CheckView extends View
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CheckView);
         mChecked = ta.getBoolean(R.styleable.CheckView_android_checked, false);
         mCheckMode = ta.getInt(R.styleable.CheckView_checkMode, CHECK_MODE_DRAWABLE);
-        mTextSize = ta.getDimensionPixelOffset(R.styleable.CheckView_android_textSize,
-                context.getResources().getDimensionPixelOffset(R.dimen.check_view_text_size_default));
-        mBackgroundColor = ta.getColor(R.styleable.CheckView_android_background, Color.TRANSPARENT);
-        mBorderColor = ta.getColor(R.styleable.CheckView_border_color, Color.WHITE);
-        mBorderWidth = ta.getDimensionPixelOffset(R.styleable.CheckView_border_width,
+        mCheckedColor = ta.getColor(R.styleable.CheckView_checkedColor, Color.BLUE);
+        mBorderColor = ta.getColor(R.styleable.CheckView_borderColor, Color.WHITE);
+        mBorderWidth = ta.getDimensionPixelOffset(R.styleable.CheckView_borderWidth,
                 context.getResources().getDimensionPixelOffset(R.dimen.check_view_border_width_default));
-        mNumberCenter = ta.getInt(R.styleable.CheckView_numberCenter, 0);
-        mDrawableCenter = ta.getDrawable(R.styleable.CheckView_drawableCenter);
+        mNumber = ta.getInt(R.styleable.CheckView_numberValue, 0);
+        mDrawable = ta.getDrawable(R.styleable.CheckView_drawableValue);
+        if (mDrawable == null)
+        {
+            mDrawable = RcvUtils.getDrawableResources(context, R.drawable.image_picker_hook);
+        }
 
         initTextPaint();
         initBorderPaint();
@@ -112,40 +172,24 @@ public class CheckView extends View
 
     private void initBorderPaint()
     {
-        if (mBackgroundPaint != null)
-        {
-            return;
-        }
         mBorderPaint = new Paint();
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
-        mBorderPaint.setStrokeWidth(mBorderWidth);
-        mBorderPaint.setColor(mBorderColor);
     }
 
     private void initBackgroundPaint()
     {
-        if (mBackgroundPaint != null)
-        {
-            return;
-        }
         mBackgroundPaint = new Paint();
         mBackgroundPaint.setAntiAlias(true);
         mBackgroundPaint.setStyle(Paint.Style.FILL);
-        mBackgroundPaint.setColor(mBackgroundColor);
     }
 
     private void initTextPaint()
     {
-        if (mTextPaint != null)
-        {
-            return;
-        }
         mTextPaint = new TextPaint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setColor(Color.WHITE);
         mTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        mTextPaint.setTextSize(mTextSize);
     }
 }
