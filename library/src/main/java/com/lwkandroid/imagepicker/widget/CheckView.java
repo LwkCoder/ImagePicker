@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.lwkandroid.imagepicker.R;
@@ -21,6 +20,7 @@ import com.lwkandroid.rcvadapter.utils.RcvUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 
@@ -29,7 +29,7 @@ import androidx.annotation.Nullable;
  * @author: LWK
  * @date: 2021/6/15 9:52
  */
-public class CheckView extends View
+public class CheckView extends View implements View.OnClickListener
 {
     public static final int CHECK_MODE_DRAWABLE = 0;
     public static final int CHECK_MODE_NUMBER = 1;
@@ -51,6 +51,7 @@ public class CheckView extends View
     private int mYCenter;
     private int mContentRadius;
     private Rect mDrawableRect;
+    private OnCheckedChangeListener mListener;
 
     @IntDef({CHECK_MODE_DRAWABLE, CHECK_MODE_NUMBER})
     @Retention(RetentionPolicy.SOURCE)
@@ -82,8 +83,6 @@ public class CheckView extends View
         int paddingRight = getPaddingRight();
         int paddingTop = getPaddingTop();
         int paddingBottom = getPaddingBottom();
-
-        Log.e("AA", "widthSize->" + measuredWidth + " heightSize->" + measuredHeight);
 
         if (MeasureSpec.EXACTLY != widthMode && MeasureSpec.EXACTLY != heightMode)
         {
@@ -143,10 +142,100 @@ public class CheckView extends View
                 canvas.drawText(text, baseX, baseY, mTextPaint);
             } else
             {
-                mDrawable.setBounds(mDrawableRect);
-                mDrawable.draw(canvas);
+                if (mDrawable != null)
+                {
+                    mDrawable.setBounds(mDrawableRect);
+                    mDrawable.draw(canvas);
+                }
             }
         }
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        setChecked(!isChecked());
+        if (mListener != null)
+        {
+            mListener.onCheckChanged(this, isChecked());
+        }
+    }
+
+    public boolean isChecked()
+    {
+        return mChecked;
+    }
+
+    public void setChecked(boolean checked)
+    {
+        this.mChecked = checked;
+        invalidate();
+    }
+
+    public int getCheckedColor()
+    {
+        return mCheckedColor;
+    }
+
+    public void setCheckedColor(@ColorInt int color)
+    {
+        this.mCheckedColor = color;
+        invalidate();
+    }
+
+    public int getBorderColor()
+    {
+        return mBorderColor;
+    }
+
+    public void setBorderColor(@ColorInt int color)
+    {
+        this.mBorderColor = color;
+        invalidate();
+    }
+
+    public int getBorderWidth()
+    {
+        return mBorderWidth;
+    }
+
+    public void setBorderWidth(int value)
+    {
+        this.mBorderWidth = value;
+        invalidate();
+    }
+
+    public int getNumber()
+    {
+        return mNumber;
+    }
+
+    public void setNumber(int number)
+    {
+        this.mNumber = number;
+        invalidate();
+    }
+
+    public Drawable getDrawable()
+    {
+        return mDrawable;
+    }
+
+    public void setDrawable(Drawable drawable)
+    {
+        this.mDrawable = drawable;
+        invalidate();
+    }
+
+    public int getCheckMode()
+    {
+        return mCheckMode;
+    }
+
+    public void setCheckMode(@CheckMode int mode)
+    {
+        this.mCheckMode = mode;
+        invalidate();
     }
 
     private void init(Context context, AttributeSet attrs)
@@ -165,9 +254,12 @@ public class CheckView extends View
             mDrawable = RcvUtils.getDrawableResources(context, R.drawable.image_picker_hook);
         }
 
+        ta.recycle();
+
         initTextPaint();
         initBorderPaint();
         initBackgroundPaint();
+        setOnClickListener(this);
     }
 
     private void initBorderPaint()
@@ -191,5 +283,10 @@ public class CheckView extends View
         mTextPaint.setAntiAlias(true);
         mTextPaint.setColor(Color.WHITE);
         mTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+    }
+
+    public interface OnCheckedChangeListener
+    {
+        void onCheckChanged(CheckView checkView, boolean isChecked);
     }
 }
