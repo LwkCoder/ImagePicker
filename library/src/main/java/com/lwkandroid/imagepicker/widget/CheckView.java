@@ -124,11 +124,11 @@ public class CheckView extends View implements View.OnClickListener
         //绘制border
         mBorderPaint.setStrokeWidth(mBorderWidth);
         mBorderPaint.setColor(mBorderColor);
-        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth, mBorderPaint);
+        canvas.drawCircle(mXCenter, mYCenter, mContentRadius, mBorderPaint);
 
         //绘制背景
         mBackgroundPaint.setColor(mChecked ? mCheckedColor : Color.TRANSPARENT);
-        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth, mBackgroundPaint);
+        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth / 2, mBackgroundPaint);
 
         //绘制内容
         if (mChecked)
@@ -180,7 +180,6 @@ public class CheckView extends View implements View.OnClickListener
     public void setCheckedColor(@ColorInt int color)
     {
         this.mCheckedColor = color;
-        invalidate();
     }
 
     public int getBorderColor()
@@ -191,7 +190,6 @@ public class CheckView extends View implements View.OnClickListener
     public void setBorderColor(@ColorInt int color)
     {
         this.mBorderColor = color;
-        invalidate();
     }
 
     public int getBorderWidth()
@@ -202,7 +200,6 @@ public class CheckView extends View implements View.OnClickListener
     public void setBorderWidth(int value)
     {
         this.mBorderWidth = value;
-        invalidate();
     }
 
     public int getNumber()
@@ -213,7 +210,6 @@ public class CheckView extends View implements View.OnClickListener
     public void setNumber(int number)
     {
         this.mNumber = number;
-        invalidate();
     }
 
     public Drawable getDrawable()
@@ -224,7 +220,6 @@ public class CheckView extends View implements View.OnClickListener
     public void setDrawable(Drawable drawable)
     {
         this.mDrawable = drawable;
-        invalidate();
     }
 
     public int getCheckMode()
@@ -235,7 +230,11 @@ public class CheckView extends View implements View.OnClickListener
     public void setCheckMode(@CheckMode int mode)
     {
         this.mCheckMode = mode;
-        invalidate();
+    }
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener)
+    {
+        this.mListener = listener;
     }
 
     private void init(Context context, AttributeSet attrs)

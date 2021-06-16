@@ -4,7 +4,4 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="zhihu_item_checkCircle_backgroundColor">#1E8AE8</color>
-    <color name="zhihu_check_original_radio_disable">#808080</color>
-    <color name="zhihu_item_checkCircle_borderColor">#FFFFFF</color>
 </resources>

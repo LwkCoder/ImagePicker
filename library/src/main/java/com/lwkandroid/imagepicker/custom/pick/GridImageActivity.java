@@ -31,6 +31,7 @@ import com.lwkandroid.widget.StateFrameLayout;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.MutableLiveData;
@@ -63,8 +64,6 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
     private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
-    //已选文件集合，多选模式下生效
-    private MutableLiveData<List<BucketBean>> mSelectedMediaLiveData = new MutableLiveData<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -80,6 +79,10 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
             finish();
             return;
         }
+        if (mOptions.getStyle() == null)
+        {
+            mOptions.setStyle(CustomPickImageStyle.dark(this));
+        }
 
         mRootLinearLayout = findViewById(R.id.ll_root_container);
         mActionBar = findViewById(R.id.actionBar);
@@ -91,8 +94,16 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mTvDone = findViewById(R.id.tv_done);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
-        mAdapter = new GridAdapter(this, null,
-                getResources().getDisplayMetrics().widthPixels / getHorizontalChildCount());
+        mAdapter = new GridAdapter(this, null, getListChildSize(), mOptions.getStyle().getDoneTextColor());
+        mLoadingView.setColor(mOptions.getStyle().getLoadingColor());
+        RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
+                .setTextColor(mOptions.getStyle().getLoadingColor())
+                .setTextSize(TypedValue.COMPLEX_UNIT_PX, 0)
+                .setFailDrawable(null)
+                .setSuccessDrawable(null)
+                .build();
+        mAdapter.setLoadMoreLayout(loadMoreView);
+        mAdapter.setOnLoadMoreListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         initStyle();
@@ -103,7 +114,6 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     @Override
     public void onLoadMoreRequest()
     {
-        Log.e("AA", "onLoadMoreRequest!!!");
         int nextPage = mCurrentPageIndex + 1;
         mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
                 nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
@@ -123,16 +133,20 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                 });
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        PickTempStorage.getInstance().removeObservers(this);
+        PickTempStorage.getInstance().clear();
+    }
+
     /**
      * 初始化风格配置
      */
     private void initStyle()
     {
         CustomPickImageStyle style = mOptions.getStyle();
-        if (style == null)
-        {
-            style = CustomPickImageStyle.dark(this);
-        }
 
         Utils.setStatusBarColor(this, style.getStatusBarColor(), true);
         //智能调节状态栏文字颜色
@@ -161,14 +175,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mTvCurrentBucket.setTextColor(style.getBucketNameTextColor());
         mTvDone.setTextColor(style.getDoneTextColor());
 
-        mLoadingView.setColor(style.getLoadingColor());
-        RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
-                .setTextColor(style.getLoadingColor())
-                .setTextSize(TypedValue.COMPLEX_UNIT_PX, 0)
-                .setFailDrawable(null)
-                .setSuccessDrawable(null)
-                .build();
-        mAdapter.setLoadMoreLayout(loadMoreView);
+
     }
 
     /**
@@ -176,8 +183,6 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
      */
     private void initData()
     {
-        mAdapter.setOnLoadMoreListener(this);
-
         //单选模式下不需要显示“完成”按钮
         mTvDone.setVisibility(mOptions.getMaxPickNumber() > 1 ? View.VISIBLE : View.GONE);
 
@@ -190,15 +195,16 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
 
         mCurrentBucketLiveData.observe(this, this::updateListAfterBucketChanged);
 
-        mSelectedMediaLiveData.observe(this, bucketBeans -> {
-            if (bucketBeans == null || bucketBeans.size() == 0)
+        PickTempStorage.getInstance().setMaxNumber(mOptions.getMaxPickNumber());
+        PickTempStorage.getInstance().addObserver(this, mediaList -> {
+            if (mediaList == null || mediaList.size() == 0)
             {
                 mActionBar.setRightText01(null);
                 mActionBar.setRightOnItemClickListener01(null);
                 mTvDone.setVisibility(View.GONE);
             } else
             {
-                mActionBar.setRightText01(getString(R.string.preview_placeholder, bucketBeans.size()));
+                mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
                 mActionBar.setRightOnItemClickListener01(new ComActionBar.OnItemClickListener()
                 {
                     @Override
@@ -208,7 +214,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                     }
                 });
                 mTvDone.setVisibility(View.VISIBLE);
-                mTvDone.setText(getString(R.string.done_placeholder, bucketBeans.size(), mOptions.getMaxPickNumber()));
+                mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
             }
         });
     }
@@ -296,5 +302,42 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     {
         int orientation = getResources().getConfiguration().orientation;
         return orientation == Configuration.ORIENTATION_LANDSCAPE ? 6 : 4;
+    }
+
+    /**
+     * 计算每个图片尺寸
+     */
+    private int getListChildSize()
+    {
+        return getResources().getDisplayMetrics().widthPixels / getHorizontalChildCount();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        Log.e("AAA", "onConfigurationChanged->" + PickTempStorage.getInstance().getSelectedMediaLiveData().getValue().size());
+        if (mRecyclerView != null)
+        {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
+        }
+        if (mAdapter != null)
+        {
+            mAdapter.updateChildSize(getListChildSize());
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        Log.e("aaa", "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.e("aaa", "onRestoreInstanceState");
     }
 }

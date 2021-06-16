@@ -58,7 +58,7 @@
             android:layout_margin="16dp" />|
 
         <com.lwkandroid.imagepicker.widget.CheckView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:checked="true"
             android:paddingLeft="4dp"
@@ -67,9 +67,6 @@
             android:paddingBottom="18dp"
             app:checkMode="numberMode" />
 
-        <com.lwkandroid.imagepickerdemo.CheckView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </ScrollView>

@@ -11,6 +11,7 @@
     <application android:requestLegacyExternalStorage="true">
         <activity
             android:name=".custom.pick.GridImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider

@@ -1,16 +1,24 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.common.PickCommonConfig;
+import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.rcvadapter.RcvSingleAdapter;
 import com.lwkandroid.rcvadapter.holder.RcvHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import androidx.core.util.Pair;
 
 /**
  * @description: 网格列表适配器
@@ -19,37 +27,103 @@ import java.util.List;
  */
 final class GridAdapter extends RcvSingleAdapter<MediaBean>
 {
-    private final int mChildSize;
+    private final int mCheckedColor;
+    private int mChildSize;
+    private final Map<String, Pair<Integer, Integer>> mCheckedPositionMap = new HashMap<>();
 
-    public GridAdapter(Context context, List<MediaBean> datas, int childSize)
+    public GridAdapter(Context context, List<MediaBean> datas, int childSize, int checkedColor)
     {
         super(context, R.layout.adapter_image_picker_grid, datas);
         this.mChildSize = childSize;
+        this.mCheckedColor = checkedColor;
     }
 
     @Override
-    protected void onCreateDataViewHolder(RcvHolder holder, ViewGroup parent, int viewType)
+    public void refreshDatas(List<MediaBean> data)
     {
-        super.onCreateDataViewHolder(holder, parent, viewType);
-        ViewGroup.LayoutParams layoutParams = holder.getConvertView().getLayoutParams();
-        layoutParams.width = mChildSize;
-        layoutParams.height = mChildSize;
-        holder.getConvertView().setLayoutParams(layoutParams);
+        super.refreshDatas(data);
+        mCheckedPositionMap.clear();
+    }
+
+    public void updateChildSize(int size)
+    {
+        this.mChildSize = size;
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindView(RcvHolder holder, MediaBean itemData, int position)
     {
-        ImageView imageView = holder.findView(R.id.imageView);
-//        imageView.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        ViewGroup.LayoutParams layoutParams = holder.getConvertView().getLayoutParams();
+        layoutParams.width = mChildSize;
+        layoutParams.height = mChildSize;
+        holder.getConvertView().setLayoutParams(layoutParams);
 
-        if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
+        ImageView imageView = holder.findView(R.id.imgContent);
+        CheckView checkView = holder.findView(R.id.checkView);
+        ViewGroup.LayoutParams layoutParams1 = checkView.getLayoutParams();
+        layoutParams1.width = mChildSize / 4;
+        layoutParams1.height = mChildSize / 4;
+        checkView.setLayoutParams(layoutParams1);
+        checkView.setCheckedColor(mCheckedColor);
+
+        int index = PickTempStorage.getInstance().indexData(itemData);
+        boolean checked = index >= 0;
+        if (checked)
         {
-            if (itemData.isGif())
+            checkView.setNumber(index + 1);
+            imageView.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            mCheckedPositionMap.put(itemData.getId(), new Pair<>(index, position));
+        } else
+        {
+            imageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
+        }
+
+        checkView.setChecked(checked);
+        checkView.setOnCheckedChangeListener((checkView1, isChecked) -> {
+            if (isChecked)
+            {
+                if (PickTempStorage.getInstance().addData(itemData))
+                {
+                    int newIndex = PickTempStorage.getInstance().indexData(itemData);
+                    checkView.setNumber(newIndex + 1);
+                    mCheckedPositionMap.put(itemData.getId(), new Pair<>(newIndex, position));
+                    notifyItemChanged(position);
+                } else
+                {
+                    checkView1.setChecked(false);
+                }
+            } else
+            {
+                int oldIndex = PickTempStorage.getInstance().indexData(itemData);
+                if (PickTempStorage.getInstance().removeData(itemData))
+                {
+                    notifyItemChanged(position);
+                    mCheckedPositionMap.remove(itemData.getId());
+                    for (Pair<Integer, Integer> pair : mCheckedPositionMap.values())
+                    {
+                        if (pair.first >= oldIndex)
+                        {
+                            notifyItemChanged(pair.second);
+                        }
+                    }
+                }
+            }
+        });
+
+        //显示是否为GIF
+        if (itemData.isGif())
+        {
+            holder.setVisibility(R.id.imgGif, View.VISIBLE);
+            if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
             {
                 PickCommonConfig.getInstance().getImagePickerDisplayer().displayGifImage(
                         getContext(), itemData.getPath(), imageView);
-            } else
+            }
+        } else
+        {
+            holder.setVisibility(R.id.imgGif, View.GONE);
+            if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
             {
                 PickCommonConfig.getInstance().getImagePickerDisplayer().displayImage(
                         getContext(), itemData.getPath(), imageView);
