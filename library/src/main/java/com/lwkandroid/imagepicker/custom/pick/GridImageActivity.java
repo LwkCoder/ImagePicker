@@ -134,6 +134,22 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     }
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        if (mRecyclerView != null)
+        {
+            GridLayoutManager layoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
+            layoutManager.setSpanCount(getHorizontalChildCount());
+            mRecyclerView.setLayoutManager(layoutManager);
+        }
+        if (mAdapter != null)
+        {
+            mAdapter.updateChildSize(getListChildSize());
+        }
+    }
+
+    @Override
     protected void onDestroy()
     {
         super.onDestroy();
@@ -310,34 +326,5 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private int getListChildSize()
     {
         return getResources().getDisplayMetrics().widthPixels / getHorizontalChildCount();
-    }
-
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        Log.e("AAA", "onConfigurationChanged->" + PickTempStorage.getInstance().getSelectedMediaLiveData().getValue().size());
-        if (mRecyclerView != null)
-        {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
-        }
-        if (mAdapter != null)
-        {
-            mAdapter.updateChildSize(getListChildSize());
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        Log.e("aaa", "onSaveInstanceState");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState)
-    {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.e("aaa", "onRestoreInstanceState");
     }
 }

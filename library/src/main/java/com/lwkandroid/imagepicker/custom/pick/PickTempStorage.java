@@ -58,7 +58,12 @@ public class PickTempStorage
 
     public boolean removeData(MediaBean mediaBean)
     {
-        return mSelectedMediaLiveData.getValue().remove(mediaBean);
+        boolean remove = mSelectedMediaLiveData.getValue().remove(mediaBean);
+        if (remove)
+        {
+            mSelectedMediaLiveData.postValue(mSelectedMediaLiveData.getValue());
+        }
+        return remove;
     }
 
     public int indexData(MediaBean mediaBean)
@@ -79,10 +84,5 @@ public class PickTempStorage
     public void clear()
     {
         mSelectedMediaLiveData.postValue(new LinkedList<>());
-    }
-
-    public MutableLiveData<List<MediaBean>> getSelectedMediaLiveData()
-    {
-        return mSelectedMediaLiveData;
     }
 }
