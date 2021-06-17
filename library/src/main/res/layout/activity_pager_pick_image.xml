@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
+        app:left_click_to_finish="true"
         app:show_divider_line="false"
         tools:background="@color/image_pick_style_dark_action_bar_background" />
 

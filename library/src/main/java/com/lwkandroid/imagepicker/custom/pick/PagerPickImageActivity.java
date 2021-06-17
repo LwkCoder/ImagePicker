@@ -116,13 +116,8 @@ public class PagerPickImageActivity extends AppCompatActivity
             } else
             {
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
-                mActionBar.setRightOnItemClickListener01(new ComActionBar.OnItemClickListener()
-                {
-                    @Override
-                    public void onActionBarItemClicked(int viewId, TextView textView, View dividerLine)
-                    {
-                        //TODO 预览
-                    }
+                mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
+                    //TODO 预览
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
