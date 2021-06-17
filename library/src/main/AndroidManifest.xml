@@ -13,6 +13,10 @@
             android:name=".custom.pick.GridImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".custom.pick.PagerImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name=".utils.ImagePickerFileProvider"

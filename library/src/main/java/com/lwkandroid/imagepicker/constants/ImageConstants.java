@@ -29,4 +29,6 @@ public final class ImageConstants
 
     public static final String KEY_INTENT_OPTIONS = "options";
     public static final String KEY_INTENT_RESULT = "result";
+    public static final String KEY_INTENT_INDEX = "index";
+    public static final String KEY_INTENT_BUCKET = "bucket";
 }

@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/v_root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/image_pick_style_dark_root_background">
+
+    <com.lwkandroid.widget.ComActionBar
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        app:show_divider_line="false"
+        tools:background="@color/image_pick_style_dark_action_bar_background" />
+
+    <LinearLayout
+        android:id="@+id/v_bottom_operation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_picker_bottom_operation_height"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        tools:background="@color/image_pick_style_dark_action_bar_background">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:gravity="center"
+            android:paddingStart="@dimen/image_picker_padding_horizontal_normal"
+            android:paddingEnd="@dimen/image_picker_padding_horizontal_normal"
+            android:textSize="14sp"
+            tools:text="@string/done_placeholder"
+            tools:textColor="@color/image_pick_style_dark_action_bar_text" />
+
+    </LinearLayout>
+
 
 </FrameLayout>

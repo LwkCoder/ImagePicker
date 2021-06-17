@@ -1,13 +1,14 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +30,13 @@ import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
 import com.lwkandroid.widget.ComActionBar;
 import com.lwkandroid.widget.StateFrameLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.MutableLiveData;
@@ -49,10 +54,10 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
 
     private CustomPickImageOptions mOptions;
 
-    private LinearLayout mRootLinearLayout;
+    private View mRootContainer;
     private ComActionBar mActionBar;
+    private View mBottomContainer;
     private RecyclerView mRecyclerView;
-    private LinearLayout mBottomLinearLayout;
     private StateFrameLayout mStateFrameLayout;
     private RcvLoadingView mLoadingView;
     private TextView mTvCurrentBucket;
@@ -64,6 +69,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
     private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
+    private ActivityResultLauncher<LauncherOptions> mPagerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,10 +90,10 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
             mOptions.setStyle(CustomPickImageStyle.dark(this));
         }
 
-        mRootLinearLayout = findViewById(R.id.ll_root_container);
+        mRootContainer = findViewById(R.id.v_root_container);
         mActionBar = findViewById(R.id.actionBar);
         mRecyclerView = findViewById(R.id.recyclerView);
-        mBottomLinearLayout = findViewById(R.id.ll_bottom_operation);
+        mBottomContainer = findViewById(R.id.v_bottom_operation);
         mStateFrameLayout = findViewById(R.id.stateFrameLayout);
         mLoadingView = findViewById(R.id.loadingView);
         mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
@@ -104,6 +110,13 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                 .build();
         mAdapter.setLoadMoreLayout(loadMoreView);
         mAdapter.setOnLoadMoreListener(this);
+        mAdapter.setOnChildClickListener(R.id.imgContent, (viewId, view, mediaBean, layoutPosition) -> {
+            LauncherOptions launcherOptions = new LauncherOptions();
+            launcherOptions.setIndex(layoutPosition);
+            launcherOptions.setBucketBean(mCurrentBucketLiveData.getValue());
+            launcherOptions.setOptions(mOptions);
+            mPagerLauncher.launch(launcherOptions);
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         initStyle();
@@ -155,6 +168,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         super.onDestroy();
         PickTempStorage.getInstance().removeObservers(this);
         PickTempStorage.getInstance().clear();
+        mPagerLauncher.unregister();
     }
 
     /**
@@ -169,7 +183,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         Utils.setStatusBarDarkMode(this, !Utils.isDarkColor(style.getStatusBarColor()));
         Utils.setNavigationBarColor(this, style.getNavigationBarColor());
 
-        mRootLinearLayout.setBackgroundColor(style.getRootBackgroundColor());
+        mRootContainer.setBackgroundColor(style.getRootBackgroundColor());
 
         mActionBar.setBackgroundColor(style.getActionBarColor());
         Drawable leftBackDrawable = AppCompatResources.getDrawable(this, R.drawable.image_picker_action_bar_arrow);
@@ -180,7 +194,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mActionBar.setRightTextColor01(style.getActionBarTextColor());
         mActionBar.setRightTextColor02(style.getActionBarTextColor());
 
-        mBottomLinearLayout.setBackgroundColor(style.getNavigationBarColor());
+        mBottomContainer.setBackgroundColor(style.getNavigationBarColor());
         Drawable bucketDrawable = AppCompatResources.getDrawable(this, R.drawable.image_picker_album);
         bucketDrawable.setBounds(0, 0, bucketDrawable.getIntrinsicWidth(), bucketDrawable.getIntrinsicHeight());
         bucketDrawable.setTint(style.getBucketNameTextColor());
@@ -190,8 +204,6 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mTvCurrentBucket.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
         mTvCurrentBucket.setTextColor(style.getBucketNameTextColor());
         mTvDone.setTextColor(style.getDoneTextColor());
-
-
     }
 
     /**
@@ -201,17 +213,18 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     {
         //单选模式下不需要显示“完成”按钮
         mTvDone.setVisibility(mOptions.getMaxPickNumber() > 1 ? View.VISIBLE : View.GONE);
-
+        //所有文件夹加载完成后的监听
         mAllBucketLiveData.observe(this, bucketBeans -> {
             if (bucketBeans != null && bucketBeans.size() > 0)
             {
                 mCurrentBucketLiveData.postValue(bucketBeans.get(0));
             }
         });
-
+        //当前所选文件夹更改后的监听
         mCurrentBucketLiveData.observe(this, this::updateListAfterBucketChanged);
-
+        //同步临时存储中的最大选择数量
         PickTempStorage.getInstance().setMaxNumber(mOptions.getMaxPickNumber());
+        //临时存储的监听
         PickTempStorage.getInstance().addObserver(this, mediaList -> {
             if (mediaList == null || mediaList.size() == 0)
             {
@@ -231,6 +244,38 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
+            }
+        });
+        //注册大图浏览跳转
+        mPagerLauncher = registerForActivityResult(new ActivityResultContract<LauncherOptions, Integer>()
+        {
+            @NonNull
+            @Override
+            public Intent createIntent(@NonNull Context context, LauncherOptions input)
+            {
+                Intent intent = new Intent(context, PagerImageActivity.class);
+                intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input.getOptions());
+                intent.putExtra(ImageConstants.KEY_INTENT_BUCKET, input.getBucketBean());
+                intent.putExtra(ImageConstants.KEY_INTENT_INDEX, input.getIndex());
+                return intent;
+            }
+
+            @Override
+            public Integer parseResult(int resultCode, @Nullable Intent intent)
+            {
+                return resultCode;
+            }
+        }, result -> {
+            if (result == RESULT_OK)
+            {
+                //完成
+                returnSelectedMediaData();
+            } else
+            {
+                if (mAdapter != null)
+                {
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -326,5 +371,59 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private int getListChildSize()
     {
         return getResources().getDisplayMetrics().widthPixels / getHorizontalChildCount();
+    }
+
+    /**
+     * 返回所选图片
+     */
+    private void returnSelectedMediaData()
+    {
+        ArrayList<MediaBean> resultList = new ArrayList<>();
+        resultList.addAll(PickTempStorage.getInstance().getAllSelectedData());
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(ImageConstants.KEY_INTENT_RESULT, resultList);
+        setResult(RESULT_OK, intent);
+        finish();
+        PickTempStorage.getInstance().clear();
+    }
+
+    /**
+     * 跳转参数
+     */
+    private static class LauncherOptions
+    {
+        private BucketBean bucketBean;
+        private int index;
+        private CustomPickImageOptions options;
+
+        public BucketBean getBucketBean()
+        {
+            return bucketBean;
+        }
+
+        public void setBucketBean(BucketBean bucketBean)
+        {
+            this.bucketBean = bucketBean;
+        }
+
+        public int getIndex()
+        {
+            return index;
+        }
+
+        public void setIndex(int index)
+        {
+            this.index = index;
+        }
+
+        public CustomPickImageOptions getOptions()
+        {
+            return options;
+        }
+
+        public void setOptions(CustomPickImageOptions options)
+        {
+            this.options = options;
+        }
     }
 }

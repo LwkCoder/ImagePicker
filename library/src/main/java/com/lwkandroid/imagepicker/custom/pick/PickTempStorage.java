@@ -85,4 +85,15 @@ public class PickTempStorage
     {
         mSelectedMediaLiveData.postValue(new LinkedList<>());
     }
+
+    public List<MediaBean> getAllSelectedData()
+    {
+        return mSelectedMediaLiveData.getValue();
+    }
+
+    public int getCurrentSelectedSize()
+    {
+        return mSelectedMediaLiveData != null && mSelectedMediaLiveData.getValue() != null ?
+                mSelectedMediaLiveData.getValue().size() : 0;
+    }
 }

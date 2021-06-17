@@ -134,6 +134,22 @@ public class CustomPickImageStyle implements Parcelable
         this.doneTextColor = doneTextColor;
     }
 
+
+    public static CustomPickImageStyle dark(Context context)
+    {
+        return new Builder()
+                .setStatusBarColorResId(context, R.color.image_pick_style_dark_status_bar)
+                .setActionBarColorResId(context, R.color.image_pick_style_dark_action_bar_background)
+                .setNavigationBarColorResId(context, R.color.image_pick_style_dark_navigation_bar_background)
+                .setRootBackgroundColorResId(context, R.color.image_pick_style_dark_root_background)
+                .setActionBarTextColorResId(context, R.color.image_pick_style_dark_action_bar_text)
+                .setLoadingColorResId(context, R.color.image_pick_style_dark_loading)
+                .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
+                .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
+                .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
+                .build();
+    }
+
     @Override
     public int describeContents()
     {
@@ -145,10 +161,13 @@ public class CustomPickImageStyle implements Parcelable
     {
         dest.writeInt(this.statusBarColor);
         dest.writeInt(this.actionBarColor);
-        dest.writeInt(this.actionBarTextColor);
         dest.writeInt(this.navigationBarColor);
         dest.writeInt(this.rootBackgroundColor);
+        dest.writeInt(this.actionBarTextColor);
         dest.writeInt(this.loadingColor);
+        dest.writeInt(this.bucketNameTextColor);
+        dest.writeInt(this.bucketListBackgroundColor);
+        dest.writeInt(this.doneTextColor);
     }
 
     public CustomPickImageStyle()
@@ -159,13 +178,16 @@ public class CustomPickImageStyle implements Parcelable
     {
         this.statusBarColor = in.readInt();
         this.actionBarColor = in.readInt();
-        this.actionBarTextColor = in.readInt();
         this.navigationBarColor = in.readInt();
         this.rootBackgroundColor = in.readInt();
+        this.actionBarTextColor = in.readInt();
         this.loadingColor = in.readInt();
+        this.bucketNameTextColor = in.readInt();
+        this.bucketListBackgroundColor = in.readInt();
+        this.doneTextColor = in.readInt();
     }
 
-    public static final Parcelable.Creator<CustomPickImageStyle> CREATOR = new Parcelable.Creator<CustomPickImageStyle>()
+    public static final Creator<CustomPickImageStyle> CREATOR = new Creator<CustomPickImageStyle>()
     {
         @Override
         public CustomPickImageStyle createFromParcel(Parcel source)
@@ -301,20 +323,5 @@ public class CustomPickImageStyle implements Parcelable
         {
             return mStyle;
         }
-    }
-
-    public static CustomPickImageStyle dark(Context context)
-    {
-        return new Builder()
-                .setStatusBarColorResId(context, R.color.image_pick_style_dark_status_bar)
-                .setActionBarColorResId(context, R.color.image_pick_style_dark_action_bar_background)
-                .setNavigationBarColorResId(context, R.color.image_pick_style_dark_navigation_bar_background)
-                .setRootBackgroundColorResId(context, R.color.image_pick_style_dark_root_background)
-                .setActionBarTextColorResId(context, R.color.image_pick_style_dark_action_bar_text)
-                .setLoadingColorResId(context, R.color.image_pick_style_dark_loading)
-                .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
-                .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
-                .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
-                .build();
     }
 }

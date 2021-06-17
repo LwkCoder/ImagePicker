@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_root_container"
+    android:id="@+id/v_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -40,7 +40,7 @@
                 android:overScrollMode="never" />
 
             <LinearLayout
-                android:id="@+id/ll_bottom_operation"
+                android:id="@+id/v_bottom_operation"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/image_picker_bottom_operation_height"
                 android:orientation="horizontal"
