@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:background="@color/image_pick_style_dark_root_background"
-    tools:context=".custom.pick.GridImageActivity">
+    tools:context=".custom.pick.GridPickImageActivity">
 
     <com.lwkandroid.widget.ComActionBar
         android:id="@+id/actionBar"

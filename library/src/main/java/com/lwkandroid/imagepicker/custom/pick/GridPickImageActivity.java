@@ -45,11 +45,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * 网格图片界面
- *
- * @author LWK
+ * @description: 网格浏览界面
+ * @author: LWK
+ * @date: 2021/6/15 10:30
  */
-public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreListener
+public class GridPickImageActivity extends AppCompatActivity implements RcvLoadMoreListener
 {
     private static final int PAGE_SIZE = 60;
 
@@ -66,18 +66,18 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private CheckBox mCkOriginalFile;
 
     private MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
-    private GridAdapter mAdapter;
+    private GridPickAdapter mAdapter;
 
     private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
     private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
-    private ActivityResultLauncher<LauncherOptions> mPagerLauncher;
+    private ActivityResultLauncher<PagerLauncherOptions> mPagerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grid_image);
+        setContentView(R.layout.activity_grid_pick_image);
 
         mOptions = getIntent().getParcelableExtra(ImageConstants.KEY_INTENT_OPTIONS);
         if (mOptions == null)
@@ -104,7 +104,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
         //只有多选模式下才能出现复选框
-        mAdapter = new GridAdapter(this, null, getListChildSize(),
+        mAdapter = new GridPickAdapter(this, null, getListChildSize(),
                 mOptions.getStyle().getDoneTextColor(), mOptions.getMaxPickNumber() > 1);
         mLoadingView.setColor(mOptions.getStyle().getLoadingColor());
         RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
@@ -124,11 +124,11 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                 returnSelectedMediaData(list);
             } else
             {
-                LauncherOptions launcherOptions = new LauncherOptions();
-                launcherOptions.setIndex(layoutPosition);
-                launcherOptions.setBucketBean(mCurrentBucketLiveData.getValue());
-                launcherOptions.setOptions(mOptions);
-                mPagerLauncher.launch(launcherOptions);
+                PagerLauncherOptions pagerLauncherOptions = new PagerLauncherOptions();
+                pagerLauncherOptions.setIndex(layoutPosition);
+                pagerLauncherOptions.setBucketBean(mCurrentBucketLiveData.getValue());
+                pagerLauncherOptions.setOptions(mOptions);
+                mPagerLauncher.launch(pagerLauncherOptions);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -261,13 +261,13 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
             }
         });
         //注册大图浏览跳转
-        mPagerLauncher = registerForActivityResult(new ActivityResultContract<LauncherOptions, Integer>()
+        mPagerLauncher = registerForActivityResult(new ActivityResultContract<PagerLauncherOptions, Integer>()
         {
             @NonNull
             @Override
-            public Intent createIntent(@NonNull Context context, LauncherOptions input)
+            public Intent createIntent(@NonNull Context context, PagerLauncherOptions input)
             {
-                Intent intent = new Intent(context, PagerImageActivity.class);
+                Intent intent = new Intent(context, PagerPickImageActivity.class);
                 intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input.getOptions());
                 intent.putExtra(ImageConstants.KEY_INTENT_BUCKET, input.getBucketBean());
                 intent.putExtra(ImageConstants.KEY_INTENT_INDEX, input.getIndex());
@@ -308,7 +308,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                     @Override
                     public void onGranted(List<String> permissions, boolean all)
                     {
-                        mMediaLoaderEngine.loadAllBucket(GridImageActivity.this, GridImageActivity.this, mOptions,
+                        mMediaLoaderEngine.loadAllBucket(GridPickImageActivity.this, GridPickImageActivity.this, mOptions,
                                 new PickCallBack<List<BucketBean>>()
                                 {
                                     @Override
@@ -321,7 +321,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                                     @Override
                                     public void onPickFailed(int errorCode, String message)
                                     {
-                                        Toast.makeText(GridImageActivity.this, R.string.can_not_scan_media_data, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(GridPickImageActivity.this, R.string.can_not_scan_media_data, Toast.LENGTH_SHORT).show();
                                         setResult(Activity.RESULT_CANCELED);
                                         finish();
                                     }
@@ -331,10 +331,10 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
                     @Override
                     public void onDenied(List<String> permissions, boolean never)
                     {
-                        Toast.makeText(GridImageActivity.this, R.string.permission_denied_of_pick_image, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GridPickImageActivity.this, R.string.permission_denied_of_pick_image, Toast.LENGTH_SHORT).show();
                         if (never)
                         {
-                            XXPermissions.startPermissionActivity(GridImageActivity.this, permissions);
+                            XXPermissions.startPermissionActivity(GridPickImageActivity.this, permissions);
                         }
                         setResult(Activity.RESULT_CANCELED);
                         finish();
@@ -401,9 +401,9 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     }
 
     /**
-     * 跳转参数
+     * 跳转大图浏览界面参数
      */
-    private static class LauncherOptions
+    private static class PagerLauncherOptions
     {
         private BucketBean bucketBean;
         private int index;

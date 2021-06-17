@@ -19,11 +19,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.viewpager2.widget.ViewPager2;
 
 /**
- * @description: ViewPager图片界面
+ * @description: 大图浏览界面
  * @author: LWK
  * @date: 2021/6/17 10:30
  */
-public class PagerImageActivity extends AppCompatActivity
+public class PagerPickImageActivity extends AppCompatActivity
 {
     private BucketBean mCurrentBucket;
     private int mCurrentIndex;
@@ -39,7 +39,7 @@ public class PagerImageActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pager_image);
+        setContentView(R.layout.activity_pager_pick_image);
 
         mCurrentBucket = getIntent().getParcelableExtra(ImageConstants.KEY_INTENT_BUCKET);
         mOptions = getIntent().getParcelableExtra(ImageConstants.KEY_INTENT_OPTIONS);

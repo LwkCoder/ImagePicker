@@ -13,9 +13,9 @@ import java.util.ArrayList;
  * @author: LWK
  * @date: 2021/6/17 10:35
  */
-class PagerAdapter extends RcvSingleAdapter<MediaBean>
+class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
 {
-    public PagerAdapter(Context context, int layoutId, int number)
+    public PagerPickAdapter(Context context, int layoutId, int number)
     {
         super(context, layoutId, new ArrayList<>(number));
     }

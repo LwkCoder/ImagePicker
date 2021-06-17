@@ -54,7 +54,7 @@ public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImage
             @Override
             public Intent createIntent(@NonNull Context context, CustomPickImageOptions input)
             {
-                Intent intent = new Intent(context, GridImageActivity.class);
+                Intent intent = new Intent(context, GridPickImageActivity.class);
                 intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input);
                 return intent;
             }

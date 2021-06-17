@@ -10,11 +10,11 @@
 
     <application android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".custom.pick.GridImageActivity"
+            android:name=".custom.pick.GridPickImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".custom.pick.PagerImageActivity"
+            android:name=".custom.pick.PagerPickImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 

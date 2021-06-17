@@ -25,14 +25,14 @@ import androidx.core.util.Pair;
  * @author: LWK
  * @date: 2021/6/11 15:30
  */
-final class GridAdapter extends RcvSingleAdapter<MediaBean>
+final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
 {
     private final int mCheckedColor;
     private int mChildSize;
     private boolean mShowCheckView;
     private final Map<String, Pair<Integer, Integer>> mCheckedPositionMap = new HashMap<>();
 
-    public GridAdapter(Context context, List<MediaBean> datas, int childSize, int checkedColor, boolean showCheckView)
+    public GridPickAdapter(Context context, List<MediaBean> datas, int childSize, int checkedColor, boolean showCheckView)
     {
         super(context, R.layout.adapter_image_picker_grid, datas);
         this.mChildSize = childSize;
