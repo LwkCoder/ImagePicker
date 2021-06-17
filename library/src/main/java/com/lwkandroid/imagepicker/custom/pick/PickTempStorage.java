@@ -5,9 +5,7 @@ import com.lwkandroid.imagepicker.bean.MediaBean;
 import java.util.LinkedList;
 import java.util.List;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 /**
  * @description: 临时存储所选数据的类, 多选模式下生效
@@ -18,6 +16,7 @@ public class PickTempStorage
 {
     private int mMaxNumber;
     private MutableLiveData<List<MediaBean>> mSelectedMediaLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mOriginFileStateLiveData = new MutableLiveData<>();
 
     public static PickTempStorage getInstance()
     {
@@ -44,7 +43,7 @@ public class PickTempStorage
         return mMaxNumber;
     }
 
-    public boolean addData(MediaBean mediaBean)
+    public boolean addMediaData(MediaBean mediaBean)
     {
         if (mSelectedMediaLiveData.getValue().size() == mMaxNumber)
         {
@@ -55,7 +54,7 @@ public class PickTempStorage
         return true;
     }
 
-    public boolean removeData(MediaBean mediaBean)
+    public boolean removeMediaData(MediaBean mediaBean)
     {
         boolean remove = mSelectedMediaLiveData.getValue().remove(mediaBean);
         if (remove)
@@ -65,34 +64,24 @@ public class PickTempStorage
         return remove;
     }
 
-    public int indexData(MediaBean mediaBean)
+    public int indexMediaData(MediaBean mediaBean)
     {
         return mSelectedMediaLiveData.getValue().indexOf(mediaBean);
     }
 
-    public void addObserver(LifecycleOwner owner, Observer<List<MediaBean>> observer)
+    public MutableLiveData<List<MediaBean>> getSelectedMediaLiveData()
     {
-        mSelectedMediaLiveData.observe(owner, observer);
+        return mSelectedMediaLiveData;
     }
 
-    public void removeObservers(LifecycleOwner owner)
+    public MutableLiveData<Boolean> getOriginFileStateLiveData()
     {
-        mSelectedMediaLiveData.removeObservers(owner);
+        return mOriginFileStateLiveData;
     }
 
     public void clear()
     {
         mSelectedMediaLiveData.postValue(new LinkedList<>());
-    }
-
-    public List<MediaBean> getAllSelectedData()
-    {
-        return mSelectedMediaLiveData.getValue();
-    }
-
-    public int getCurrentSelectedSize()
-    {
-        return mSelectedMediaLiveData != null && mSelectedMediaLiveData.getValue() != null ?
-                mSelectedMediaLiveData.getValue().size() : 0;
+        mOriginFileStateLiveData.postValue(false);
     }
 }

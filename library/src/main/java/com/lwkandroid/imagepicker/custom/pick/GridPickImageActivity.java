@@ -31,7 +31,6 @@ import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
 import com.lwkandroid.widget.ComActionBar;
 import com.lwkandroid.widget.StateFrameLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -102,6 +101,8 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         mTvDone = findViewById(R.id.tv_done);
         mCkOriginalFile = findViewById(R.id.ck_original_file);
 
+        mTvDone.setOnClickListener(v -> callSelectedDone());
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
         //只有多选模式下才能出现复选框
         mAdapter = new GridPickAdapter(this, null, getListChildSize(),
@@ -119,9 +120,9 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
             //单选模式下直接返回
             if (mOptions.getMaxPickNumber() == 1)
             {
-                List<MediaBean> list = new ArrayList<>(1);
-                list.add(mediaBean);
-                returnSelectedMediaData(list);
+                PickTempStorage.getInstance().getSelectedMediaLiveData().removeObservers(GridPickImageActivity.this);
+                PickTempStorage.getInstance().addMediaData(mediaBean);
+                callSelectedDone();
             } else
             {
                 PagerLauncherOptions pagerLauncherOptions = new PagerLauncherOptions();
@@ -180,8 +181,8 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     protected void onDestroy()
     {
         super.onDestroy();
-        PickTempStorage.getInstance().removeObservers(this);
-        PickTempStorage.getInstance().clear();
+        PickTempStorage.getInstance().getSelectedMediaLiveData().removeObservers(this);
+        PickTempStorage.getInstance().getOriginFileStateLiveData().removeObservers(this);
         mPagerLauncher.unregister();
     }
 
@@ -217,7 +218,13 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         drawables[0] = bucketDrawable;
         mTvCurrentBucket.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
         mTvCurrentBucket.setTextColor(style.getBucketNameTextColor());
+
         mTvDone.setTextColor(style.getDoneTextColor());
+        mCkOriginalFile.setVisibility(mOptions.isShowOriginalFileCheckBox() ? View.VISIBLE : View.GONE);
+        mCkOriginalFile.setTextColor(mOptions.getStyle().getOriginFileCheckBoxTextColor());
+        mCkOriginalFile.setButtonTintList(Utils.createCheckBoxColorStateList(
+                mOptions.getStyle().getOriginFileCheckBoxButtonTintColor(),
+                mOptions.getStyle().getOriginFileCheckBoxTextColor()));
     }
 
     /**
@@ -239,7 +246,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         //同步临时存储中的最大选择数量
         PickTempStorage.getInstance().setMaxNumber(mOptions.getMaxPickNumber());
         //临时存储的监听
-        PickTempStorage.getInstance().addObserver(this, mediaList -> {
+        PickTempStorage.getInstance().getSelectedMediaLiveData().observe(this, mediaList -> {
             if (mediaList == null || mediaList.size() == 0)
             {
                 mActionBar.setRightText01(null);
@@ -248,18 +255,18 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
             } else
             {
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
-                mActionBar.setRightOnItemClickListener01(new ComActionBar.OnItemClickListener()
-                {
-                    @Override
-                    public void onActionBarItemClicked(int viewId, TextView textView, View dividerLine)
-                    {
-                        //TODO 预览
-                    }
+                mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
+                    //TODO 预览
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
             }
         });
+        PickTempStorage.getInstance().getOriginFileStateLiveData().observe(this, checked -> mCkOriginalFile.setChecked(checked));
+        //“原图”checkbox状态同步
+        mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
+                PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));
+        mCkOriginalFile.setChecked(false);
         //注册大图浏览跳转
         mPagerLauncher = registerForActivityResult(new ActivityResultContract<PagerLauncherOptions, Integer>()
         {
@@ -283,7 +290,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
             if (result == RESULT_OK)
             {
                 //完成
-                returnSelectedMediaData(PickTempStorage.getInstance().getAllSelectedData());
+                callSelectedDone();
             } else
             {
                 if (mAdapter != null)
@@ -292,6 +299,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
                 }
             }
         });
+        //TODO 注册预览图片跳转
     }
 
     /**
@@ -388,16 +396,12 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     }
 
     /**
-     * 返回所选图片
+     * 完成选择
      */
-    private void returnSelectedMediaData(List<MediaBean> list)
+    private void callSelectedDone()
     {
-        ArrayList<MediaBean> resultList = new ArrayList<>(list);
-        Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(ImageConstants.KEY_INTENT_RESULT, resultList);
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK);
         finish();
-        PickTempStorage.getInstance().clear();
     }
 
     /**

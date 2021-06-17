@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 ImagePicker.pickImageByCustom(new GlideDisplayer())
                         .setMaxPickNumber(9)
+                        .setShowOriginalFileCheckBox(true)
                         .build()
                         .doPickImage(MainActivity.this, new PickCallBack<PickResultBean>()
                         {
@@ -126,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
             }
         });
-
     }
 
     @Override

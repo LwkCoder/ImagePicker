@@ -3,6 +3,7 @@ package com.lwkandroid.imagepicker.custom.pick;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.R;
@@ -34,6 +35,7 @@ public class PagerPickImageActivity extends AppCompatActivity
     private ComActionBar mActionBar;
     private View mBottomContainer;
     private TextView mTvDone;
+    private CheckBox mCkOriginalFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -49,7 +51,10 @@ public class PagerPickImageActivity extends AppCompatActivity
         mActionBar = findViewById(R.id.actionBar);
         mBottomContainer = findViewById(R.id.v_bottom_operation);
         mTvDone = findViewById(R.id.tv_done);
+        mCkOriginalFile = findViewById(R.id.ck_original_file);
         mViewPager = findViewById(R.id.viewPager);
+
+        mTvDone.setOnClickListener(v -> callSelectedDone());
 
         initStyle();
         initData();
@@ -59,7 +64,8 @@ public class PagerPickImageActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        PickTempStorage.getInstance().removeObservers(this);
+        PickTempStorage.getInstance().getSelectedMediaLiveData().removeObservers(this);
+        PickTempStorage.getInstance().getOriginFileStateLiveData().removeObservers(this);
     }
 
     /**
@@ -87,6 +93,11 @@ public class PagerPickImageActivity extends AppCompatActivity
 
         mBottomContainer.setBackgroundColor(style.getNavigationBarColor());
         mTvDone.setTextColor(style.getDoneTextColor());
+        mCkOriginalFile.setVisibility(mOptions.isShowOriginalFileCheckBox() ? View.VISIBLE : View.GONE);
+        mCkOriginalFile.setTextColor(mOptions.getStyle().getOriginFileCheckBoxTextColor());
+        mCkOriginalFile.setButtonTintList(Utils.createCheckBoxColorStateList(
+                mOptions.getStyle().getOriginFileCheckBoxButtonTintColor(),
+                mOptions.getStyle().getOriginFileCheckBoxTextColor()));
     }
 
     /**
@@ -96,7 +107,7 @@ public class PagerPickImageActivity extends AppCompatActivity
     {
         //TODO 注册跳转
         //临时存储的监听
-        PickTempStorage.getInstance().addObserver(this, mediaList -> {
+        PickTempStorage.getInstance().getSelectedMediaLiveData().observe(this, mediaList -> {
             if (mediaList == null || mediaList.size() == 0)
             {
                 mActionBar.setRightText01(null);
@@ -117,5 +128,19 @@ public class PagerPickImageActivity extends AppCompatActivity
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
             }
         });
+        PickTempStorage.getInstance().getOriginFileStateLiveData().observe(this, checked -> mCkOriginalFile.setChecked(checked));
+        //“原图”checkbox状态同步
+        mCkOriginalFile.setChecked(PickTempStorage.getInstance().getOriginFileStateLiveData().getValue());
+        mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
+                PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));
+    }
+
+    /**
+     * 完成选择
+     */
+    private void callSelectedDone()
+    {
+        setResult(RESULT_OK);
+        finish();
     }
 }

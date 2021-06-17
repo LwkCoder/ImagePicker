@@ -20,31 +20,35 @@
         app:show_divider_line="false"
         tools:background="@color/image_pick_style_dark_action_bar_background" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/v_bottom_operation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_picker_bottom_operation_height"
         android:layout_gravity="bottom"
-        android:orientation="horizontal"
         tools:background="@color/image_pick_style_dark_action_bar_background">
 
-        <View
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/ck_original_file"
+            style="@style/ImagePickerCheckBoxStyle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_gravity="center"
+            android:text="@string/original_image"
+            tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
         <TextView
             android:id="@+id/tv_done"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="end"
             android:background="@drawable/image_picker_ripple_click_effect"
             android:gravity="center"
             android:paddingStart="@dimen/image_picker_padding_horizontal_small"
             android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
-            android:textSize="14sp"
+            android:textSize="@dimen/image_picker_text_size_medium"
             tools:text="@string/done_placeholder"
             tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </FrameLayout>

@@ -69,7 +69,7 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
         checkView.setLayoutParams(layoutParams1);
         checkView.setCheckedColor(mCheckedColor);
 
-        int index = PickTempStorage.getInstance().indexData(itemData);
+        int index = PickTempStorage.getInstance().indexMediaData(itemData);
         boolean checked = index >= 0;
         if (checked)
         {
@@ -85,9 +85,9 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
         checkView.setOnCheckedChangeListener((checkView1, isChecked) -> {
             if (isChecked)
             {
-                if (PickTempStorage.getInstance().addData(itemData))
+                if (PickTempStorage.getInstance().addMediaData(itemData))
                 {
-                    int newIndex = PickTempStorage.getInstance().indexData(itemData);
+                    int newIndex = PickTempStorage.getInstance().indexMediaData(itemData);
                     checkView.setNumber(newIndex + 1);
                     mCheckedPositionMap.put(itemData.getId(), new Pair<>(newIndex, position));
                     notifyItemChanged(position);
@@ -97,8 +97,8 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
                 }
             } else
             {
-                int oldIndex = PickTempStorage.getInstance().indexData(itemData);
-                if (PickTempStorage.getInstance().removeData(itemData))
+                int oldIndex = PickTempStorage.getInstance().indexMediaData(itemData);
+                if (PickTempStorage.getInstance().removeMediaData(itemData))
                 {
                     notifyItemChanged(position);
                     mCheckedPositionMap.remove(itemData.getId());

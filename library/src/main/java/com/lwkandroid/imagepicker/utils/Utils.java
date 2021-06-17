@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -640,5 +641,14 @@ public final class Utils
     public static boolean checkAndroidR()
     {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
+
+    public static ColorStateList createCheckBoxColorStateList(int checkedColor, int unCheckColor)
+    {
+        int[] colors = new int[]{checkedColor, unCheckColor};
+        int[][] states = new int[2][];
+        states[0] = new int[]{android.R.attr.state_checked};
+        states[1] = new int[]{};
+        return new ColorStateList(states, colors);
     }
 }

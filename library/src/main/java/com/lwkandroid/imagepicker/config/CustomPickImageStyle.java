@@ -44,6 +44,12 @@ public class CustomPickImageStyle implements Parcelable
     @ColorInt
     private int doneTextColor;
 
+    @ColorInt
+    private int originFileCheckBoxTextColor;
+
+    @ColorInt
+    private int originFileCheckBoxButtonTintColor;
+
     public int getStatusBarColor()
     {
         return statusBarColor;
@@ -134,6 +140,25 @@ public class CustomPickImageStyle implements Parcelable
         this.doneTextColor = doneTextColor;
     }
 
+    public int getOriginFileCheckBoxTextColor()
+    {
+        return originFileCheckBoxTextColor;
+    }
+
+    public void setOriginFileCheckBoxTextColor(int originFileCheckBoxTextColor)
+    {
+        this.originFileCheckBoxTextColor = originFileCheckBoxTextColor;
+    }
+
+    public int getOriginFileCheckBoxButtonTintColor()
+    {
+        return originFileCheckBoxButtonTintColor;
+    }
+
+    public void setOriginFileCheckBoxButtonTintColor(int originFileCheckBoxButtonTintColor)
+    {
+        this.originFileCheckBoxButtonTintColor = originFileCheckBoxButtonTintColor;
+    }
 
     public static CustomPickImageStyle dark(Context context)
     {
@@ -147,60 +172,10 @@ public class CustomPickImageStyle implements Parcelable
                 .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
                 .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
                 .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
+                .setOriginFileCheckBoxTextColorResId(context, R.color.image_pick_style_dark_origin_file_checkbox_text)
+                .setOriginFileCheckBoxButtonTintColorResId(context, R.color.image_pick_style_dark_origin_file_checkbox_button_tint)
                 .build();
     }
-
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeInt(this.statusBarColor);
-        dest.writeInt(this.actionBarColor);
-        dest.writeInt(this.navigationBarColor);
-        dest.writeInt(this.rootBackgroundColor);
-        dest.writeInt(this.actionBarTextColor);
-        dest.writeInt(this.loadingColor);
-        dest.writeInt(this.bucketNameTextColor);
-        dest.writeInt(this.bucketListBackgroundColor);
-        dest.writeInt(this.doneTextColor);
-    }
-
-    public CustomPickImageStyle()
-    {
-    }
-
-    protected CustomPickImageStyle(Parcel in)
-    {
-        this.statusBarColor = in.readInt();
-        this.actionBarColor = in.readInt();
-        this.navigationBarColor = in.readInt();
-        this.rootBackgroundColor = in.readInt();
-        this.actionBarTextColor = in.readInt();
-        this.loadingColor = in.readInt();
-        this.bucketNameTextColor = in.readInt();
-        this.bucketListBackgroundColor = in.readInt();
-        this.doneTextColor = in.readInt();
-    }
-
-    public static final Creator<CustomPickImageStyle> CREATOR = new Creator<CustomPickImageStyle>()
-    {
-        @Override
-        public CustomPickImageStyle createFromParcel(Parcel source)
-        {
-            return new CustomPickImageStyle(source);
-        }
-
-        @Override
-        public CustomPickImageStyle[] newArray(int size)
-        {
-            return new CustomPickImageStyle[size];
-        }
-    };
 
     public static class Builder
     {
@@ -319,9 +294,89 @@ public class CustomPickImageStyle implements Parcelable
             return this;
         }
 
+        public Builder setOriginFileCheckBoxTextColor(@ColorInt int color)
+        {
+            mStyle.setOriginFileCheckBoxTextColor(color);
+            return this;
+        }
+
+        public Builder setOriginFileCheckBoxTextColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setOriginFileCheckBoxTextColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
+        public Builder setOriginFileCheckBoxButtonTintColor(@ColorInt int color)
+        {
+            mStyle.setOriginFileCheckBoxButtonTintColor(color);
+            return this;
+        }
+
+        public Builder setOriginFileCheckBoxButtonTintColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setOriginFileCheckBoxButtonTintColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
         public CustomPickImageStyle build()
         {
             return mStyle;
         }
     }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.statusBarColor);
+        dest.writeInt(this.actionBarColor);
+        dest.writeInt(this.navigationBarColor);
+        dest.writeInt(this.rootBackgroundColor);
+        dest.writeInt(this.actionBarTextColor);
+        dest.writeInt(this.loadingColor);
+        dest.writeInt(this.bucketNameTextColor);
+        dest.writeInt(this.bucketListBackgroundColor);
+        dest.writeInt(this.doneTextColor);
+        dest.writeInt(this.originFileCheckBoxTextColor);
+        dest.writeInt(this.originFileCheckBoxButtonTintColor);
+    }
+
+    public CustomPickImageStyle()
+    {
+    }
+
+    protected CustomPickImageStyle(Parcel in)
+    {
+        this.statusBarColor = in.readInt();
+        this.actionBarColor = in.readInt();
+        this.navigationBarColor = in.readInt();
+        this.rootBackgroundColor = in.readInt();
+        this.actionBarTextColor = in.readInt();
+        this.loadingColor = in.readInt();
+        this.bucketNameTextColor = in.readInt();
+        this.bucketListBackgroundColor = in.readInt();
+        this.doneTextColor = in.readInt();
+        this.originFileCheckBoxTextColor = in.readInt();
+        this.originFileCheckBoxButtonTintColor = in.readInt();
+    }
+
+    public static final Creator<CustomPickImageStyle> CREATOR = new Creator<CustomPickImageStyle>()
+    {
+        @Override
+        public CustomPickImageStyle createFromParcel(Parcel source)
+        {
+            return new CustomPickImageStyle(source);
+        }
+
+        @Override
+        public CustomPickImageStyle[] newArray(int size)
+        {
+            return new CustomPickImageStyle[size];
+        }
+    };
 }

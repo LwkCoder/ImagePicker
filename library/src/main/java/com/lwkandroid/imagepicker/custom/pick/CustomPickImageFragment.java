@@ -5,15 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.bean.PickResultBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.common.AbsMediatorFragment;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -28,7 +24,6 @@ import androidx.fragment.app.FragmentActivity;
  */
 public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImageOptions, PickResultBean>
 {
-    private static final int REQUEST_CODE_PICK = 100;
     private ActivityResultLauncher<CustomPickImageOptions> mActivityLauncher;
 
     public CustomPickImageFragment(CustomPickImageOptions options, PickCallBack<PickResultBean> callback)
@@ -48,7 +43,7 @@ public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImage
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mActivityLauncher = registerForActivityResult(new ActivityResultContract<CustomPickImageOptions, List<MediaBean>>()
+        mActivityLauncher = registerForActivityResult(new ActivityResultContract<CustomPickImageOptions, Integer>()
         {
             @NonNull
             @Override
@@ -60,26 +55,22 @@ public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImage
             }
 
             @Override
-            public List<MediaBean> parseResult(int resultCode, @Nullable Intent intent)
+            public Integer parseResult(int resultCode, @Nullable Intent intent)
             {
-                if (Activity.RESULT_OK == resultCode)
-                {
-                    return intent.getParcelableArrayListExtra(ImageConstants.KEY_INTENT_RESULT);
-                } else
-                {
-                    return new LinkedList<>();
-                }
+                return resultCode;
             }
         }, result -> {
-            if (result != null && result.size() > 0)
+            if (Activity.RESULT_OK == result)
             {
                 PickResultBean resultBean = new PickResultBean();
-                resultBean.setMediaList(result);
+                resultBean.setMediaList(PickTempStorage.getInstance().getSelectedMediaLiveData().getValue());
+                resultBean.setOriginalFile(PickTempStorage.getInstance().getOriginFileStateLiveData().getValue());
                 invokeSuccessCallBack(resultBean);
             } else
             {
                 detachActivity(getActivity());
             }
+            PickTempStorage.getInstance().clear();
         });
     }
 

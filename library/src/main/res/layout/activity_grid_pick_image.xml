@@ -51,24 +51,24 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     android:background="@drawable/image_picker_ripple_click_effect"
-                    android:drawablePadding="@dimen/image_picker_padding_horizontal_small"
+                    android:drawablePadding="@dimen/image_picker_padding_horizontal_tiny"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:paddingStart="@dimen/image_picker_padding_horizontal_small"
                     android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
                     android:singleLine="true"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/image_picker_text_size_medium"
                     tools:text="全部图片"
                     tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
                 <CheckBox
                     android:id="@+id/ck_original_file"
+                    style="@style/ImagePickerCheckBoxStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:text="@string/original_image"
-                    android:textSize="14sp"
                     tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
                 <TextView
@@ -80,7 +80,7 @@
                     android:gravity="center"
                     android:paddingStart="@dimen/image_picker_padding_horizontal_small"
                     android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/image_picker_text_size_medium"
                     tools:text="@string/done_placeholder"
                     tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 

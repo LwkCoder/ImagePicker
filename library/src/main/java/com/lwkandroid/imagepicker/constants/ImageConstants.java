@@ -28,7 +28,8 @@ public final class ImageConstants
     public static final long BUCKET_ID_ALL_IMAGE = -1;
 
     public static final String KEY_INTENT_OPTIONS = "options";
-    public static final String KEY_INTENT_RESULT = "result";
+    public static final String KEY_INTENT_DATA_LIST = "data_list";
+    public static final String KEY_INTENT_CHECK_STATE = "check_state";
     public static final String KEY_INTENT_INDEX = "index";
     public static final String KEY_INTENT_BUCKET = "bucket";
 }
