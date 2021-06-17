@@ -29,6 +29,7 @@ dependencies {
     implementation "com.lwkandroid.library:StateFrameLayout:$StateFrameLayoutVersion"
     implementation "com.lwkandroid.library:ComActionBar:$ComActionBarVersion"
     implementation "com.github.getActivity:XXPermissions:$XXPermissionVersion"
+    implementation "com.google.android.material:material:$AndroidMaterialVersion"
 }
 
 allprojects {

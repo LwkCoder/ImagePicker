@@ -41,6 +41,7 @@
     <string name="done_placeholder">Done(%1$d/%2$d)</string>
     <string name="title_select_image">Select Picture</string>
     <string name="title_crop_image">Crop Picture</string>
+    <string name="original_image">Original Image</string>
 
     <string name="bucket_all_picture">All Pictures</string>
 </resources>

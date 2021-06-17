@@ -10,14 +10,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 /**
- * @description: 临时存储所选数据的类
+ * @description: 临时存储所选数据的类, 多选模式下生效
  * @author: LWK
  * @date: 2021/6/16 13:31
  */
 public class PickTempStorage
 {
     private int mMaxNumber;
-    //已选文件集合，多选模式下生效
     private MutableLiveData<List<MediaBean>> mSelectedMediaLiveData = new MutableLiveData<>();
 
     public static PickTempStorage getInstance()

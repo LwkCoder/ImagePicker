@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.bean.MediaBean;
+import com.lwkandroid.imagepicker.bean.PickResultBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 
 import java.io.File;
@@ -104,13 +105,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ImagePicker.pickImageByCustom(new GlideDisplayer())
                         .setMaxPickNumber(9)
                         .build()
-                        .doPickImage(MainActivity.this, new PickCallBack<List<MediaBean>>()
+                        .doPickImage(MainActivity.this, new PickCallBack<PickResultBean>()
                         {
                             @Override
-                            public void onPickSuccess(List<MediaBean> result)
+                            public void onPickSuccess(PickResultBean result)
                             {
                                 String string = "";
-                                for (MediaBean mediaBean : result)
+                                for (MediaBean mediaBean : result.getMediaList())
                                 {
                                     string = string + mediaBean.toString() + "\n";
                                 }

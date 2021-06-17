@@ -16,6 +16,7 @@ import com.lwkandroid.widget.ComActionBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.viewpager2.widget.ViewPager2;
 
 /**
  * @description: ViewPager图片界面
@@ -28,6 +29,7 @@ public class PagerImageActivity extends AppCompatActivity
     private int mCurrentIndex;
     private CustomPickImageOptions mOptions;
 
+    private ViewPager2 mViewPager;
     private View mRootContainer;
     private ComActionBar mActionBar;
     private View mBottomContainer;
@@ -47,6 +49,7 @@ public class PagerImageActivity extends AppCompatActivity
         mActionBar = findViewById(R.id.actionBar);
         mBottomContainer = findViewById(R.id.v_bottom_operation);
         mTvDone = findViewById(R.id.tv_done);
+        mViewPager = findViewById(R.id.viewPager);
 
         initStyle();
         initData();

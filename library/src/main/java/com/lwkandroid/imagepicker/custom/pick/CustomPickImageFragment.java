@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.lwkandroid.imagepicker.bean.MediaBean;
+import com.lwkandroid.imagepicker.bean.PickResultBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.common.AbsMediatorFragment;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
@@ -25,17 +26,17 @@ import androidx.fragment.app.FragmentActivity;
  * @author: LWK
  * @date: 2021/6/9 13:39
  */
-public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImageOptions, List<MediaBean>>
+public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImageOptions, PickResultBean>
 {
     private static final int REQUEST_CODE_PICK = 100;
     private ActivityResultLauncher<CustomPickImageOptions> mActivityLauncher;
 
-    public CustomPickImageFragment(CustomPickImageOptions options, PickCallBack<List<MediaBean>> callback)
+    public CustomPickImageFragment(CustomPickImageOptions options, PickCallBack<PickResultBean> callback)
     {
         super(options, callback);
     }
 
-    public static void create(FragmentActivity activity, CustomPickImageOptions options, PickCallBack<List<MediaBean>> callBack)
+    public static void create(FragmentActivity activity, CustomPickImageOptions options, PickCallBack<PickResultBean> callBack)
     {
         CustomPickImageFragment fragment = new CustomPickImageFragment(options, callBack);
         // 设置保留实例，不会因为屏幕方向或配置变化而重新创建
@@ -72,7 +73,9 @@ public class CustomPickImageFragment extends AbsMediatorFragment<CustomPickImage
         }, result -> {
             if (result != null && result.size() > 0)
             {
-                invokeSuccessCallBack(result);
+                PickResultBean resultBean = new PickResultBean();
+                resultBean.setMediaList(result);
+                invokeSuccessCallBack(resultBean);
             } else
             {
                 detachActivity(getActivity());

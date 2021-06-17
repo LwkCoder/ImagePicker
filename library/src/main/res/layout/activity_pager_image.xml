@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:background="@color/image_pick_style_dark_root_background">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.lwkandroid.widget.ComActionBar
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
@@ -34,13 +39,12 @@
             android:layout_height="match_parent"
             android:background="@drawable/image_picker_ripple_click_effect"
             android:gravity="center"
-            android:paddingStart="@dimen/image_picker_padding_horizontal_normal"
-            android:paddingEnd="@dimen/image_picker_padding_horizontal_normal"
+            android:paddingStart="@dimen/image_picker_padding_horizontal_small"
+            android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
             android:textSize="14sp"
             tools:text="@string/done_placeholder"
             tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
     </LinearLayout>
-
 
 </FrameLayout>

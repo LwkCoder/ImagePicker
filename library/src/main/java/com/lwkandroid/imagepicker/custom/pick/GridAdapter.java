@@ -29,13 +29,15 @@ final class GridAdapter extends RcvSingleAdapter<MediaBean>
 {
     private final int mCheckedColor;
     private int mChildSize;
+    private boolean mShowCheckView;
     private final Map<String, Pair<Integer, Integer>> mCheckedPositionMap = new HashMap<>();
 
-    public GridAdapter(Context context, List<MediaBean> datas, int childSize, int checkedColor)
+    public GridAdapter(Context context, List<MediaBean> datas, int childSize, int checkedColor, boolean showCheckView)
     {
         super(context, R.layout.adapter_image_picker_grid, datas);
         this.mChildSize = childSize;
         this.mCheckedColor = checkedColor;
+        this.mShowCheckView = showCheckView;
     }
 
     @Override
@@ -62,8 +64,8 @@ final class GridAdapter extends RcvSingleAdapter<MediaBean>
         ImageView imageView = holder.findView(R.id.imgContent);
         CheckView checkView = holder.findView(R.id.checkView);
         ViewGroup.LayoutParams layoutParams1 = checkView.getLayoutParams();
-        layoutParams1.width = mChildSize / 4;
-        layoutParams1.height = mChildSize / 4;
+        layoutParams1.width = mShowCheckView ? mChildSize / 4 : 0;
+        layoutParams1.height = mShowCheckView ? mChildSize / 4 : 0;
         checkView.setLayoutParams(layoutParams1);
         checkView.setCheckedColor(mCheckedColor);
 

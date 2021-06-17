@@ -7,8 +7,6 @@ import com.lwkandroid.imagepicker.constants.PickMimeType;
 import com.lwkandroid.imagepicker.custom.pick.CustomPickImageRequestImpl;
 import com.lwkandroid.imagepicker.custom.pick.ICustomPickImageRequest;
 
-import java.util.Arrays;
-
 /**
  * @description: 自定义选择图片的配置
  * @author: LWK
@@ -21,6 +19,7 @@ public class CustomPickImageOptions implements Parcelable
     private long fileMaxSize = Long.MAX_VALUE;
     private String[] mimeTypeArray = PickMimeType.ARRAY_NO_LIMIT;
     private CustomPickImageStyle style;
+    private boolean showOriginalFileCheckBox;
 
     public int getMaxPickNumber()
     {
@@ -72,16 +71,14 @@ public class CustomPickImageOptions implements Parcelable
         this.style = style;
     }
 
-    @Override
-    public String toString()
+    public boolean isShowOriginalFileCheckBox()
     {
-        return "CustomPickImageOptions{" +
-                "maxPickNumber=" + maxPickNumber +
-                ", fileMinSize=" + fileMinSize +
-                ", fileMaxSize=" + fileMaxSize +
-                ", mimeTypeArray=" + Arrays.toString(mimeTypeArray) +
-                ", style=" + style +
-                '}';
+        return showOriginalFileCheckBox;
+    }
+
+    public void setShowOriginalFileCheckBox(boolean b)
+    {
+        this.showOriginalFileCheckBox = b;
     }
 
     @Override
@@ -98,6 +95,7 @@ public class CustomPickImageOptions implements Parcelable
         dest.writeLong(this.fileMaxSize);
         dest.writeStringArray(this.mimeTypeArray);
         dest.writeParcelable(this.style, flags);
+        dest.writeByte(this.showOriginalFileCheckBox ? (byte) 1 : (byte) 0);
     }
 
     public CustomPickImageOptions()
@@ -111,6 +109,7 @@ public class CustomPickImageOptions implements Parcelable
         this.fileMaxSize = in.readLong();
         this.mimeTypeArray = in.createStringArray();
         this.style = in.readParcelable(CustomPickImageStyle.class.getClassLoader());
+        this.showOriginalFileCheckBox = in.readByte() != 0;
     }
 
     public static final Creator<CustomPickImageOptions> CREATOR = new Creator<CustomPickImageOptions>()
@@ -164,6 +163,12 @@ public class CustomPickImageOptions implements Parcelable
         public Builder setStyle(CustomPickImageStyle style)
         {
             mOptions.setStyle(style);
+            return this;
+        }
+
+        public Builder setShowOriginalFileCheckBox(boolean show)
+        {
+            mOptions.setShowOriginalFileCheckBox(show);
             return this;
         }
 

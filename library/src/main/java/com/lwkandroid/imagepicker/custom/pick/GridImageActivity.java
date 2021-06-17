@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     private RcvLoadingView mLoadingView;
     private TextView mTvCurrentBucket;
     private TextView mTvDone;
+    private CheckBox mCkOriginalFile;
 
     private MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
     private GridAdapter mAdapter;
@@ -98,9 +100,12 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mLoadingView = findViewById(R.id.loadingView);
         mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
         mTvDone = findViewById(R.id.tv_done);
+        mCkOriginalFile = findViewById(R.id.ck_original_file);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
-        mAdapter = new GridAdapter(this, null, getListChildSize(), mOptions.getStyle().getDoneTextColor());
+        //只有多选模式下才能出现复选框
+        mAdapter = new GridAdapter(this, null, getListChildSize(),
+                mOptions.getStyle().getDoneTextColor(), mOptions.getMaxPickNumber() > 1);
         mLoadingView.setColor(mOptions.getStyle().getLoadingColor());
         RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
                 .setTextColor(mOptions.getStyle().getLoadingColor())
@@ -111,11 +116,20 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
         mAdapter.setLoadMoreLayout(loadMoreView);
         mAdapter.setOnLoadMoreListener(this);
         mAdapter.setOnChildClickListener(R.id.imgContent, (viewId, view, mediaBean, layoutPosition) -> {
-            LauncherOptions launcherOptions = new LauncherOptions();
-            launcherOptions.setIndex(layoutPosition);
-            launcherOptions.setBucketBean(mCurrentBucketLiveData.getValue());
-            launcherOptions.setOptions(mOptions);
-            mPagerLauncher.launch(launcherOptions);
+            //单选模式下直接返回
+            if (mOptions.getMaxPickNumber() == 1)
+            {
+                List<MediaBean> list = new ArrayList<>(1);
+                list.add(mediaBean);
+                returnSelectedMediaData(list);
+            } else
+            {
+                LauncherOptions launcherOptions = new LauncherOptions();
+                launcherOptions.setIndex(layoutPosition);
+                launcherOptions.setBucketBean(mCurrentBucketLiveData.getValue());
+                launcherOptions.setOptions(mOptions);
+                mPagerLauncher.launch(launcherOptions);
+            }
         });
         mRecyclerView.setAdapter(mAdapter);
 
@@ -269,7 +283,7 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
             if (result == RESULT_OK)
             {
                 //完成
-                returnSelectedMediaData();
+                returnSelectedMediaData(PickTempStorage.getInstance().getAllSelectedData());
             } else
             {
                 if (mAdapter != null)
@@ -376,10 +390,9 @@ public class GridImageActivity extends AppCompatActivity implements RcvLoadMoreL
     /**
      * 返回所选图片
      */
-    private void returnSelectedMediaData()
+    private void returnSelectedMediaData(List<MediaBean> list)
     {
-        ArrayList<MediaBean> resultList = new ArrayList<>();
-        resultList.addAll(PickTempStorage.getInstance().getAllSelectedData());
+        ArrayList<MediaBean> resultList = new ArrayList<>(list);
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(ImageConstants.KEY_INTENT_RESULT, resultList);
         setResult(RESULT_OK, intent);

@@ -1,10 +1,8 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
-import com.lwkandroid.imagepicker.bean.MediaBean;
+import com.lwkandroid.imagepicker.bean.PickResultBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
-
-import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -24,13 +22,13 @@ public class CustomPickImageRequestImpl implements ICustomPickImageRequest
     }
 
     @Override
-    public void doPickImage(AppCompatActivity activity, PickCallBack<List<MediaBean>> callBack)
+    public void doPickImage(AppCompatActivity activity, PickCallBack<PickResultBean> callBack)
     {
         CustomPickImageFragment.create(activity, mOptions, callBack);
     }
 
     @Override
-    public void doPickImage(Fragment fragment, PickCallBack<List<MediaBean>> callBack)
+    public void doPickImage(Fragment fragment, PickCallBack<PickResultBean> callBack)
     {
         CustomPickImageFragment.create(fragment.getActivity(), mOptions, callBack);
     }
