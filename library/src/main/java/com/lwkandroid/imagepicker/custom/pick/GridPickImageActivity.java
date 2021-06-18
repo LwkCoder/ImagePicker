@@ -235,10 +235,10 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
 
         mTvDone.setTextColor(style.getDoneTextColor());
         mCkOriginalFile.setVisibility(mOptions.isShowOriginalFileCheckBox() ? View.VISIBLE : View.GONE);
-        mCkOriginalFile.setTextColor(mOptions.getStyle().getOriginFileCheckBoxTextColor());
+        mCkOriginalFile.setTextColor(mOptions.getStyle().getCheckWidgetNormalColor());
         mCkOriginalFile.setButtonTintList(Utils.createCheckBoxColorStateList(
-                mOptions.getStyle().getOriginFileCheckBoxButtonTintColor(),
-                mOptions.getStyle().getOriginFileCheckBoxTextColor()));
+                mOptions.getStyle().getCheckWidgetCheckedColor(),
+                mOptions.getStyle().getCheckWidgetNormalColor()));
     }
 
     /**

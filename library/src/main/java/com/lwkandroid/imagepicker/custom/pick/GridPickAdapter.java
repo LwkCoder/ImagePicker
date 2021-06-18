@@ -81,7 +81,7 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
             imageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
         }
 
-        checkView.setChecked(checked);
+        checkView.setChecked(checked, false);
         checkView.setOnCheckedChangeListener((checkView1, isChecked) -> {
             if (isChecked)
             {
@@ -93,7 +93,7 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
                     notifyItemChanged(position);
                 } else
                 {
-                    checkView1.setChecked(false);
+                    checkView1.setChecked(false, false);
                 }
             } else
             {

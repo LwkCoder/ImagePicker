@@ -1,6 +1,6 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="16dp"
-    android:height="16dp"
+    android:width="@dimen/image_picker_checkbox_button_size"
+    android:height="@dimen/image_picker_checkbox_button_size"
     android:viewportWidth="1059"
     android:viewportHeight="1024">
   <path

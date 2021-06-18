@@ -23,7 +23,7 @@
     <color name="image_pick_style_dark_bucket_name">@android:color/white</color>
     <color name="image_pick_style_dark_bucket_list_background">@color/image_pick_style_dark_action_bar_background</color>
     <color name="image_pick_style_dark_done_text">#00B30B</color>
-    <color name="image_pick_style_dark_origin_file_checkbox_text">@android:color/white</color>
-    <color name="image_pick_style_dark_origin_file_checkbox_button_tint">@color/image_pick_style_dark_done_text</color>
+    <color name="image_pick_style_dark_check_widget_normal">@android:color/white</color>
+    <color name="image_pick_style_dark_check_widget_checked">@color/image_pick_style_dark_done_text</color>
 
 </resources>

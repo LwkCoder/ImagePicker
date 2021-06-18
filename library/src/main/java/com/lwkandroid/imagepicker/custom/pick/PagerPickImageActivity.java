@@ -12,6 +12,7 @@ import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.utils.Utils;
+import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.widget.ComActionBar;
 
 import androidx.annotation.Nullable;
@@ -36,6 +37,9 @@ public class PagerPickImageActivity extends AppCompatActivity
     private View mBottomContainer;
     private TextView mTvDone;
     private CheckBox mCkOriginalFile;
+    private View mSelectContainer;
+    private CheckView mCvSelect;
+    private TextView mTvSelect;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -53,6 +57,9 @@ public class PagerPickImageActivity extends AppCompatActivity
         mTvDone = findViewById(R.id.tv_done);
         mCkOriginalFile = findViewById(R.id.ck_original_file);
         mViewPager = findViewById(R.id.viewPager);
+        mSelectContainer = findViewById(R.id.v_select_container);
+        mCvSelect = findViewById(R.id.cv_select);
+        mTvSelect = findViewById(R.id.tv_select);
 
         mTvDone.setOnClickListener(v -> callSelectedDone());
 
@@ -94,10 +101,14 @@ public class PagerPickImageActivity extends AppCompatActivity
         mBottomContainer.setBackgroundColor(style.getNavigationBarColor());
         mTvDone.setTextColor(style.getDoneTextColor());
         mCkOriginalFile.setVisibility(mOptions.isShowOriginalFileCheckBox() ? View.VISIBLE : View.GONE);
-        mCkOriginalFile.setTextColor(mOptions.getStyle().getOriginFileCheckBoxTextColor());
+        mCkOriginalFile.setTextColor(mOptions.getStyle().getCheckWidgetNormalColor());
         mCkOriginalFile.setButtonTintList(Utils.createCheckBoxColorStateList(
-                mOptions.getStyle().getOriginFileCheckBoxButtonTintColor(),
-                mOptions.getStyle().getOriginFileCheckBoxTextColor()));
+                mOptions.getStyle().getCheckWidgetCheckedColor(),
+                mOptions.getStyle().getCheckWidgetNormalColor()));
+
+        mTvSelect.setTextColor(mOptions.getStyle().getCheckWidgetNormalColor());
+        mCvSelect.setBorderColor(mOptions.getStyle().getCheckWidgetNormalColor());
+        mCvSelect.setCheckedColor(mOptions.getStyle().getCheckWidgetCheckedColor());
     }
 
     /**

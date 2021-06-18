@@ -34,6 +34,7 @@ public class CheckView extends View implements View.OnClickListener
     public static final int CHECK_MODE_DRAWABLE = 0;
     public static final int CHECK_MODE_NUMBER = 1;
 
+    private boolean mEnabled;
     private boolean mChecked;
     private int mCheckedColor;
     private int mBorderColor;
@@ -124,7 +125,7 @@ public class CheckView extends View implements View.OnClickListener
         //绘制border
         mBorderPaint.setStrokeWidth(mBorderWidth);
         mBorderPaint.setColor(mBorderColor);
-        canvas.drawCircle(mXCenter, mYCenter, mContentRadius, mBorderPaint);
+        canvas.drawCircle(mXCenter, mYCenter, mContentRadius - mBorderWidth / 2, mBorderPaint);
 
         //绘制背景
         mBackgroundPaint.setColor(mChecked ? mCheckedColor : Color.TRANSPARENT);
@@ -154,11 +155,11 @@ public class CheckView extends View implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        setChecked(!isChecked());
-        if (mListener != null)
+        if (!mEnabled)
         {
-            mListener.onCheckChanged(this, isChecked());
+            return;
         }
+        setChecked(!isChecked());
     }
 
     public boolean isChecked()
@@ -168,8 +169,18 @@ public class CheckView extends View implements View.OnClickListener
 
     public void setChecked(boolean checked)
     {
+        setChecked(checked, true);
+    }
+
+    public void setChecked(boolean checked, boolean invokeListener)
+    {
+        boolean c = mChecked;
         this.mChecked = checked;
         invalidate();
+        if (mChecked != c && invokeListener && mListener != null)
+        {
+            mListener.onCheckChanged(this, mChecked);
+        }
     }
 
     public int getCheckedColor()
@@ -240,6 +251,7 @@ public class CheckView extends View implements View.OnClickListener
     private void init(Context context, AttributeSet attrs)
     {
         final TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CheckView);
+        mEnabled = ta.getBoolean(R.styleable.CheckView_android_enabled, true);
         mChecked = ta.getBoolean(R.styleable.CheckView_android_checked, false);
         mCheckMode = ta.getInt(R.styleable.CheckView_checkMode, CHECK_MODE_DRAWABLE);
         mCheckedColor = ta.getColor(R.styleable.CheckView_checkedColor, Color.BLUE);
