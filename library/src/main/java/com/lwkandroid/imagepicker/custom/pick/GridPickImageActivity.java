@@ -57,8 +57,6 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class GridPickImageActivity extends AppCompatActivity implements RcvLoadMoreListener
 {
-    private static final int PAGE_SIZE = 60;
-
     private CustomPickImageOptions mOptions;
 
     private View mRootContainer;
@@ -66,16 +64,15 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     private View mBottomContainer;
     private RecyclerView mRecyclerView;
     private StateFrameLayout mStateFrameLayout;
-    private RcvLoadingView mLoadingView;
     private TextView mTvCurrentBucket;
     private TextView mTvDone;
     private CheckBox mCkOriginalFile;
 
-    private MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
+    private final MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
     private GridPickAdapter mAdapter;
 
-    private MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
-    private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<BucketBean>> mAllBucketLiveData = new MutableLiveData<>();
+    private final MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
     private ActivityResultLauncher<PagerLauncherOptions> mPagerLauncher;
     private BottomSheetDialog mBucketListSheetDialog;
@@ -104,18 +101,18 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         mRecyclerView = findViewById(R.id.recyclerView);
         mBottomContainer = findViewById(R.id.v_bottom_operation);
         mStateFrameLayout = findViewById(R.id.stateFrameLayout);
-        mLoadingView = findViewById(R.id.loadingView);
+        RcvLoadingView loadingView = findViewById(R.id.loadingView);
         mTvCurrentBucket = findViewById(R.id.tv_current_bucket);
         mTvDone = findViewById(R.id.tv_done);
         mCkOriginalFile = findViewById(R.id.ck_original_file);
 
         mTvDone.setOnClickListener(v -> callSelectedDone());
+        loadingView.setColor(mOptions.getStyle().getLoadingColor());
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, getHorizontalChildCount()));
         //只有多选模式下才能出现复选框
         mAdapter = new GridPickAdapter(this, null, getListChildSize(),
                 mOptions.getStyle().getDoneTextColor(), mOptions.getMaxPickNumber() > 1);
-        mLoadingView.setColor(mOptions.getStyle().getLoadingColor());
         RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
                 .setTextColor(mOptions.getStyle().getLoadingColor())
                 .setTextSize(TypedValue.COMPLEX_UNIT_PX, 0)
@@ -152,12 +149,13 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     {
         int nextPage = mCurrentPageIndex + 1;
         mMediaLoaderEngine.loadPageImage(this, this, mOptions, mCurrentBucketLiveData.getValue().getBucketId(),
-                nextPage, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                nextPage, mOptions.getPageLoadSize(), new PickCallBack<List<MediaBean>>()
                 {
                     @Override
                     public void onPickSuccess(List<MediaBean> result)
                     {
-                        mAdapter.notifyLoadMoreSuccess(result, result != null && result.size() >= PAGE_SIZE);
+                        mAdapter.notifyLoadMoreSuccess(result, result != null
+                                && result.size() >= mOptions.getPageLoadSize());
                         mCurrentPageIndex = nextPage;
                     }
 
@@ -378,14 +376,14 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         mTvCurrentBucket.setText(bucketBean.getName());
         mAdapter.enableLoadMore(false);
         mMediaLoaderEngine.loadPageImage(this, this, mOptions, bucketBean.getBucketId(),
-                1, PAGE_SIZE, new PickCallBack<List<MediaBean>>()
+                1, mOptions.getPageLoadSize(), new PickCallBack<List<MediaBean>>()
                 {
                     @Override
                     public void onPickSuccess(List<MediaBean> result)
                     {
                         mCurrentPageIndex = 1;
                         mAdapter.refreshDatas(result);
-                        mAdapter.enableLoadMore(result != null && result.size() >= PAGE_SIZE);
+                        mAdapter.enableLoadMore(result != null && result.size() >= mOptions.getPageLoadSize());
                     }
 
                     @Override

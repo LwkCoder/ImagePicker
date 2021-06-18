@@ -1,6 +1,6 @@
 package com.lwkandroid.imagepicker;
 
-import com.lwkandroid.imagepicker.common.PickCommonConfig;
+import com.lwkandroid.imagepicker.config.PickCommonConfig;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.ImagePickerDisplayer;
 import com.lwkandroid.imagepicker.config.SystemCropOptions;

@@ -7,6 +7,8 @@ import com.lwkandroid.imagepicker.constants.PickMimeType;
 import com.lwkandroid.imagepicker.custom.pick.CustomPickImageRequestImpl;
 import com.lwkandroid.imagepicker.custom.pick.ICustomPickImageRequest;
 
+import java.util.Arrays;
+
 /**
  * @description: 自定义选择图片的配置
  * @author: LWK
@@ -14,6 +16,7 @@ import com.lwkandroid.imagepicker.custom.pick.ICustomPickImageRequest;
  */
 public class CustomPickImageOptions implements Parcelable
 {
+    private int pageLoadSize = 60;
     private int maxPickNumber = 1;
     private long fileMinSize = 0;
     private long fileMaxSize = Long.MAX_VALUE;
@@ -81,51 +84,29 @@ public class CustomPickImageOptions implements Parcelable
         this.showOriginalFileCheckBox = b;
     }
 
-    @Override
-    public int describeContents()
+    public int getPageLoadSize()
     {
-        return 0;
+        return pageLoadSize;
+    }
+
+    public void setPageLoadSize(int pageLoadSize)
+    {
+        this.pageLoadSize = pageLoadSize;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
+    public String toString()
     {
-        dest.writeInt(this.maxPickNumber);
-        dest.writeLong(this.fileMinSize);
-        dest.writeLong(this.fileMaxSize);
-        dest.writeStringArray(this.mimeTypeArray);
-        dest.writeParcelable(this.style, flags);
-        dest.writeByte(this.showOriginalFileCheckBox ? (byte) 1 : (byte) 0);
+        return "CustomPickImageOptions{" +
+                "pageLoadSize=" + pageLoadSize +
+                ", maxPickNumber=" + maxPickNumber +
+                ", fileMinSize=" + fileMinSize +
+                ", fileMaxSize=" + fileMaxSize +
+                ", mimeTypeArray=" + Arrays.toString(mimeTypeArray) +
+                ", style=" + style +
+                ", showOriginalFileCheckBox=" + showOriginalFileCheckBox +
+                '}';
     }
-
-    public CustomPickImageOptions()
-    {
-    }
-
-    protected CustomPickImageOptions(Parcel in)
-    {
-        this.maxPickNumber = in.readInt();
-        this.fileMinSize = in.readLong();
-        this.fileMaxSize = in.readLong();
-        this.mimeTypeArray = in.createStringArray();
-        this.style = in.readParcelable(CustomPickImageStyle.class.getClassLoader());
-        this.showOriginalFileCheckBox = in.readByte() != 0;
-    }
-
-    public static final Creator<CustomPickImageOptions> CREATOR = new Creator<CustomPickImageOptions>()
-    {
-        @Override
-        public CustomPickImageOptions createFromParcel(Parcel source)
-        {
-            return new CustomPickImageOptions(source);
-        }
-
-        @Override
-        public CustomPickImageOptions[] newArray(int size)
-        {
-            return new CustomPickImageOptions[size];
-        }
-    };
 
     public static class Builder
     {
@@ -172,9 +153,63 @@ public class CustomPickImageOptions implements Parcelable
             return this;
         }
 
+        public Builder setPageLoadSize(int size)
+        {
+            mOptions.setPageLoadSize(size);
+            return this;
+        }
+
         public ICustomPickImageRequest build()
         {
             return new CustomPickImageRequestImpl(mOptions);
         }
     }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.pageLoadSize);
+        dest.writeInt(this.maxPickNumber);
+        dest.writeLong(this.fileMinSize);
+        dest.writeLong(this.fileMaxSize);
+        dest.writeStringArray(this.mimeTypeArray);
+        dest.writeParcelable(this.style, flags);
+        dest.writeByte(this.showOriginalFileCheckBox ? (byte) 1 : (byte) 0);
+    }
+
+    public CustomPickImageOptions()
+    {
+    }
+
+    protected CustomPickImageOptions(Parcel in)
+    {
+        this.pageLoadSize = in.readInt();
+        this.maxPickNumber = in.readInt();
+        this.fileMinSize = in.readLong();
+        this.fileMaxSize = in.readLong();
+        this.mimeTypeArray = in.createStringArray();
+        this.style = in.readParcelable(CustomPickImageStyle.class.getClassLoader());
+        this.showOriginalFileCheckBox = in.readByte() != 0;
+    }
+
+    public static final Creator<CustomPickImageOptions> CREATOR = new Creator<CustomPickImageOptions>()
+    {
+        @Override
+        public CustomPickImageOptions createFromParcel(Parcel source)
+        {
+            return new CustomPickImageOptions(source);
+        }
+
+        @Override
+        public CustomPickImageOptions[] newArray(int size)
+        {
+            return new CustomPickImageOptions[size];
+        }
+    };
 }

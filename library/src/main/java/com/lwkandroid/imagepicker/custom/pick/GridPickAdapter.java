@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.MediaBean;
-import com.lwkandroid.imagepicker.common.PickCommonConfig;
+import com.lwkandroid.imagepicker.config.PickCommonConfig;
 import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.rcvadapter.RcvSingleAdapter;
 import com.lwkandroid.rcvadapter.holder.RcvHolder;

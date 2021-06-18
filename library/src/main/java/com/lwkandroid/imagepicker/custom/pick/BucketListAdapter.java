@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.BucketBean;
-import com.lwkandroid.imagepicker.common.PickCommonConfig;
+import com.lwkandroid.imagepicker.config.PickCommonConfig;
 import com.lwkandroid.rcvadapter.RcvSingleAdapter;
 import com.lwkandroid.rcvadapter.holder.RcvHolder;
 

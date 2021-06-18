@@ -1,6 +1,4 @@
-package com.lwkandroid.imagepicker.common;
-
-import com.lwkandroid.imagepicker.config.ImagePickerDisplayer;
+package com.lwkandroid.imagepicker.config;
 
 /**
  * @description: 通用配置

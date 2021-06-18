@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ImagePicker.pickImageByCustom(new GlideDisplayer())
                         .setMaxPickNumber(9)
                         .setShowOriginalFileCheckBox(true)
+                        .setPageLoadSize(100)
                         .build()
                         .doPickImage(MainActivity.this, new PickCallBack<PickResultBean>()
                         {
