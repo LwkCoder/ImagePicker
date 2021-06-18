@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -28,10 +31,12 @@ import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
 import com.lwkandroid.rcvadapter.ui.RcvDefLoadMoreView;
 import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
+import com.lwkandroid.rcvadapter.utils.RcvLinearDecoration;
 import com.lwkandroid.widget.ComActionBar;
 import com.lwkandroid.widget.StateFrameLayout;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -39,8 +44,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -71,6 +78,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     private MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
     private ActivityResultLauncher<PagerLauncherOptions> mPagerLauncher;
+    private BottomSheetDialog mBucketListSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -175,6 +183,14 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         {
             mAdapter.updateChildSize(getListChildSize());
         }
+        if (mBucketListSheetDialog != null && mBucketListSheetDialog.isShowing())
+        {
+            int orientation = getResources().getConfiguration().orientation;
+            mBucketListSheetDialog.getBehavior().setState(
+                    orientation == Configuration.ORIENTATION_PORTRAIT ?
+                            BottomSheetBehavior.STATE_COLLAPSED :
+                            BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
     @Override
@@ -267,6 +283,8 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
                 PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));
         mCkOriginalFile.setChecked(false);
+        //切换文件夹的事件
+        mTvCurrentBucket.setOnClickListener(v -> showBucketListSheet());
         //注册大图浏览跳转
         mPagerLauncher = registerForActivityResult(new ActivityResultContract<PagerLauncherOptions, Integer>()
         {
@@ -402,6 +420,44 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     {
         setResult(RESULT_OK);
         finish();
+    }
+
+    /**
+     * 显示文件夹列表
+     */
+    private void showBucketListSheet()
+    {
+        int orientation = getResources().getConfiguration().orientation;
+        int windowHeight = getResources().getDisplayMetrics().heightPixels;
+        mBucketListSheetDialog = new BottomSheetDialog(this, R.style.ImagePickerSheetStyle);
+        View contentView = getLayoutInflater().inflate(R.layout.layout_sheet_bucket_list, null);
+        Drawable bgDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.shape_bucket_list_background, getTheme());
+        bgDrawable.setTint(mOptions.getStyle().getBucketListBackgroundColor());
+        contentView.setBackground(bgDrawable);
+        RecyclerView recyclerView = contentView.findViewById(R.id.rcvBucketList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(RcvLinearDecoration.createDefaultVertical(this));
+        BucketListAdapter adapter = new BucketListAdapter(this, mAllBucketLiveData.getValue(),
+                mOptions.getStyle().getBucketNameTextColor());
+        adapter.setOnItemClickListener((holder, bucketBean, position) -> {
+            if (!Objects.equals(mCurrentBucketLiveData.getValue(), bucketBean))
+            {
+                mCurrentBucketLiveData.postValue(bucketBean);
+            }
+            mBucketListSheetDialog.dismiss();
+            mBucketListSheetDialog = null;
+        });
+        recyclerView.setAdapter(adapter);
+        mBucketListSheetDialog.setContentView(contentView);
+        mBucketListSheetDialog.getWindow().setWindowAnimations(R.style.ImagePickerSheetAnim);
+        mBucketListSheetDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, windowHeight / 3 * 2);
+        mBucketListSheetDialog.setCancelable(true);
+        mBucketListSheetDialog.setCanceledOnTouchOutside(true);
+        mBucketListSheetDialog.getBehavior().setState(
+                orientation == Configuration.ORIENTATION_PORTRAIT ?
+                        BottomSheetBehavior.STATE_COLLAPSED :
+                        BottomSheetBehavior.STATE_EXPANDED);
+        mBucketListSheetDialog.show();
     }
 
     /**

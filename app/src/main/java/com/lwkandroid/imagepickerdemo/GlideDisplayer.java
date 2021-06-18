@@ -19,7 +19,7 @@ class GlideDisplayer implements ImagePickerDisplayer
     public void displayImage(@NonNull Context context, @NonNull String url, @NonNull ImageView imageView)
     {
         Glide.with(context)
-                .asDrawable()
+                .asBitmap()
                 .load(url)
                 .into(imageView);
     }
