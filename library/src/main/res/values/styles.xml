@@ -10,8 +10,8 @@
     </style>
 
     <style name="ImagePickerSheetAnim">
-        <item name="android:windowEnterAnimation">@anim/image_picker_pop_slide_in</item>
-        <item name="android:windowExitAnimation">@anim/image_picker_pop_slide_out</item>
+        <item name="android:windowEnterAnimation">@anim/image_picker_sheet_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/image_picker_sheet_slide_out</item>
     </style>
 
     <style name="ImagePickerSheetStyle" parent="@android:style/Theme.Dialog">
