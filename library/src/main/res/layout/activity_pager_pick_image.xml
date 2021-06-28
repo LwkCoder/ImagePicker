@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:clickable="true"
             android:orientation="horizontal"
             android:paddingStart="@dimen/image_picker_padding_horizontal_small"
             android:paddingEnd="@dimen/image_picker_padding_horizontal_small">
@@ -52,7 +53,7 @@
                 android:layout_width="@dimen/image_picker_checkbox_button_size"
                 android:layout_height="@dimen/image_picker_checkbox_button_size"
                 android:layout_gravity="center_vertical"
-                android:checked="true"
+                android:clickable="false"
                 android:enabled="false"
                 app:borderWidth="1.5dp"
                 app:checkMode="drawableMode" />

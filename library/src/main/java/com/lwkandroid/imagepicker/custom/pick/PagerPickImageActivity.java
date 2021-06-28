@@ -2,18 +2,25 @@ package com.lwkandroid.imagepicker.custom.pick;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.BucketBean;
+import com.lwkandroid.imagepicker.bean.MediaBean;
+import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
+import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.widget.ComActionBar;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +32,7 @@ import androidx.viewpager2.widget.ViewPager2;
  * @author: LWK
  * @date: 2021/6/17 10:30
  */
-public class PagerPickImageActivity extends AppCompatActivity
+public class PagerPickImageActivity extends AppCompatActivity implements PagerPickAdapter.IMediaDataSupplier
 {
     private BucketBean mCurrentBucket;
     private int mCurrentIndex;
@@ -40,6 +47,9 @@ public class PagerPickImageActivity extends AppCompatActivity
     private View mSelectContainer;
     private CheckView mCvSelect;
     private TextView mTvSelect;
+
+    private PagerPickAdapter mAdapter;
+    private final MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -63,8 +73,59 @@ public class PagerPickImageActivity extends AppCompatActivity
 
         mTvDone.setOnClickListener(v -> callSelectedDone());
 
+        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback()
+        {
+            @Override
+            public void onPageSelected(int position)
+            {
+                super.onPageSelected(position);
+                mCurrentIndex = position;
+                mActionBar.setTitleText(getResources().getString(R.string.media_position_placeholder,
+                        mCurrentIndex + 1, mCurrentBucket.getFileNumber()));
+                //判断是否选中
+                mCvSelect.setChecked(PickTempStorage.getInstance().contains(mAdapter.getDatas().get(position)), false);
+            }
+        });
+        mAdapter = new PagerPickAdapter(this, this);
+        mViewPager.setAdapter(mAdapter);
+
         initStyle();
         initData();
+    }
+
+    @Override
+    public void onMediaDataRequest(int position, PickCallBack<MediaBean> callBack)
+    {
+        mMediaLoaderEngine.loadPageImage(
+                PagerPickImageActivity.this,
+                PagerPickImageActivity.this,
+                mOptions,
+                mCurrentBucket.getBucketId(),
+                (int) Math.min(position + 1, mCurrentBucket.getFileNumber()),
+                1,
+                new PickCallBack<List<MediaBean>>()
+                {
+                    @Override
+                    public void onPickSuccess(List<MediaBean> result)
+                    {
+                        MediaBean mediaBean = result.get(0);
+                        //判断是否选中
+                        mCvSelect.setChecked(PickTempStorage.getInstance().contains(mediaBean), false);
+                        if (callBack != null)
+                        {
+                            callBack.onPickSuccess(mediaBean);
+                        }
+                    }
+
+                    @Override
+                    public void onPickFailed(int errorCode, String message)
+                    {
+                        if (callBack != null)
+                        {
+                            callBack.onPickFailed(errorCode, message);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -116,6 +177,17 @@ public class PagerPickImageActivity extends AppCompatActivity
      */
     private void initData()
     {
+        //复选框联动
+        mCvSelect.setOnCheckedChangeListener((checkView, isChecked) -> {
+            if (isChecked)
+            {
+                PickTempStorage.getInstance().addMediaData(mAdapter.getDatas().get(mCurrentIndex));
+            } else
+            {
+                PickTempStorage.getInstance().removeMediaData(mAdapter.getDatas().get(mCurrentIndex));
+            }
+        });
+        mSelectContainer.setOnClickListener(v -> mCvSelect.setChecked(!mCvSelect.isChecked(), true));
         //TODO 注册跳转
         //临时存储的监听
         PickTempStorage.getInstance().getSelectedMediaLiveData().observe(this, mediaList -> {
@@ -139,6 +211,16 @@ public class PagerPickImageActivity extends AppCompatActivity
         mCkOriginalFile.setChecked(PickTempStorage.getInstance().getOriginFileStateLiveData().getValue());
         mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
                 PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));
+
+
+        List<MediaBean> list = new LinkedList<>();
+        for (int i = 0; i < mCurrentBucket.getFileNumber(); i++)
+        {
+            list.add(null);
+        }
+        mAdapter.refreshDatas(list);
+        Log.e("AA", "设置容量->" + mAdapter.getItemCount());
+        mViewPager.setCurrentItem(mCurrentIndex, false);
     }
 
     /**

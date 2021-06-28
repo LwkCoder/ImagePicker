@@ -79,6 +79,14 @@ public class PickTempStorage
         return mOriginFileStateLiveData;
     }
 
+    public boolean contains(MediaBean mediaBean)
+    {
+        return mediaBean != null
+                && mSelectedMediaLiveData != null
+                && mSelectedMediaLiveData.getValue() != null
+                && mSelectedMediaLiveData.getValue().contains(mediaBean);
+    }
+
     public void clear()
     {
         mSelectedMediaLiveData.postValue(new LinkedList<>());

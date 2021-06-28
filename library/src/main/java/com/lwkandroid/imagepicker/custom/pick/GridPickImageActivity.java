@@ -7,7 +7,6 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -28,8 +27,8 @@ import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
 import com.lwkandroid.imagepicker.utils.Utils;
+import com.lwkandroid.imagepicker.widget.IpRcvLoadMoreView;
 import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
-import com.lwkandroid.rcvadapter.ui.RcvDefLoadMoreView;
 import com.lwkandroid.rcvadapter.ui.RcvLoadingView;
 import com.lwkandroid.rcvadapter.utils.RcvLinearDecoration;
 import com.lwkandroid.widget.ComActionBar;
@@ -113,12 +112,8 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
         //只有多选模式下才能出现复选框
         mAdapter = new GridPickAdapter(this, null, getListChildSize(),
                 mOptions.getStyle().getDoneTextColor(), mOptions.getMaxPickNumber() > 1);
-        RcvDefLoadMoreView loadMoreView = new RcvDefLoadMoreView.Builder(this)
-                .setTextColor(mOptions.getStyle().getLoadingColor())
-                .setTextSize(TypedValue.COMPLEX_UNIT_PX, 0)
-                .setFailDrawable(null)
-                .setSuccessDrawable(null)
-                .build();
+        IpRcvLoadMoreView loadMoreView = new IpRcvLoadMoreView(this);
+        loadMoreView.setLoadingColor(mOptions.getStyle().getLoadingColor());
         mAdapter.setLoadMoreLayout(loadMoreView);
         mAdapter.setOnLoadMoreListener(this);
         mAdapter.setOnChildClickListener(R.id.imgContent, (viewId, view, mediaBean, layoutPosition) -> {
@@ -384,6 +379,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
                         mCurrentPageIndex = 1;
                         mAdapter.refreshDatas(result);
                         mAdapter.enableLoadMore(result != null && result.size() >= mOptions.getPageLoadSize());
+                        mRecyclerView.scrollToPosition(0);
                     }
 
                     @Override
