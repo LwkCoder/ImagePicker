@@ -2,7 +2,6 @@ package com.lwkandroid.imagepicker.custom.pick;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -80,10 +79,11 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             {
                 super.onPageSelected(position);
                 mCurrentIndex = position;
+                //更新标题
                 mActionBar.setTitleText(getResources().getString(R.string.media_position_placeholder,
                         mCurrentIndex + 1, mCurrentBucket.getFileNumber()));
                 //判断是否选中
-                mCvSelect.setChecked(PickTempStorage.getInstance().contains(mAdapter.getDatas().get(position)), false);
+                updateCurrentSelectedState();
             }
         });
         mAdapter = new PagerPickAdapter(this, this);
@@ -110,7 +110,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
                     {
                         MediaBean mediaBean = result.get(0);
                         //判断是否选中
-                        mCvSelect.setChecked(PickTempStorage.getInstance().contains(mediaBean), false);
+                        updateCurrentSelectedState();
                         if (callBack != null)
                         {
                             callBack.onPickSuccess(mediaBean);
@@ -181,13 +181,16 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
         mCvSelect.setOnCheckedChangeListener((checkView, isChecked) -> {
             if (isChecked)
             {
-                PickTempStorage.getInstance().addMediaData(mAdapter.getDatas().get(mCurrentIndex));
+                if (!PickTempStorage.getInstance().addMediaData(mAdapter.getDatas().get(mCurrentIndex)))
+                {
+                    mCvSelect.setChecked(false, false);
+                }
             } else
             {
                 PickTempStorage.getInstance().removeMediaData(mAdapter.getDatas().get(mCurrentIndex));
             }
         });
-        mSelectContainer.setOnClickListener(v -> mCvSelect.setChecked(!mCvSelect.isChecked(), true));
+        mSelectContainer.setOnClickListener(v -> mCvSelect.setChecked(!mCvSelect.isChecked()));
         //TODO 注册跳转
         //临时存储的监听
         PickTempStorage.getInstance().getSelectedMediaLiveData().observe(this, mediaList -> {
@@ -219,8 +222,16 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             list.add(null);
         }
         mAdapter.refreshDatas(list);
-        Log.e("AA", "设置容量->" + mAdapter.getItemCount());
         mViewPager.setCurrentItem(mCurrentIndex, false);
+    }
+
+    private void updateCurrentSelectedState()
+    {
+        MediaBean mediaBean = mAdapter.getDatas().get(mCurrentIndex);
+        if (mediaBean != null)
+        {
+            mCvSelect.setChecked(PickTempStorage.getInstance().contains(mediaBean), false);
+        }
     }
 
     /**

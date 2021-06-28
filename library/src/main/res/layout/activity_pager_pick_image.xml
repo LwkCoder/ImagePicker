@@ -53,8 +53,7 @@
                 android:layout_width="@dimen/image_picker_checkbox_button_size"
                 android:layout_height="@dimen/image_picker_checkbox_button_size"
                 android:layout_gravity="center_vertical"
-                android:clickable="false"
-                android:enabled="false"
+                android:enabled="true"
                 app:borderWidth="1.5dp"
                 app:checkMode="drawableMode" />
 

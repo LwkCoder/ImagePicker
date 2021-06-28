@@ -2,6 +2,7 @@ package com.lwkandroid.imagepicker.custom.pick;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.lwkandroid.imagepicker.R;
@@ -32,7 +33,6 @@ class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
     {
         if (itemData == null)
         {
-            Log.e("AA", "position = " + position + " 需要加载");
             if (mMediaDataSupplier != null)
             {
                 mMediaDataSupplier.onMediaDataRequest(position, new PickCallBack<MediaBean>()
@@ -40,15 +40,14 @@ class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
                     @Override
                     public void onPickSuccess(MediaBean result)
                     {
-                        Log.e("AA", "position = " + position + " 加载成功");
-                        getDatas().add(position, result);
+                        getDatas().set(position, result);
                         notifyItemChanged(position);
                     }
 
                     @Override
                     public void onPickFailed(int errorCode, String message)
                     {
-                        Log.e("AA", "position = " + position + " 加载失败");
+                        Log.e("ImagePicker", "position = " + position + " 加载失败");
                     }
                 });
             }
@@ -56,11 +55,23 @@ class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
         {
             PhotoView photoView = holder.findView(R.id.photoView);
             photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-            if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
+            //显示是否为GIF
+            if (itemData.isGif())
             {
-                PickCommonConfig.getInstance().getImagePickerDisplayer()
-                        .displayImage(getContext(), itemData.getPath(), photoView);
+                holder.setVisibility(R.id.imgGif, View.VISIBLE);
+                if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
+                {
+                    PickCommonConfig.getInstance().getImagePickerDisplayer().displayGifImage(
+                            getContext(), itemData.getPath(), photoView);
+                }
+            } else
+            {
+                holder.setVisibility(R.id.imgGif, View.GONE);
+                if (PickCommonConfig.getInstance().getImagePickerDisplayer() != null)
+                {
+                    PickCommonConfig.getInstance().getImagePickerDisplayer().displayImage(
+                            getContext(), itemData.getPath(), photoView);
+                }
             }
         }
     }
