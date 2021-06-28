@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -591,6 +592,47 @@ public final class Utils
     }
 
     /**
+     * 为了配合状态栏而增加View的paddingTop,增加的值为状态栏高度
+     */
+    public static void compatPaddingWithStatusBar(final View view)
+    {
+        final int statusBarHeight = getStatusBarHeight(view.getContext());
+        final ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null && lp.height > 0)
+        {
+            lp.height += statusBarHeight;
+            view.setLayoutParams(lp);
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + statusBarHeight,
+                    view.getPaddingRight(), view.getPaddingBottom());
+        } else
+        {
+            view.post(() -> {
+                ViewGroup.LayoutParams lp1 = view.getLayoutParams();
+                int height = view.getHeight();
+                lp1.height = height + statusBarHeight;
+                view.setLayoutParams(lp1);
+                view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + statusBarHeight,
+                        view.getPaddingRight(), view.getPaddingBottom());
+            });
+        }
+    }
+
+    /**
+     * 获取状态栏高度
+     */
+    public static int getStatusBarHeight(Context context)
+    {
+        int result = 0;
+        Resources resources = context.getResources();
+        int resId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resId > 0)
+        {
+            result = resources.getDimensionPixelSize(resId);
+        }
+        return result;
+    }
+
+    /**
      * 5.0以上切换NavigationBar颜色
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -650,5 +692,19 @@ public final class Utils
         states[0] = new int[]{android.R.attr.state_checked};
         states[1] = new int[]{};
         return new ColorStateList(states, colors);
+    }
+
+    /**
+     * 为了配合状态栏而增加View的marginTop,增加的值为状态栏高度
+     * 【一般是给宽度为wrap_content的View设置的】
+     */
+    public static void compatMarginWithStatusBar(View view)
+    {
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null && lp instanceof ViewGroup.MarginLayoutParams)
+        {
+            ((ViewGroup.MarginLayoutParams) lp).topMargin += getStatusBarHeight(view.getContext());
+            view.setLayoutParams(lp);
+        }
     }
 }

@@ -97,6 +97,7 @@ final class GridPickAdapter extends RcvSingleAdapter<MediaBean>
                 }
             } else
             {
+                //取消选中某个图片后，position大于该位置的选中项需要重新更新index值
                 int oldIndex = PickTempStorage.getInstance().indexMediaData(itemData);
                 if (PickTempStorage.getInstance().removeMediaData(itemData))
                 {

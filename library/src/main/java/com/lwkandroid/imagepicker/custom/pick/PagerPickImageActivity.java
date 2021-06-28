@@ -1,8 +1,10 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.CheckView;
+import com.lwkandroid.imagepicker.widget.photoview.OnViewTapListener;
 import com.lwkandroid.widget.ComActionBar;
 
 import java.util.LinkedList;
@@ -31,7 +34,7 @@ import androidx.viewpager2.widget.ViewPager2;
  * @author: LWK
  * @date: 2021/6/17 10:30
  */
-public class PagerPickImageActivity extends AppCompatActivity implements PagerPickAdapter.IMediaDataSupplier
+public class PagerPickImageActivity extends AppCompatActivity implements PagerPickAdapter.IMediaDataSupplier, OnViewTapListener
 {
     private BucketBean mCurrentBucket;
     private int mCurrentIndex;
@@ -86,7 +89,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
                 updateCurrentSelectedState();
             }
         });
-        mAdapter = new PagerPickAdapter(this, this);
+        mAdapter = new PagerPickAdapter(this, this, this);
         mViewPager.setAdapter(mAdapter);
 
         initStyle();
@@ -129,6 +132,26 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
     }
 
     @Override
+    public void onViewTap(View view, float x, float y)
+    {
+        if (mActionBar.getVisibility() == View.VISIBLE)
+        {
+            mActionBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_actionbar_dismiss));
+            mBottomContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_bottom_dismiss));
+            mActionBar.setVisibility(View.GONE);
+            mBottomContainer.setVisibility(View.GONE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else
+        {
+            mActionBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_actionbar_show));
+            mBottomContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_bottom_show));
+            mActionBar.setVisibility(View.VISIBLE);
+            mBottomContainer.setVisibility(View.VISIBLE);
+            getWindow().setStatusBarColor(mOptions.getStyle().getStatusBarColor());
+        }
+    }
+
+    @Override
     protected void onDestroy()
     {
         super.onDestroy();
@@ -143,7 +166,11 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
     {
         CustomPickImageStyle style = mOptions.getStyle();
 
-        Utils.setStatusBarColor(this, style.getStatusBarColor(), true);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().setStatusBarColor(style.getStatusBarColor());
+        Utils.compatMarginWithStatusBar(mActionBar);
         //智能调节状态栏文字颜色
         Utils.setStatusBarDarkMode(this, !Utils.isDarkColor(style.getStatusBarColor()));
         Utils.setNavigationBarColor(this, style.getNavigationBarColor());
@@ -233,6 +260,23 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             mCvSelect.setChecked(PickTempStorage.getInstance().contains(mediaBean), false);
         }
     }
+
+    //    @Override
+    //    public void onWindowFocusChanged(boolean hasFocus)
+    //    {
+    //        super.onWindowFocusChanged(hasFocus);
+    //        if (hasFocus)
+    //        {
+    //            View decorView = getWindow().getDecorView();
+    //            decorView.setSystemUiVisibility(
+    //                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    //                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    //                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    //                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+    //                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+    //                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    //        }
+    //    }
 
     /**
      * 完成选择

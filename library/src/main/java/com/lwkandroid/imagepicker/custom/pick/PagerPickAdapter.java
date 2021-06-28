@@ -9,28 +9,34 @@ import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.config.PickCommonConfig;
+import com.lwkandroid.imagepicker.widget.photoview.OnViewTapListener;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.lwkandroid.rcvadapter.RcvSingleAdapter;
 import com.lwkandroid.rcvadapter.holder.RcvHolder;
 
 /**
- * @description:
+ * @description: ViewPager选择图片适配器
  * @author: LWK
  * @date: 2021/6/17 10:35
  */
 class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
 {
     private IMediaDataSupplier mMediaDataSupplier;
+    private OnViewTapListener mViewTapListener;
 
-    public PagerPickAdapter(Context context, IMediaDataSupplier supplier)
+    public PagerPickAdapter(Context context, IMediaDataSupplier supplier, OnViewTapListener tapListener)
     {
         super(context, R.layout.adapter_pager_image_content, null);
         this.mMediaDataSupplier = supplier;
+        this.mViewTapListener = tapListener;
     }
 
     @Override
     public void onBindView(RcvHolder holder, MediaBean itemData, int position)
     {
+        PhotoView photoView = holder.findView(R.id.photoView);
+        photoView.setOnViewTapListener(mViewTapListener);
+
         if (itemData == null)
         {
             if (mMediaDataSupplier != null)
@@ -53,7 +59,6 @@ class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
             }
         } else
         {
-            PhotoView photoView = holder.findView(R.id.photoView);
             photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             //显示是否为GIF
             if (itemData.isGif())
