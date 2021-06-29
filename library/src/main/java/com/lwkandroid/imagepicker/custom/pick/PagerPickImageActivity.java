@@ -166,8 +166,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
     {
         CustomPickImageStyle style = mOptions.getStyle();
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         getWindow().setStatusBarColor(style.getStatusBarColor());
         Utils.compatMarginWithStatusBar(mActionBar);
