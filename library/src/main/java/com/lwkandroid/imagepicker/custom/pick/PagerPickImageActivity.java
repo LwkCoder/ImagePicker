@@ -91,7 +91,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
                 mCurrentIndex = position;
                 //更新标题
                 mActionBar.setTitleText(getResources().getString(R.string.media_position_placeholder,
-                        mCurrentIndex + 1, mCurrentBucket.getFileNumber()));
+                        mCurrentIndex + 1, mAdapter.getItemCount()));
                 //判断是否选中
                 updateCurrentSelectedState();
             }

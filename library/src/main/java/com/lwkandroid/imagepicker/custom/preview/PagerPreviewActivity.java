@@ -48,7 +48,7 @@ public class PagerPreviewActivity extends AppCompatActivity implements OnViewTap
 
     private PagerPreviewAdapter mAdapter;
 
-    private List<MediaBean> mOriginSelectedList = new LinkedList<>();
+    private final List<MediaBean> mOriginSelectedList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -135,10 +135,6 @@ public class PagerPreviewActivity extends AppCompatActivity implements OnViewTap
     private void initData()
     {
         //复选框联动
-        //        mCvSelect.setOnCheckedChangeListener((checkView, isChecked) -> {
-        //            mTempSelectedList.set(mCurrentIndex, isChecked ? mAdapter.getDatas().get(mCurrentIndex) : null);
-        //            updateDoneTextState();
-        //        });
         mCvSelect.setOnCheckedChangeListener((checkView, isChecked) -> {
             if (isChecked)
             {
