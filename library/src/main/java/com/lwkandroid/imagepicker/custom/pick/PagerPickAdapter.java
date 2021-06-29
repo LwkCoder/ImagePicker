@@ -19,10 +19,10 @@ import com.lwkandroid.rcvadapter.holder.RcvHolder;
  * @author: LWK
  * @date: 2021/6/17 10:35
  */
-class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
+final class PagerPickAdapter extends RcvSingleAdapter<MediaBean>
 {
-    private IMediaDataSupplier mMediaDataSupplier;
-    private OnViewTapListener mViewTapListener;
+    private final IMediaDataSupplier mMediaDataSupplier;
+    private final OnViewTapListener mViewTapListener;
 
     public PagerPickAdapter(Context context, IMediaDataSupplier supplier, OnViewTapListener tapListener)
     {

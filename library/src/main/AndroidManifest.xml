@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <application android:requestLegacyExternalStorage="true">
+        <activity android:name=".custom.preview.PagerPreviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".custom.pick.GridPickImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

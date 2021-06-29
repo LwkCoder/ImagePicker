@@ -1,5 +1,7 @@
 package com.lwkandroid.imagepicker.custom.pick;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
+import com.lwkandroid.imagepicker.custom.preview.PagerPreviewActivity;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.imagepicker.widget.photoview.OnViewTapListener;
@@ -24,6 +27,9 @@ import com.lwkandroid.widget.ComActionBar;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -52,6 +58,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
 
     private PagerPickAdapter mAdapter;
     private final MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
+    private ActivityResultLauncher<Void> mPreViewLauncher;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -140,14 +147,14 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             mBottomContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_bottom_dismiss));
             mActionBar.setVisibility(View.GONE);
             mBottomContainer.setVisibility(View.GONE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            Utils.setStatusBarColor(this, Color.TRANSPARENT, false);
         } else
         {
             mActionBar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_actionbar_show));
             mBottomContainer.setAnimation(AnimationUtils.loadAnimation(this, R.anim.image_picker_bottom_show));
             mActionBar.setVisibility(View.VISIBLE);
             mBottomContainer.setVisibility(View.VISIBLE);
-            getWindow().setStatusBarColor(mOptions.getStyle().getStatusBarColor());
+            Utils.setStatusBarColor(this, mOptions.getStyle().getStatusBarColor(), false);
         }
     }
 
@@ -166,10 +173,10 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
     {
         CustomPickImageStyle style = mOptions.getStyle();
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        getWindow().setStatusBarColor(style.getStatusBarColor());
-        Utils.compatMarginWithStatusBar(mActionBar);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        Utils.setStatusBarColor(this, style.getStatusBarColor(), false);
+        Utils.setStatusBarDarkMode(this, Utils.isDarkColor(style.getStatusBarColor()));
+        Utils.compatPaddingWithStatusBar(mActionBar);
         //智能调节状态栏文字颜色
         Utils.setStatusBarDarkMode(this, !Utils.isDarkColor(style.getStatusBarColor()));
         Utils.setNavigationBarColor(this, style.getNavigationBarColor());
@@ -217,7 +224,34 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             }
         });
         mSelectContainer.setOnClickListener(v -> mCvSelect.setChecked(!mCvSelect.isChecked()));
-        //TODO 注册跳转
+        //注册预览图片跳转
+        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<Void, Integer>()
+        {
+            @NonNull
+            @Override
+            public Intent createIntent(@NonNull Context context, Void input)
+            {
+                return new Intent(context, PagerPreviewActivity.class);
+            }
+
+            @Override
+            public Integer parseResult(int resultCode, @Nullable Intent intent)
+            {
+                return resultCode;
+            }
+        }, result -> {
+            if (result == RESULT_OK)
+            {
+                //完成
+                callSelectedDone();
+            } else
+            {
+                if (mAdapter != null)
+                {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
         //临时存储的监听
         PickTempStorage.getInstance().getSelectedMediaLiveData().observe(this, mediaList -> {
             if (mediaList == null || mediaList.size() == 0)
@@ -229,7 +263,8 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             {
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
                 mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
-                    //TODO 预览
+                    //预览
+                    mPreViewLauncher.launch(null);
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
@@ -241,7 +276,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
         mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
                 PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));
 
-
+        //填充空数据
         List<MediaBean> list = new LinkedList<>();
         for (int i = 0; i < mCurrentBucket.getFileNumber(); i++)
         {
@@ -259,23 +294,6 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
             mCvSelect.setChecked(PickTempStorage.getInstance().contains(mediaBean), false);
         }
     }
-
-    //    @Override
-    //    public void onWindowFocusChanged(boolean hasFocus)
-    //    {
-    //        super.onWindowFocusChanged(hasFocus);
-    //        if (hasFocus)
-    //        {
-    //            View decorView = getWindow().getDecorView();
-    //            decorView.setSystemUiVisibility(
-    //                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-    //                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-    //                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-    //                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-    //                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-    //                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    //        }
-    //    }
 
     /**
      * 完成选择

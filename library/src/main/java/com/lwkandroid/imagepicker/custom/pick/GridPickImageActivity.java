@@ -26,6 +26,7 @@ import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
+import com.lwkandroid.imagepicker.custom.preview.PagerPreviewActivity;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.IpRcvLoadMoreView;
 import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
@@ -74,6 +75,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     private final MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
     private ActivityResultLauncher<PagerLauncherOptions> mPagerLauncher;
+    private ActivityResultLauncher<Void> mPreViewLauncher;
     private BottomSheetDialog mBucketListSheetDialog;
 
     @Override
@@ -265,7 +267,8 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
             {
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
                 mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
-                    //TODO 预览
+                    // 预览
+                    mPreViewLauncher.launch(null);
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
@@ -310,7 +313,34 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
                 }
             }
         });
-        //TODO 注册预览图片跳转
+        //注册预览图片跳转
+        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<Void, Integer>()
+        {
+            @NonNull
+            @Override
+            public Intent createIntent(@NonNull Context context, Void input)
+            {
+                return new Intent(context, PagerPreviewActivity.class);
+            }
+
+            @Override
+            public Integer parseResult(int resultCode, @Nullable Intent intent)
+            {
+                return resultCode;
+            }
+        }, result -> {
+            if (result == RESULT_OK)
+            {
+                //完成
+                callSelectedDone();
+            } else
+            {
+                if (mAdapter != null)
+                {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     /**
