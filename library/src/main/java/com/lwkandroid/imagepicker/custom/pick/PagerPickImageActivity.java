@@ -58,7 +58,7 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
 
     private PagerPickAdapter mAdapter;
     private final MediaLoaderEngine mMediaLoaderEngine = new MediaLoaderEngine();
-    private ActivityResultLauncher<Void> mPreViewLauncher;
+    private ActivityResultLauncher<CustomPickImageOptions> mPreViewLauncher;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -226,13 +226,15 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
         });
         mSelectContainer.setOnClickListener(v -> mCvSelect.setChecked(!mCvSelect.isChecked()));
         //注册预览图片跳转
-        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<Void, Integer>()
+        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<CustomPickImageOptions, Integer>()
         {
             @NonNull
             @Override
-            public Intent createIntent(@NonNull Context context, Void input)
+            public Intent createIntent(@NonNull Context context, CustomPickImageOptions input)
             {
-                return new Intent(context, PagerPreviewActivity.class);
+                Intent intent = new Intent(context, PagerPreviewActivity.class);
+                intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input);
+                return intent;
             }
 
             @Override
@@ -265,14 +267,14 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
                 mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
                     //预览
-                    mPreViewLauncher.launch(null);
+                    mPreViewLauncher.launch(mOptions);
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
             }
         });
-        PickTempStorage.getInstance().getOriginFileStateLiveData().observe(this, checked -> mCkOriginalFile.setChecked(checked));
         //“原图”checkbox状态同步
+        PickTempStorage.getInstance().getOriginFileStateLiveData().observe(this, checked -> mCkOriginalFile.setChecked(checked));
         mCkOriginalFile.setChecked(PickTempStorage.getInstance().getOriginFileStateLiveData().getValue());
         mCkOriginalFile.setOnCheckedChangeListener((buttonView, isChecked) ->
                 PickTempStorage.getInstance().getOriginFileStateLiveData().postValue(isChecked));

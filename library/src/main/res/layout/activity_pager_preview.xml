@@ -1,9 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/v_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".custom.preview.PagerPreviewActivity">
+    tools:background="@color/image_pick_style_dark_root_background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.lwkandroid.widget.ComActionBar
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        app:left_click_to_finish="true"
+        app:show_divider_line="false"
+        tools:background="@color/image_pick_style_dark_action_bar_background" />
+
+    <FrameLayout
+        android:id="@+id/v_bottom_operation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_picker_bottom_operation_height"
+        android:layout_gravity="bottom"
+        tools:background="@color/image_pick_style_dark_action_bar_background">
+
+        <CheckBox
+            android:id="@+id/ck_original_file"
+            style="@style/ImagePickerCheckBoxStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/image_picker_padding_horizontal_small"
+            android:text="@string/original_image"
+            tools:textColor="@color/image_pick_style_dark_action_bar_text" />
+
+        <LinearLayout
+            android:id="@+id/v_select_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/image_picker_padding_horizontal_small"
+            android:paddingEnd="@dimen/image_picker_padding_horizontal_small">
+
+            <com.lwkandroid.imagepicker.widget.CheckView
+                android:id="@+id/cv_select"
+                android:layout_width="@dimen/image_picker_checkbox_button_size"
+                android:layout_height="@dimen/image_picker_checkbox_button_size"
+                android:layout_gravity="center_vertical"
+                android:enabled="true"
+                app:borderWidth="1.5dp"
+                app:checkMode="drawableMode" />
+
+            <TextView
+                android:id="@+id/tv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/image_picker_padding_horizontal_tiny"
+                android:text="@string/select"
+                android:textSize="@dimen/image_picker_text_size_medium"
+                tools:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:gravity="center"
+            android:paddingStart="@dimen/image_picker_padding_horizontal_small"
+            android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
+            android:textSize="@dimen/image_picker_text_size_medium"
+            tools:text="@string/done_placeholder"
+            tools:textColor="@color/image_pick_style_dark_action_bar_text" />
+
+    </FrameLayout>
+
+</FrameLayout>

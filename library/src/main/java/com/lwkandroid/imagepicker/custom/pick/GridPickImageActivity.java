@@ -75,7 +75,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     private final MutableLiveData<BucketBean> mCurrentBucketLiveData = new MutableLiveData<>();
     private int mCurrentPageIndex = 1;
     private ActivityResultLauncher<PagerLauncherOptions> mPagerLauncher;
-    private ActivityResultLauncher<Void> mPreViewLauncher;
+    private ActivityResultLauncher<CustomPickImageOptions> mPreViewLauncher;
     private BottomSheetDialog mBucketListSheetDialog;
 
     @Override
@@ -268,7 +268,7 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
                 mActionBar.setRightText01(getString(R.string.preview_placeholder, mediaList.size()));
                 mActionBar.setRightOnItemClickListener01((viewId, textView, dividerLine) -> {
                     // 预览
-                    mPreViewLauncher.launch(null);
+                    mPreViewLauncher.launch(mOptions);
                 });
                 mTvDone.setVisibility(View.VISIBLE);
                 mTvDone.setText(getString(R.string.done_placeholder, mediaList.size(), mOptions.getMaxPickNumber()));
@@ -314,13 +314,15 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
             }
         });
         //注册预览图片跳转
-        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<Void, Integer>()
+        mPreViewLauncher = registerForActivityResult(new ActivityResultContract<CustomPickImageOptions, Integer>()
         {
             @NonNull
             @Override
-            public Intent createIntent(@NonNull Context context, Void input)
+            public Intent createIntent(@NonNull Context context, CustomPickImageOptions input)
             {
-                return new Intent(context, PagerPreviewActivity.class);
+                Intent intent = new Intent(context, PagerPreviewActivity.class);
+                intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input);
+                return intent;
             }
 
             @Override
