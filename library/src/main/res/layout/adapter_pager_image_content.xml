@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.lwkandroid.imagepicker.widget.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/photoView"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</com.lwkandroid.imagepicker.widget.photoview.PhotoView>
+    <com.lwkandroid.imagepicker.widget.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="60dp"
+        android:paddingStart="@dimen/image_picker_padding_horizontal_tiny"
+        android:paddingEnd="@dimen/image_picker_padding_horizontal_tiny"
+        android:textSize="@dimen/image_picker_text_size_medium"
+        tools:text="AAAA" />
+
+</FrameLayout>

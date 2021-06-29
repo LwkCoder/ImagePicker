@@ -43,10 +43,10 @@ import androidx.core.content.FileProvider;
  */
 public final class Utils
 {
-    /**
-     * 默认透明度为1.0f（不透明）
-     */
-    private static final float DEFAULT_ALPHA = 1.0f;
+    private static final int BYTE = 1;
+    private static final int KB = 1024;
+    private static final int MB = 1048576;
+    private static final int GB = 1073741824;
 
     private Utils()
     {
@@ -707,4 +707,36 @@ public final class Utils
             view.setLayoutParams(lp);
         }
     }
+
+    /**
+     * 获取字节大小描述
+     *
+     * @param byteSize  Size of byte.
+     * @param precision The precision
+     * @return fit size of memory
+     */
+    public static String byte2FitMemorySize(final long byteSize, int precision)
+    {
+        if (precision < 0)
+        {
+            throw new IllegalArgumentException("precision shouldn't be less than zero!");
+        }
+        if (byteSize < 0)
+        {
+            throw new IllegalArgumentException("byteSize shouldn't be less than zero!");
+        } else if (byteSize < KB)
+        {
+            return String.format("%." + precision + "fB", (double) byteSize);
+        } else if (byteSize < MB)
+        {
+            return String.format("%." + precision + "fKB", (double) byteSize / KB);
+        } else if (byteSize < GB)
+        {
+            return String.format("%." + precision + "fMB", (double) byteSize / MB);
+        } else
+        {
+            return String.format("%." + precision + "fGB", (double) byteSize / GB);
+        }
+    }
+
 }

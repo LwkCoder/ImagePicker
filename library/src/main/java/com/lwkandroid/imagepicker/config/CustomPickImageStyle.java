@@ -50,6 +50,12 @@ public class CustomPickImageStyle implements Parcelable
     @ColorInt
     private int checkWidgetCheckedColor;
 
+    @ColorInt
+    private int fileSizeTextBackgroundColor;
+
+    @ColorInt
+    private int fileSizeTextColor;
+
     public int getStatusBarColor()
     {
         return statusBarColor;
@@ -160,21 +166,24 @@ public class CustomPickImageStyle implements Parcelable
         this.checkWidgetCheckedColor = checkWidgetCheckedColor;
     }
 
-    public static CustomPickImageStyle dark(Context context)
+    public int getFileSizeTextBackgroundColor()
     {
-        return new Builder()
-                .setStatusBarColorResId(context, R.color.image_pick_style_dark_status_bar)
-                .setActionBarColorResId(context, R.color.image_pick_style_dark_action_bar_background)
-                .setNavigationBarColorResId(context, R.color.image_pick_style_dark_navigation_bar_background)
-                .setRootBackgroundColorResId(context, R.color.image_pick_style_dark_root_background)
-                .setActionBarTextColorResId(context, R.color.image_pick_style_dark_action_bar_text)
-                .setLoadingColorResId(context, R.color.image_pick_style_dark_loading)
-                .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
-                .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
-                .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
-                .setCheckWidgetNormalColorResId(context, R.color.image_pick_style_dark_check_widget_normal)
-                .setCheckWidgetCheckedColorResId(context, R.color.image_pick_style_dark_check_widget_checked)
-                .build();
+        return fileSizeTextBackgroundColor;
+    }
+
+    public void setFileSizeTextBackgroundColor(int fileSizeTextBackgroundColor)
+    {
+        this.fileSizeTextBackgroundColor = fileSizeTextBackgroundColor;
+    }
+
+    public int getFileSizeTextColor()
+    {
+        return fileSizeTextColor;
+    }
+
+    public void setFileSizeTextColor(int fileSizeTextColor)
+    {
+        this.fileSizeTextColor = fileSizeTextColor;
     }
 
     public static class Builder
@@ -318,6 +327,30 @@ public class CustomPickImageStyle implements Parcelable
             return this;
         }
 
+        public Builder setFileSizeTextBackgroundColor(@ColorInt int color)
+        {
+            mStyle.setFileSizeTextBackgroundColor(color);
+            return this;
+        }
+
+        public Builder setFileSizeTextBackgroundColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setFileSizeTextBackgroundColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
+        public Builder setFileSizeTextColor(@ColorInt int color)
+        {
+            mStyle.setFileSizeTextColor(color);
+            return this;
+        }
+
+        public Builder setFileSizeTextColorResId(Context context, @ColorRes int resId)
+        {
+            mStyle.setFileSizeTextColor(ResourcesCompat.getColor(context.getResources(), resId, context.getTheme()));
+            return this;
+        }
+
         public CustomPickImageStyle build()
         {
             return mStyle;
@@ -344,6 +377,8 @@ public class CustomPickImageStyle implements Parcelable
         dest.writeInt(this.doneTextColor);
         dest.writeInt(this.checkWidgetNormalColor);
         dest.writeInt(this.checkWidgetCheckedColor);
+        dest.writeInt(this.fileSizeTextBackgroundColor);
+        dest.writeInt(this.fileSizeTextColor);
     }
 
     public CustomPickImageStyle()
@@ -363,6 +398,8 @@ public class CustomPickImageStyle implements Parcelable
         this.doneTextColor = in.readInt();
         this.checkWidgetNormalColor = in.readInt();
         this.checkWidgetCheckedColor = in.readInt();
+        this.fileSizeTextBackgroundColor = in.readInt();
+        this.fileSizeTextColor = in.readInt();
     }
 
     public static final Creator<CustomPickImageStyle> CREATOR = new Creator<CustomPickImageStyle>()
@@ -379,4 +416,24 @@ public class CustomPickImageStyle implements Parcelable
             return new CustomPickImageStyle[size];
         }
     };
+
+    public static CustomPickImageStyle dark(Context context)
+    {
+        return new Builder()
+                .setStatusBarColorResId(context, R.color.image_pick_style_dark_status_bar)
+                .setActionBarColorResId(context, R.color.image_pick_style_dark_action_bar_background)
+                .setNavigationBarColorResId(context, R.color.image_pick_style_dark_navigation_bar_background)
+                .setRootBackgroundColorResId(context, R.color.image_pick_style_dark_root_background)
+                .setActionBarTextColorResId(context, R.color.image_pick_style_dark_action_bar_text)
+                .setLoadingColorResId(context, R.color.image_pick_style_dark_loading)
+                .setBucketNameTextColorResId(context, R.color.image_pick_style_dark_bucket_name)
+                .setBucketListBackgroundColorResId(context, R.color.image_pick_style_dark_bucket_list_background)
+                .setDoneTextColorResId(context, R.color.image_pick_style_dark_done_text)
+                .setCheckWidgetNormalColorResId(context, R.color.image_pick_style_dark_check_widget_normal)
+                .setCheckWidgetCheckedColorResId(context, R.color.image_pick_style_dark_check_widget_checked)
+                .setFileSizeTextBackgroundColorResId(context, R.color.image_pick_style_dark_file_size_background)
+                .setFileSizeTextColorResId(context, R.color.image_pick_style_dark_file_size_text)
+                .build();
+    }
+
 }

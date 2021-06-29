@@ -25,5 +25,7 @@
     <color name="image_pick_style_dark_done_text">#00B30B</color>
     <color name="image_pick_style_dark_check_widget_normal">@android:color/white</color>
     <color name="image_pick_style_dark_check_widget_checked">@color/image_pick_style_dark_done_text</color>
+    <color name="image_pick_style_dark_file_size_background">#9d9d9d</color>
+    <color name="image_pick_style_dark_file_size_text">@android:color/white</color>
 
 </resources>

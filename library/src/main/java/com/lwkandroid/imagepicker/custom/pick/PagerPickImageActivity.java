@@ -96,7 +96,8 @@ public class PagerPickImageActivity extends AppCompatActivity implements PagerPi
                 updateCurrentSelectedState();
             }
         });
-        mAdapter = new PagerPickAdapter(this, this, this);
+        mAdapter = new PagerPickAdapter(this, mOptions.getStyle().getFileSizeTextBackgroundColor()
+                , mOptions.getStyle().getFileSizeTextColor(), this, this);
         mViewPager.setAdapter(mAdapter);
 
         initStyle();
