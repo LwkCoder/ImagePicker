@@ -1,27 +1,29 @@
 package com.lwkandroid.imagepicker.system.photograph;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
-import com.lwkandroid.imagepicker.config.SystemPhotographOptions;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.common.AbsMediatorFragment;
+import com.lwkandroid.imagepicker.config.SystemPhotographOptions;
 import com.lwkandroid.imagepicker.constants.ErrorCode;
 import com.lwkandroid.imagepicker.utils.Utils;
 
 import java.io.File;
 import java.util.List;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
@@ -32,8 +34,8 @@ import androidx.fragment.app.FragmentActivity;
  */
 public final class SystemPhotographFragment extends AbsMediatorFragment<SystemPhotographOptions, File>
 {
-    private static final int REQUEST_CODE_PHOTOGRAPH = 200;
     private File mResultFile;
+    private ActivityResultLauncher<Uri> mLauncher;
 
     public SystemPhotographFragment(SystemPhotographOptions options, PickCallBack<File> callback)
     {
@@ -46,6 +48,31 @@ public final class SystemPhotographFragment extends AbsMediatorFragment<SystemPh
         // 设置保留实例，不会因为屏幕方向或配置变化而重新创建
         fragment.setRetainInstance(true);
         fragment.attachActivity(activity);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        mLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture()
+        {
+            @NonNull
+            @Override
+            public Intent createIntent(@NonNull Context context, @NonNull Uri input)
+            {
+                Intent intent = super.createIntent(context, input);
+                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+                return intent;
+            }
+        }, result -> {
+            if (result)
+            {
+                invokeSuccessCallBack(mResultFile);
+            } else
+            {
+                detachActivity(getActivity());
+            }
+        });
     }
 
     @Override
@@ -79,41 +106,16 @@ public final class SystemPhotographFragment extends AbsMediatorFragment<SystemPh
                 });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE_PHOTOGRAPH == requestCode)
-        {
-            if (Activity.RESULT_OK == resultCode)
-            {
-                invokeSuccessCallBack(mResultFile);
-            } else
-            {
-                detachActivity(getActivity());
-            }
-        }
-    }
-
     private void doPhotograph()
     {
         if (getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
         {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
             try
             {
                 File cacheDirFile = new File(Utils.getAvailableCacheDirPath(getContext(), getOption().getCacheDirPath()));
                 mResultFile = new File(cacheDirFile.getAbsolutePath(), "IMG_" + System.currentTimeMillis() + ".jpg");
                 Uri resultUri = Utils.file2Uri(getContext(), mResultFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, resultUri);
-                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                {
-                    //添加这一句表示对目标应用临时授权该Uri所代表的文件
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-                startActivityForResult(intent, REQUEST_CODE_PHOTOGRAPH);
+                mLauncher.launch(resultUri);
             } catch (Exception e)
             {
                 e.printStackTrace();
