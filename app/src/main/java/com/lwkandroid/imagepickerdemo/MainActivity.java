@@ -128,6 +128,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
             }
         });
+
+        findViewById(R.id.btnTest5).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (mLastFile == null)
+                {
+                    return;
+                }
+            }
+        });
     }
 
     @Override

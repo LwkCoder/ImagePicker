@@ -1,7 +1,7 @@
 package com.lwkandroid.imagepicker.config;
 
-import com.lwkandroid.imagepicker.system.crop.ISystemCropRequest;
-import com.lwkandroid.imagepicker.system.crop.SystemCropRequestImpl;
+import com.lwkandroid.imagepicker.system.crop.ISystemCropImageRequest;
+import com.lwkandroid.imagepicker.system.crop.SystemCropImageRequestImpl;
 
 import java.io.File;
 
@@ -10,7 +10,7 @@ import java.io.File;
  * @author: LWK
  * @date: 2021/6/3 9:21
  */
-public class SystemCropOptions
+public class SystemCropImageOptions
 {
     private File imageFile;
     private String cacheDirPath;
@@ -93,11 +93,11 @@ public class SystemCropOptions
 
     public static class Builder
     {
-        private SystemCropOptions mOptions;
+        private SystemCropImageOptions mOptions;
 
         public Builder()
         {
-            this.mOptions = new SystemCropOptions();
+            this.mOptions = new SystemCropImageOptions();
         }
 
         public Builder setImageFile(File imageFile)
@@ -136,9 +136,9 @@ public class SystemCropOptions
             return this;
         }
 
-        public ISystemCropRequest build()
+        public ISystemCropImageRequest build()
         {
-            return new SystemCropRequestImpl(mOptions);
+            return new SystemCropImageRequestImpl(mOptions);
         }
     }
 }

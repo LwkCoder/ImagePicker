@@ -1,4 +1,4 @@
-package com.lwkandroid.imagepicker.custom.preview;
+package com.lwkandroid.imagepicker.custom.pick;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

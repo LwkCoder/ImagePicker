@@ -8,17 +8,6 @@ android {
         minSdkVersion MIN_SDK_VERSION as int
         targetSdkVersion TARGET_SDK_VERSION as int
     }
-
-    buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 }
 
 dependencies {
@@ -30,7 +19,6 @@ dependencies {
     implementation "com.lwkandroid.library:ComActionBar:$ComActionBarVersion"
     implementation "com.github.getActivity:XXPermissions:$XXPermissionVersion"
     implementation "com.google.android.material:material:$AndroidMaterialVersion"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 }
 
 allprojects {

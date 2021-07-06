@@ -1,6 +1,6 @@
 package com.lwkandroid.imagepicker.system.crop;
 
-import com.lwkandroid.imagepicker.config.SystemCropOptions;
+import com.lwkandroid.imagepicker.config.SystemCropImageOptions;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 
 import java.io.File;
@@ -13,11 +13,11 @@ import androidx.fragment.app.Fragment;
  * @author:
  * @date: 2021/6/3 9:33
  */
-public class SystemCropRequestImpl implements ISystemCropRequest
+public class SystemCropImageRequestImpl implements ISystemCropImageRequest
 {
-    private SystemCropOptions mOptions;
+    private SystemCropImageOptions mOptions;
 
-    public SystemCropRequestImpl(SystemCropOptions options)
+    public SystemCropImageRequestImpl(SystemCropImageOptions options)
     {
         this.mOptions = options;
     }
@@ -25,12 +25,12 @@ public class SystemCropRequestImpl implements ISystemCropRequest
     @Override
     public void doCrop(AppCompatActivity activity, PickCallBack<File> callBack)
     {
-        SystemCropFragment.create(activity, mOptions, callBack);
+        SystemCropImageFragment.create(activity, mOptions, callBack);
     }
 
     @Override
     public void doCrop(Fragment fragment, PickCallBack<File> callBack)
     {
-        SystemCropFragment.create(fragment.getActivity(), mOptions, callBack);
+        SystemCropImageFragment.create(fragment.getActivity(), mOptions, callBack);
     }
 }

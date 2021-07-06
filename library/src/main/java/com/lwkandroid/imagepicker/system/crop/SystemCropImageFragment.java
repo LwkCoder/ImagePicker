@@ -18,7 +18,7 @@ import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.callback.PickCallBack;
 import com.lwkandroid.imagepicker.common.AbsMediatorFragment;
-import com.lwkandroid.imagepicker.config.SystemCropOptions;
+import com.lwkandroid.imagepicker.config.SystemCropImageOptions;
 import com.lwkandroid.imagepicker.constants.ErrorCode;
 import com.lwkandroid.imagepicker.utils.Utils;
 
@@ -36,21 +36,21 @@ import androidx.fragment.app.FragmentActivity;
  * @author: LWK
  * @date: 2021/6/3 10:02
  */
-public class SystemCropFragment extends AbsMediatorFragment<SystemCropOptions, File>
+public class SystemCropImageFragment extends AbsMediatorFragment<SystemCropImageOptions, File>
 {
     //华为手机标识
     private static final String HUAWEI = "HUAWEI";
     private File mResultFile;
-    private ActivityResultLauncher<Pair<SystemCropOptions, File>> mLauncher;
+    private ActivityResultLauncher<Pair<SystemCropImageOptions, File>> mLauncher;
 
-    public SystemCropFragment(SystemCropOptions options, PickCallBack<File> callback)
+    public SystemCropImageFragment(SystemCropImageOptions options, PickCallBack<File> callback)
     {
         super(options, callback);
     }
 
-    public static void create(FragmentActivity activity, SystemCropOptions options, PickCallBack<File> callBack)
+    public static void create(FragmentActivity activity, SystemCropImageOptions options, PickCallBack<File> callBack)
     {
-        SystemCropFragment fragment = new SystemCropFragment(options, callBack);
+        SystemCropImageFragment fragment = new SystemCropImageFragment(options, callBack);
         // 设置保留实例，不会因为屏幕方向或配置变化而重新创建
         fragment.setRetainInstance(true);
         fragment.attachActivity(activity);
@@ -62,8 +62,8 @@ public class SystemCropFragment extends AbsMediatorFragment<SystemCropOptions, F
         super.onCreate(savedInstanceState);
         File cacheDirFile = new File(Utils.getAvailableCacheDirPath(getContext(), getOption().getCacheDirPath()));
         mResultFile = new File(cacheDirFile.getAbsolutePath(), "CROP_" + System.currentTimeMillis() + ".jpg");
-        mLauncher = registerForActivityResult(new CropContracts(), result -> {
-            if (result)
+        mLauncher = registerForActivityResult(new CropContracts(), success -> {
+            if (success)
             {
                 invokeSuccessCallBack(mResultFile);
             } else
@@ -104,13 +104,13 @@ public class SystemCropFragment extends AbsMediatorFragment<SystemCropOptions, F
                 });
     }
 
-    private static class CropContracts extends ActivityResultContract<Pair<SystemCropOptions, File>, Boolean>
+    private static class CropContracts extends ActivityResultContract<Pair<SystemCropImageOptions, File>, Boolean>
     {
         @NonNull
         @Override
-        public Intent createIntent(@NonNull Context context, Pair<SystemCropOptions, File> pair)
+        public Intent createIntent(@NonNull Context context, Pair<SystemCropImageOptions, File> pair)
         {
-            SystemCropOptions options = pair.first;
+            SystemCropImageOptions options = pair.first;
             File resultFile = pair.second;
 
             File imageFile = options.getImageFile();

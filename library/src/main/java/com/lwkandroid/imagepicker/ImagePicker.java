@@ -1,9 +1,10 @@
 package com.lwkandroid.imagepicker;
 
+import com.lwkandroid.imagepicker.config.CustomCropImageOptions;
 import com.lwkandroid.imagepicker.config.PickCommonConfig;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.ImagePickerDisplayer;
-import com.lwkandroid.imagepicker.config.SystemCropOptions;
+import com.lwkandroid.imagepicker.config.SystemCropImageOptions;
 import com.lwkandroid.imagepicker.config.SystemPhotographOptions;
 import com.lwkandroid.imagepicker.config.SystemPickImageOptions;
 
@@ -42,9 +43,9 @@ public final class ImagePicker
      *
      * @param imageFile 本地图片File对象
      */
-    public static SystemCropOptions.Builder cropImageBySystem(File imageFile)
+    public static SystemCropImageOptions.Builder cropImageBySystem(File imageFile)
     {
-        return new SystemCropOptions.Builder().setImageFile(imageFile);
+        return new SystemCropImageOptions.Builder().setImageFile(imageFile);
     }
 
     /**
@@ -55,4 +56,13 @@ public final class ImagePicker
         PickCommonConfig.getInstance().setImagePickerDisPlayer(disPlayer);
         return new CustomPickImageOptions.Builder();
     }
+
+    /**
+     * 发起自定义界面裁剪图片
+     */
+    public static CustomCropImageOptions.Builder cropImageByCustom()
+    {
+        return new CustomCropImageOptions.Builder();
+    }
+
 }

@@ -15,9 +15,6 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.hjq.permissions.OnPermissionCallback;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.lwkandroid.imagepicker.R;
 import com.lwkandroid.imagepicker.bean.BucketBean;
 import com.lwkandroid.imagepicker.bean.MediaBean;
@@ -26,7 +23,6 @@ import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
-import com.lwkandroid.imagepicker.custom.preview.PagerPreviewActivity;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.IpRcvLoadMoreView;
 import com.lwkandroid.rcvadapter.listener.RcvLoadMoreListener;
@@ -352,41 +348,20 @@ public class GridPickImageActivity extends AppCompatActivity implements RcvLoadM
     {
         mStateFrameLayout.switchToLoadingState();
 
-        XXPermissions.with(this)
-                .permission(Permission.MANAGE_EXTERNAL_STORAGE)
-                .request(new OnPermissionCallback()
+        mMediaLoaderEngine.loadAllBucket(GridPickImageActivity.this, GridPickImageActivity.this, mOptions,
+                new PickCallBack<List<BucketBean>>()
                 {
                     @Override
-                    public void onGranted(List<String> permissions, boolean all)
+                    public void onPickSuccess(List<BucketBean> result)
                     {
-                        mMediaLoaderEngine.loadAllBucket(GridPickImageActivity.this, GridPickImageActivity.this, mOptions,
-                                new PickCallBack<List<BucketBean>>()
-                                {
-                                    @Override
-                                    public void onPickSuccess(List<BucketBean> result)
-                                    {
-                                        mStateFrameLayout.switchToContentState();
-                                        mAllBucketLiveData.postValue(result);
-                                    }
-
-                                    @Override
-                                    public void onPickFailed(int errorCode, String message)
-                                    {
-                                        Toast.makeText(GridPickImageActivity.this, R.string.can_not_scan_media_data, Toast.LENGTH_SHORT).show();
-                                        setResult(Activity.RESULT_CANCELED);
-                                        finish();
-                                    }
-                                });
+                        mStateFrameLayout.switchToContentState();
+                        mAllBucketLiveData.postValue(result);
                     }
 
                     @Override
-                    public void onDenied(List<String> permissions, boolean never)
+                    public void onPickFailed(int errorCode, String message)
                     {
-                        Toast.makeText(GridPickImageActivity.this, R.string.permission_denied_of_pick_image, Toast.LENGTH_SHORT).show();
-                        if (never)
-                        {
-                            XXPermissions.startPermissionActivity(GridPickImageActivity.this, permissions);
-                        }
+                        Toast.makeText(GridPickImageActivity.this, R.string.can_not_scan_media_data, Toast.LENGTH_SHORT).show();
                         setResult(Activity.RESULT_CANCELED);
                         finish();
                     }

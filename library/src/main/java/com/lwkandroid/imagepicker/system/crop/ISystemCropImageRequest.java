@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
  * @author: LWK
  * @date: 2021/6/1 16:22
  */
-public interface ISystemCropRequest
+public interface ISystemCropImageRequest
 {
     void doCrop(AppCompatActivity activity, PickCallBack<File> callBack);
 

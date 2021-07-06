@@ -18,7 +18,6 @@ import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
 import com.lwkandroid.imagepicker.custom.model.MediaLoaderEngine;
-import com.lwkandroid.imagepicker.custom.preview.PagerPreviewActivity;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.imagepicker.widget.photoview.OnViewTapListener;

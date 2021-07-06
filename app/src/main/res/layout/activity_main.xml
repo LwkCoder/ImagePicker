@@ -43,7 +43,7 @@
             android:id="@+id/btnTest5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TEST5" />
+            android:text="自定义模式裁剪图片(需先执行系统拍照或系统选择图片)" />
 
         <Button
             android:id="@+id/btnTest6"

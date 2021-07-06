@@ -1,6 +1,3 @@
-#ImagePicker
--dontwarn com.lwkandroid.imagepicker.**
--keep class com.lwkandroid.imagepicker.**{*;}
 
 #---------------------------------基本指令区-------------------------------
 #代码混淆的压缩比例，值在0-7之间

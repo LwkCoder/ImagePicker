@@ -1,4 +1,4 @@
-package com.lwkandroid.imagepicker.custom.preview;
+package com.lwkandroid.imagepicker.custom.pick;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,7 +13,6 @@ import com.lwkandroid.imagepicker.bean.MediaBean;
 import com.lwkandroid.imagepicker.config.CustomPickImageOptions;
 import com.lwkandroid.imagepicker.config.CustomPickImageStyle;
 import com.lwkandroid.imagepicker.constants.ImageConstants;
-import com.lwkandroid.imagepicker.custom.pick.PickTempStorage;
 import com.lwkandroid.imagepicker.utils.Utils;
 import com.lwkandroid.imagepicker.widget.CheckView;
 import com.lwkandroid.imagepicker.widget.photoview.OnViewTapListener;
