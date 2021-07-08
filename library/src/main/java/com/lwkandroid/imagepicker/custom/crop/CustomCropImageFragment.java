@@ -87,10 +87,7 @@ class CustomCropImageFragment extends AbsMediatorFragment<CustomCropImageOptions
                     @Override
                     public void onGranted(List<String> permissions, boolean all)
                     {
-                        if (all)
-                        {
-                            mLauncher.launch(getOption());
-                        }
+                        mLauncher.launch(getOption());
                     }
 
                     @Override
