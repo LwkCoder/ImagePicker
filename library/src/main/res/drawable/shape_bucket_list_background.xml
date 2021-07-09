@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:topLeftRadius="@dimen/image_picker_padding_horizontal_small"
-        android:topRightRadius="@dimen/image_picker_padding_horizontal_small" />
+        android:topLeftRadius="@dimen/image_picker_padding_small"
+        android:topRightRadius="@dimen/image_picker_padding_small" />
     <solid android:color="@android:color/white"/>
 </shape>

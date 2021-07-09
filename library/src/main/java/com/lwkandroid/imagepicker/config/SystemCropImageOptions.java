@@ -106,26 +106,16 @@ public class SystemCropImageOptions
             return this;
         }
 
-        public Builder setAspectX(int aspectX)
+        public Builder setAspectSize(int aspectX, int aspectY)
         {
             mOptions.setAspectX(aspectX);
-            return this;
-        }
-
-        public Builder setAspectY(int aspectY)
-        {
             mOptions.setAspectY(aspectY);
             return this;
         }
 
-        public Builder setOutputX(int outputX)
+        public Builder setOutputSize(int outputX, int outputY)
         {
             mOptions.setOutputX(outputX);
-            return this;
-        }
-
-        public Builder setOutputY(int outputY)
-        {
             mOptions.setOutputY(outputY);
             return this;
         }

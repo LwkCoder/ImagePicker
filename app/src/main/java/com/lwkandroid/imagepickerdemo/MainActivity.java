@@ -76,10 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
             ImagePicker.cropImageBySystem(mLastFile)
-                    .setAspectX(1)
-                    .setAspectY(1)
-                    .setOutputX(500)
-                    .setOutputY(500)
+                    .setAspectSize(1, 1)
+                    .setOutputSize(500, 500)
                     .build()
                     .doCrop(MainActivity.this, new PickCallBack<File>()
                     {
@@ -97,11 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
         });
 
-        findViewById(R.id.btnTest4).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
+        findViewById(R.id.btnTest4).setOnClickListener(v ->
                 ImagePicker.pickImageByCustom(new GlideDisplayer())
                         .setMaxPickNumber(9)
                         .setShowOriginalFileCheckBox(true)
@@ -118,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     string = string + mediaBean.toString() + "\n";
                                 }
                                 mTextView.setText(string);
+
+                                mLastFile = new File(result.getMediaList().get(0).getPath());
                             }
 
                             @Override
@@ -125,20 +121,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             {
                                 mTextView.setText("code=" + errorCode + " msg=" + message);
                             }
-                        });
-            }
-        });
+                        }));
 
-        findViewById(R.id.btnTest5).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
+        findViewById(R.id.btnTest5).setOnClickListener(v -> {
+            if (mLastFile == null)
             {
-                if (mLastFile == null)
-                {
-                    return;
-                }
+                return;
             }
+            ImagePicker.cropImageByCustom(mLastFile)
+                    .setAspectSize(1, 1)
+                    .setCircleShape(true)
+                    .setOutputSize(320, 320)
+                    .build()
+                    .doCrop(MainActivity.this, new PickCallBack<File>()
+                    {
+                        @Override
+                        public void onPickSuccess(File result)
+                        {
+                            mTextView.setText(result.getAbsolutePath());
+                        }
+
+                        @Override
+                        public void onPickFailed(int errorCode, String message)
+                        {
+                            mTextView.setText("code=" + errorCode + " msg=" + message);
+                        }
+                    });
+
         });
     }
 

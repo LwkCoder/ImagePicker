@@ -43,7 +43,11 @@
     <string name="title_crop_image">Crop Picture</string>
     <string name="original_image">Original Image</string>
     <string name="select">Select</string>
+    <string name="can_not_load_image">Can not load image</string>
+    <string name="can_not_crop_image">Can not crop image</string>
 
     <string name="bucket_all_picture">All Pictures</string>
     <string name="file_size_placeholder">Size:%1$s</string>
+    <string name="image_crop_cancel">Cancel</string>
+    <string name="image_crop_done">Done</string>
 </resources>

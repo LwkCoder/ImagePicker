@@ -1,8 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/v_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/image_pick_style_dark_root_background">
+    android:background="@color/image_pick_style_dark_root_background"
+    android:orientation="vertical">
 
-</FrameLayout>
+    <com.lwkandroid.imagepicker.widget.cropview.CropImageView
+        android:id="@+id/cropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/v_bottom_operation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_picker_bottom_operation_height"
+        android:background="#303030"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:gravity="center"
+            android:text="@string/image_crop_cancel"
+            android:textColor="@color/image_crop_style_dark_operation_tint"
+            android:textSize="@dimen/image_picker_text_size_medium" />
+
+        <ImageView
+            android:id="@+id/img_flip_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:paddingTop="@dimen/image_picker_padding_normal"
+            android:paddingBottom="@dimen/image_picker_padding_normal"
+            android:src="@drawable/ic_image_crop_flip_horizontal" />
+
+        <ImageView
+            android:id="@+id/img_flip_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:paddingTop="@dimen/image_picker_padding_normal"
+            android:paddingBottom="@dimen/image_picker_padding_normal"
+            android:src="@drawable/ic_image_crop_flip_vertical" />
+
+        <ImageView
+            android:id="@+id/img_rotate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:paddingTop="@dimen/image_picker_padding_medium"
+            android:paddingBottom="@dimen/image_picker_padding_medium"
+            android:src="@drawable/ic_image_crop_rotate" />
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/image_picker_ripple_click_effect"
+            android:gravity="center"
+            android:text="@string/image_crop_done"
+            android:textColor="@color/image_crop_style_dark_done_text"
+            android:textSize="@dimen/image_picker_text_size_medium" />
+
+    </LinearLayout>
+
+</LinearLayout>

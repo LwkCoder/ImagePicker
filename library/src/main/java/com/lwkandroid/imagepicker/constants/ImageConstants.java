@@ -32,4 +32,5 @@ public final class ImageConstants
     public static final String KEY_INTENT_CHECK_STATE = "check_state";
     public static final String KEY_INTENT_INDEX = "index";
     public static final String KEY_INTENT_BUCKET = "bucket";
+    public static final String KEY_INTENT_FILE = "file";
 }

@@ -4,7 +4,7 @@
     <style name="ImagePickerCheckBoxStyle">
         <item name="android:textSize">@dimen/image_picker_text_size_medium</item>
         <item name="android:button">@drawable/selector_image_picker_checkbox</item>
-        <item name="android:padding">@dimen/image_picker_padding_horizontal_tiny</item>
+        <item name="android:padding">@dimen/image_picker_padding_tiny</item>
         <item name="android:colorControlHighlight">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>
     </style>

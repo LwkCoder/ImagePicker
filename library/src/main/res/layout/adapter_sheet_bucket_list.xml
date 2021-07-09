@@ -15,8 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/image_picker_padding_horizontal_normal"
-        android:layout_marginEnd="@dimen/image_picker_padding_horizontal_normal"
+        android:layout_marginStart="@dimen/image_picker_padding_normal"
+        android:layout_marginEnd="@dimen/image_picker_padding_normal"
         android:textSize="@dimen/image_picker_text_size_medium" />
 
 </LinearLayout>

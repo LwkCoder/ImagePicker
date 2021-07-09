@@ -19,12 +19,10 @@
     <dimen name="image_picker_text_size_normal">16sp</dimen>
     <dimen name="image_picker_text_size_medium">14sp</dimen>
     <dimen name="image_picker_text_size_small">10sp</dimen>
-    <dimen name="image_picker_padding_horizontal_normal">16dp</dimen>
-    <dimen name="image_picker_padding_vertical_normal">16dp</dimen>
-    <dimen name="image_picker_padding_horizontal_small">8dp</dimen>
-    <dimen name="image_picker_padding_vertical_small">8dp</dimen>
-    <dimen name="image_picker_padding_horizontal_tiny">4dp</dimen>
-    <dimen name="image_picker_padding_vertical_tiny">4dp</dimen>
+    <dimen name="image_picker_padding_normal">16dp</dimen>
+    <dimen name="image_picker_padding_medium">12dp</dimen>
+    <dimen name="image_picker_padding_small">8dp</dimen>
+    <dimen name="image_picker_padding_tiny">4dp</dimen>
 
     <dimen name="image_picker_bottom_operation_height">48dp</dimen>
     <dimen name="image_picker_checkbox_button_size">16dp</dimen>

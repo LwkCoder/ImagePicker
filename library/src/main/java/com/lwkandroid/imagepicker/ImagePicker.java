@@ -60,9 +60,9 @@ public final class ImagePicker
     /**
      * 发起自定义界面裁剪图片
      */
-    public static CustomCropImageOptions.Builder cropImageByCustom()
+    public static CustomCropImageOptions.Builder cropImageByCustom(File imageFile)
     {
-        return new CustomCropImageOptions.Builder();
+        return new CustomCropImageOptions.Builder().setImageFile(imageFile);
     }
 
 }

@@ -3,6 +3,7 @@ package com.lwkandroid.imagepicker.custom.crop;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.hjq.permissions.OnPermissionCallback;
@@ -30,7 +31,7 @@ import androidx.fragment.app.FragmentActivity;
  * @author: LWK
  * @date: 2021/7/6 14:24
  */
-class CustomCropImageFragment extends AbsMediatorFragment<CustomCropImageOptions, File>
+public class CustomCropImageFragment extends AbsMediatorFragment<CustomCropImageOptions, File>
 {
     private ActivityResultLauncher<CustomCropImageOptions> mLauncher;
     private File mResultFile;
@@ -46,6 +47,12 @@ class CustomCropImageFragment extends AbsMediatorFragment<CustomCropImageOptions
     public CustomCropImageFragment(CustomCropImageOptions options, PickCallBack<File> callback)
     {
         super(options, callback);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
         File cacheDirFile = new File(Utils.getAvailableCacheDirPath(getContext(), getOption().getCacheDirPath()));
         mResultFile = new File(cacheDirFile.getAbsolutePath(), "CROP_" + System.currentTimeMillis() + ".jpg");
 
@@ -57,6 +64,7 @@ class CustomCropImageFragment extends AbsMediatorFragment<CustomCropImageOptions
             {
                 Intent intent = new Intent(context, CustomCropImageActivity.class);
                 intent.putExtra(ImageConstants.KEY_INTENT_OPTIONS, input);
+                intent.putExtra(ImageConstants.KEY_INTENT_FILE, Utils.file2Uri(context, mResultFile));
                 return intent;
             }
 

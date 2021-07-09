@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:layout_marginStart="@dimen/image_picker_padding_horizontal_small"
+            android:layout_marginStart="@dimen/image_picker_padding_small"
             android:text="@string/original_image"
             tools:textColor="@color/image_pick_style_dark_action_bar_text" />
 
@@ -45,8 +45,8 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/image_picker_padding_horizontal_small"
-            android:paddingEnd="@dimen/image_picker_padding_horizontal_small">
+            android:paddingStart="@dimen/image_picker_padding_small"
+            android:paddingEnd="@dimen/image_picker_padding_small">
 
             <com.lwkandroid.imagepicker.widget.CheckView
                 android:id="@+id/cv_select"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/image_picker_padding_horizontal_tiny"
+                android:layout_marginStart="@dimen/image_picker_padding_tiny"
                 android:text="@string/select"
                 android:textSize="@dimen/image_picker_text_size_medium"
                 tools:textColor="@android:color/white" />
@@ -76,8 +76,8 @@
             android:layout_gravity="end"
             android:background="@drawable/image_picker_ripple_click_effect"
             android:gravity="center"
-            android:paddingStart="@dimen/image_picker_padding_horizontal_small"
-            android:paddingEnd="@dimen/image_picker_padding_horizontal_small"
+            android:paddingStart="@dimen/image_picker_padding_small"
+            android:paddingEnd="@dimen/image_picker_padding_small"
             android:textSize="@dimen/image_picker_text_size_medium"
             tools:text="@string/done_placeholder"
             tools:textColor="@color/image_pick_style_dark_action_bar_text" />
