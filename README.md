@@ -1,7 +1,8 @@
 # ImagePicker
 
+【不再维护，如有bug、需求，请自行clone源码修改】
 
-<br/>
+
 
 ##  Android10以上的注意事项
 在Android10以上由于新增了作用域外部存储的访问限制，所以在设置ImagePicker的缓存路径时（拍照、裁剪），不可使用非App作用域的以外的存储路径当作缓存目录，比如以下路径就不能使用：
@@ -64,10 +65,10 @@ http://blog.csdn.net/lwk520136/article/details/65647033 <br/>
 http://www.jianshu.com/p/46b5918976e1 <br />
 
 ### 效果图:
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot02.png)<br/>
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot03.png)<br/>
-![](https://github.com/Vanish136/ImagePicker/raw/master/pictures/screen_shot04.png)<br/>
+![](https://github.com/LwkCoder/ImagePicker/raw/master/pictures/screen_shot01.png)<br/>
+![](https://github.com/LwkCoder/ImagePicker/raw/master/pictures/screen_shot02.png)<br/>
+![](https://github.com/LwkCoder/ImagePicker/raw/master/pictures/screen_shot03.png)<br/>
+![](https://github.com/LwkCoder/ImagePicker/raw/master/pictures/screen_shot04.png)<br/>
 
 ### 使用方法:
 **1.添加Gradle依赖：**
